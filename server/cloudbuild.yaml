@@ -1,0 +1,27 @@
+steps:
+  # STEP 1: Build the unified Full-Stack container (Frontend + Brain Stem)
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['build', '-t', 'gcr.io/$PROJECT_ID/sara-brain-stem:$COMMIT_SHA', '.']
+
+  # STEP 2: Push the built container to the Google Container Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/sara-brain-stem:$COMMIT_SHA']
+
+  # STEP 3: Deploy the container directly to Google Cloud Run
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      - 'run'
+      - 'deploy'
+      - 'sara-brain-stem'
+      - '--image'
+      - 'gcr.io/$PROJECT_ID/sara-brain-stem:$COMMIT_SHA'
+      - '--region'
+      - 'us-central1'
+      - '--port'
+      - '8080'
+      - '--allow-unauthenticated'
+
+# Keep a record of the built image
+images:
+  - 'gcr.io/$PROJECT_ID/sara-brain-stem:$COMMIT_SHA'
