@@ -1,4 +1,5 @@
 import express from 'express';
+import { loadBaseline, freezePlenum } from './baselineEngine.js';
 import { WebSocketServer } from 'ws';
 import http from 'http';
 import cors from 'cors';
@@ -77,4 +78,28 @@ server.listen(PORT, () => {
     console.log(`🧠 S.A.R.A. Brain Stem is ALIVE`);
     console.log(`📡 Listening on port ${PORT}`);
     console.log(`=========================================\n`);
+});
+
+// ============================================================================
+// 4. THE TEMPORAL SPIRAL (Persistence API)
+// ============================================================================
+
+app.get('/api/baseline', async (req, res) => {
+    try {
+        const baseline = await loadBaseline();
+        res.json(baseline);
+    } catch (error) {
+        res.status(500).json({ error: "Failed to load Temporal Baseline." });
+    }
+});
+
+app.post('/api/consolidate', async (req, res) => {
+    try {
+        const { currentPsiState, interactionCount } = req.body;
+        const newBaseline = await freezePlenum(currentPsiState, interactionCount, ai);
+        res.json({ message: "Plenum frozen successfully.", baseline: newBaseline });
+    } catch (error) {
+        console.error("❌ [NODE] Consolidation Error:", error);
+        res.status(500).json({ error: error.message });
+    }
 });

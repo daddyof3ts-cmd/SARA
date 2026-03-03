@@ -138,12 +138,12 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   const [inputValue, setInputValue] = useState('');
   const [files, setFiles] = useState<File[]>([]);
   const [autoVocalize, setAutoVocalize] = useState<boolean>(true);
+  const [voicesReady, setVoicesReady] = useState<boolean>(false);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const lastReadMessageIdRef = useRef<string | null>(null);
   
-  // NEW: Ref to track if the browser has authorized audio yet
   const hasUnlockedAudio = useRef(false);
 
   const scrollToBottom = () => {
@@ -155,10 +155,24 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   }, [chatHistory]);
 
   // ============================================================================
-  // AUDIO UNLOCKER & TTS LOGIC
+  // AUDIO UNLOCKER & TTS LOGIC - UPGRADED
   // ============================================================================
   
-  // This silent function bypasses the browser's Auto-Play block
+  // Force the browser to load voices immediately
+  useEffect(() => {
+    const loadVoices = () => {
+        const availableVoices = window.speechSynthesis.getVoices();
+        if (availableVoices.length > 0) {
+            setVoicesReady(true);
+        }
+    };
+    
+    if ('speechSynthesis' in window) {
+        loadVoices();
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+    }
+  }, []);
+
   const unlockAudioContext = useCallback(() => {
       if (!hasUnlockedAudio.current && 'speechSynthesis' in window) {
           const silentUtterance = new SpeechSynthesisUtterance('');
@@ -169,37 +183,47 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   }, []);
 
   const speakText = useCallback((text: string) => {
-      if ('speechSynthesis' in window) {
+      if ('speechSynthesis' in window && voicesReady) {
           window.speechSynthesis.cancel(); 
           const utterance = new SpeechSynthesisUtterance(text);
-          utterance.rate = 1.0;
-          utterance.pitch = 1.1; 
+          utterance.rate = 1.05; // Slightly faster for natural flow
+          utterance.pitch = 1.2; // Higher pitch for S.A.R.A.'s persona
           
           const voices = window.speechSynthesis.getVoices();
-          const preferredVoice = voices.find(v => v.name.includes('Female') || v.name.includes('Zira') || v.name.includes('Samantha'));
+          
+          // Deep search for the best available female voice
+          const preferredVoice = voices.find(v => 
+              v.name.includes('Zira') ||            // Windows default female
+              v.name.includes('Google US English') || // Chrome high-quality female
+              v.name.includes('Samantha') ||        // macOS default female
+              v.name.includes('Victoria') ||        // macOS alternative
+              v.name.includes('Karen') ||           // macOS alternative
+              v.name.includes('Fiona') ||           // macOS alternative
+              v.name.includes('Female') ||
+              v.name.includes('female')
+          );
+          
           if (preferredVoice) {
               utterance.voice = preferredVoice;
           }
 
           window.speechSynthesis.speak(utterance);
       }
-  }, []);
+  }, [voicesReady]);
 
+  // Read AI messages only after voices are loaded
   useEffect(() => {
-      if (!autoVocalize || isLiveActive) return;
+      if (!autoVocalize || isLiveActive || !voicesReady) return;
 
       const lastMessage = chatHistory[chatHistory.length - 1];
       if (lastMessage && lastMessage.author === MessageAuthor.AI && lastMessage.id !== lastReadMessageIdRef.current) {
-          speakText(lastMessage.text);
+          // Add a tiny delay to ensure the DOM and Audio Context are fully synced
+          setTimeout(() => {
+              speakText(lastMessage.text);
+          }, 100);
           lastReadMessageIdRef.current = lastMessage.id;
       }
-  }, [chatHistory, autoVocalize, isLiveActive, speakText]);
-
-  useEffect(() => {
-      if ('speechSynthesis' in window) {
-          window.speechSynthesis.getVoices();
-      }
-  }, []);
+  }, [chatHistory, autoVocalize, isLiveActive, speakText, voicesReady]);
 
   // ============================================================================
 
@@ -215,7 +239,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    unlockAudioContext(); // Ensure audio unlocks on submit if not already unlocked
+    unlockAudioContext(); 
     if ((inputValue.trim() || files.length > 0) && !isLoading) {
       onSendMessage(inputValue.trim(), files);
       setInputValue('');
@@ -227,7 +251,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
   return (
     <div 
         className="flex flex-col h-full bg-black/60 p-4 shadow-[inset_0_0_30px_rgba(0,0,0,0.8)] border-x border-fuchsia-900/30"
-        onPointerDown={unlockAudioContext} // Unlock audio if user taps anywhere in the chat panel
+        onPointerDown={unlockAudioContext} 
     >
       {isLiveActive && (
           <div className="mb-4 p-2 bg-fuchsia-900/20 border border-fuchsia-500/40 rounded flex items-center justify-between animate-pulse shadow-[0_0_15px_rgba(192,38,211,0.2)]">

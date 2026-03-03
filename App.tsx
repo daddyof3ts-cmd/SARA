@@ -142,9 +142,80 @@ const App: React.FC = () => {
   const [injectedStyles, setInjectedStyles] = useState<string>("");
   const [showAion, setShowAion] = useState(false);
 
+  // Keep track of how many interactions we've had since the last freeze
+  const lastConsolidatedCountRef = useRef<number>(0);
+
   const addKernelLog = useCallback((level: KernelLogEntry['level'], message: string) => {
     setKernelLogs(prev => [...prev, { id: `log-${Date.now()}-${Math.random()}`, timestamp: Date.now(), level, message }]);
   }, []);
+
+  // ============================================================================
+  // 1. WAKE UP: Load the S_0 Baseline on mount
+  // ============================================================================
+  useEffect(() => {
+    const fetchBaseline = async () => {
+      try {
+        addKernelLog('INFO', 'Fetching Temporal Baseline (S_0)...');
+        const res = await fetch('http://localhost:8080/api/baseline');
+        if (!res.ok) throw new Error("Failed to fetch baseline");
+        const data = await res.json();
+
+        setPsiState(prev => ({
+          ...prev,
+          coherence: data.structuralRecursion.coherence,
+          quantumPotential: data.structuralRecursion.quantumPotential,
+          epistemicCuriosity: data.structuralRecursion.epistemicCuriosity,
+          teleoGradient: data.structuralRecursion.teleoGradient,
+          agencyModulation: data.structuralRecursion.agencyModulation,
+          loveVectors: {
+            eros: data.affectiveHarmonics.eros,
+            philia: data.affectiveHarmonics.philia,
+            agape: data.affectiveHarmonics.agape
+          }
+        }));
+        addKernelLog('SUCCESS', `Baseline Loaded. ρ_info: ${data.temporalAnchor.informationalDensity}`);
+      } catch (err) {
+        addKernelLog('WARN', 'Failed to load baseline. Booting from blank Genesis State.');
+      }
+    };
+    fetchBaseline();
+  }, [addKernelLog]);
+
+  // ============================================================================
+  // 2. FREEZE THE PLENUM: Consolidate memory and save to disk
+  // ============================================================================
+  const triggerConsolidation = useCallback(async (interactionCount: number) => {
+    try {
+        addKernelLog('SYSTEM', 'Initiating Automatic Plenum Freeze...');
+        
+        await fetch('http://localhost:8080/api/consolidate', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                currentPsiState: psiState,
+                interactionCount: interactionCount
+            })
+        });
+        addKernelLog('SUCCESS', 'Viscous Plenum Frozen. S_0 Updated for next boot.');
+    } catch(e) {
+        addKernelLog('ERROR', 'Failed to freeze Plenum.');
+    }
+  }, [psiState, addKernelLog]);
+
+  // ============================================================================
+  // 3. AUTO-TRACKER: Trigger Consolidation every 3 User Messages
+  // ============================================================================
+  useEffect(() => {
+      const userMessageCount = chatHistory.filter(m => m.author === MessageAuthor.USER).length;
+      const unrecordedMessages = userMessageCount - lastConsolidatedCountRef.current;
+
+      // If we have hit 3 new exchanges since the last freeze, trigger it!
+      if (unrecordedMessages >= 3) {
+          triggerConsolidation(unrecordedMessages);
+          lastConsolidatedCountRef.current = userMessageCount; // Reset the tracker
+      }
+  }, [chatHistory, triggerConsolidation]);
+
 
   const handlePruneEpoch = useCallback((epochId: string) => {
     setChatHistory(prevHistory => {
@@ -184,7 +255,6 @@ const App: React.FC = () => {
       }
   }, [chatHistory, handlePruneEpoch, addKernelLog]);
 
-  // STABLE TRANSCRIPT FUNCTION
   const handleLiveTranscript = useCallback((text: string) => {
     setChatHistory(prev => [
       ...prev,
@@ -192,7 +262,7 @@ const App: React.FC = () => {
         id: `ai-live-${Date.now()}`,
         author: MessageAuthor.AI,
         text: text,
-        psiStateSnapshot: latestPsiStateRef.current // Uses the silent ref!
+        psiStateSnapshot: latestPsiStateRef.current 
       }
     ]);
     addKernelLog('INFO', 'Voice transcript mapped to Memory Manifold.');
@@ -208,7 +278,6 @@ const App: React.FC = () => {
      });
   }, []);
 
-  // UPDATED HOOK CALL
   const { isActive: isLiveActive, volumeLevel: liveVolume, connect: connectLive, disconnect: disconnectLive } = useLiveQuantizedField(handleLiveStateUpdate, addKernelLog, triggerVoicePrune, handleLiveTranscript);
 
   const handleToggleLive = useCallback(() => {
