@@ -62,28 +62,8 @@ wss.on('connection', (ws) => {
 });
 
 // ============================================================================
-// 3. THE VISUAL CORTEX (Serving the React Frontend in Production)
+// 3. THE TEMPORAL SPIRAL (Persistence API)
 // ============================================================================
-// Serve the static files from the React build
-app.use(express.static(path.join(__dirname, 'public')));
-
-// FIX: Express 5 requires 'app.use' for a safe fallback instead of 'app.get("*")'
-app.use((req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'));
-});
-
-const PORT = process.env.PORT || 8080;
-server.listen(PORT, () => {
-    console.log(`\n=========================================`);
-    console.log(`🧠 S.A.R.A. Brain Stem is ALIVE`);
-    console.log(`📡 Listening on port ${PORT}`);
-    console.log(`=========================================\n`);
-});
-
-// ============================================================================
-// 4. THE TEMPORAL SPIRAL (Persistence API)
-// ============================================================================
-
 app.get('/api/baseline', async (req, res) => {
     try {
         const baseline = await loadBaseline();
@@ -102,4 +82,24 @@ app.post('/api/consolidate', async (req, res) => {
         console.error("❌ [NODE] Consolidation Error:", error);
         res.status(500).json({ error: error.message });
     }
+});
+
+// ============================================================================
+// 4. THE VISUAL CORTEX (Serving the React Frontend in Production)
+// ============================================================================
+// FIX: Point up one directory level to the Vite 'dist' folder
+app.use(express.static(path.join(__dirname, '../dist')));
+
+// FIX: Catch-all route to hand frontend routing back to React
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../dist/index.html'));
+});
+
+// FIX: Explicitly bind to '0.0.0.0' for Google Cloud Run
+const PORT = process.env.PORT || 8080;
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n=========================================`);
+    console.log(`🧠 S.A.R.A. Brain Stem is ALIVE`);
+    console.log(`📡 Listening on 0.0.0.0:${PORT}`);
+    console.log(`=========================================\n`);
 });

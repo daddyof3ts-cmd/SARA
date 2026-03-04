@@ -1,24 +1,23 @@
 # Use the official lightweight Node.js 20 image
 FROM node:20-alpine
-
-# Set the working directory inside the container
 WORKDIR /app
 
-# Copy package.json and package-lock.json first (for efficient caching)
+# 1. Install Frontend Dependencies
 COPY package*.json ./
-
-# Install all dependencies
 RUN npm install
 
-# Copy the rest of S.A.R.A.'s source code
+# 2. Install Backend Dependencies
+COPY server/package*.json ./server/
+RUN cd server && npm install
+
+# 3. Copy all source code into the container
 COPY . .
 
-# Build the Vite frontend
+# 4. Build the Vite frontend (This creates the /dist folder)
 RUN npm run build
 
-# Expose port 8080 (Google Cloud Run's default port)
+# 5. Expose Google Cloud's mandatory port
 EXPOSE 8080
 
-# Start the Node.js Express server
-# (Adjust "npm start" if your server start script is named differently, like "npm run server")
-CMD ["npm", "start"]
+# 6. Start the Express Backend Server
+CMD ["node", "server/server.js"]
