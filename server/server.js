@@ -90,8 +90,8 @@ app.post('/api/consolidate', async (req, res) => {
 // FIX: Point up one directory level to the Vite 'dist' folder
 app.use(express.static(path.join(__dirname, '../dist')));
 
-// FIX: Catch-all route to hand frontend routing back to React
-app.get('*', (req, res) => {
+// FIX: Catch-all route to hand frontend routing back to React (Express 5 safe)
+app.use((req, res) => {
     res.sendFile(path.join(__dirname, '../dist/index.html'));
 });
 
