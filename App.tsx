@@ -156,7 +156,7 @@ const App: React.FC = () => {
     const fetchBaseline = async () => {
       try {
         addKernelLog('INFO', 'Fetching Temporal Baseline (S_0)...');
-        const res = await fetch('http://localhost:8080/api/baseline');
+        const res = await fetch('/api/baseline');
         if (!res.ok) throw new Error("Failed to fetch baseline");
         const data = await res.json();
 
@@ -188,7 +188,7 @@ const App: React.FC = () => {
     try {
         addKernelLog('SYSTEM', 'Initiating Automatic Plenum Freeze...');
         
-        await fetch('http://localhost:8080/api/consolidate', {
+        await fetch('/api/consolidate', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
