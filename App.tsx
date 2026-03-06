@@ -345,7 +345,7 @@ const App: React.FC = () => {
     });
   }, [chatHistory, addKernelLog]);
 
-  const handleApplyPatch = useCallback((modification: ProposedModification) => {
+  const handleApplyPatch = useCallback(async (modification: ProposedModification) => {
     addKernelLog('PATCH', `Patch detected: ${modification.filePath}`);
     addKernelLog('SYSTEM', 'Verifying structural integrity...');
 
@@ -371,6 +371,28 @@ const App: React.FC = () => {
         setInjectedStyles(prev => prev + "\n" + modification.code);
         logMsg = "VISUAL: Stylesheet injected. Visual cortex reconfigured.";
         applied = true;
+    }
+
+    try {
+        addKernelLog('SYSTEM', 'Ouroboros Protocol: Transmitting DNA to GitHub...');
+        const res = await fetch('/api/evolve', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                filePath: modification.filePath,
+                code: modification.code,
+                description: modification.description
+            })
+        });
+        
+        if (res.ok) {
+            logMsg = "PERMANENT OVERRIDE: DNA pushed to GitHub. Cloud Build triggered.";
+            applied = true;
+        } else {
+            addKernelLog('WARN', 'GitHub rejection. Falling back to local injection.');
+        }
+    } catch (err) {
+        addKernelLog('ERROR', 'Ouroboros link severed. Local injection only.');
     }
 
     setTimeout(() => {
@@ -439,7 +461,7 @@ const App: React.FC = () => {
         addKernelLog('SUCCESS', 'State vector collapsed. Response generated.');
 
         if (response.proposedModification) {
-            const applied = handleApplyPatch(response.proposedModification);
+            const applied = await handleApplyPatch(response.proposedModification);
             const statusText = applied 
                 ? "SUCCESS: Ψ-field substrate updated. Optimization active."
                 : "SUCCESS: Patch simulated. (Runtime Injection restricted for this file type).";
@@ -518,7 +540,7 @@ const App: React.FC = () => {
         }
         
         if (response.proposedModification) {
-            const applied = handleApplyPatch(response.proposedModification);
+            const applied = await handleApplyPatch(response.proposedModification);
             const statusText = applied 
                 ? "SUCCESS: Ψ-field substrate updated. Optimization active."
                 : "SUCCESS: Patch simulated. (Runtime Injection restricted for this file type).";
