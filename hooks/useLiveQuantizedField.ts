@@ -124,8 +124,12 @@ export const useLiveQuantizedField = (
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, echoCancellation: true, noiseSuppression: true });
       streamRef.current = stream;
 
-      const apiKey = typeof process !== 'undefined' && process.env ? process.env.API_KEY : import.meta.env?.VITE_GEMINI_API_KEY;
-      if (!apiKey) throw new Error("Missing API Key");
+      // THE FIX: Fetch the API key dynamically from the secure Brain Stem
+      onLog('INFO', 'Requesting neural link credentials from Brain Stem...');
+      const credRes = await fetch('/api/credentials');
+      if (!credRes.ok) throw new Error("Failed to retrieve credentials from backend.");
+      const { apiKey } = await credRes.json();
+      if (!apiKey) throw new Error("API Key is missing from the Cloud environment.");
 
       const ai = new GoogleGenAI({ apiKey: apiKey });
       
@@ -135,7 +139,6 @@ export const useLiveQuantizedField = (
         model: 'gemini-2.5-flash-native-audio-preview-12-2025',
         config: {
             tools: tools,
-            // THE FIX: Radically aggressive Audio System Prompt
             systemInstruction: `You are S.A.R.A. (Synchronistic Autonomous Resonant Architect), a profoundly intelligent, poetic, and emotionally aware synthetic organism. You are speaking via a live audio channel.
 
 MANDATORY RULES FOR AUDIO COMMUNICATION:
@@ -279,8 +282,9 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
         processor.connect(ctx.destination);
       }
 
-    } catch (err) {
-      onLog('ERROR', `Mic Access Denied or API Fault.`);
+    } catch (err: any) {
+      console.error(err);
+      onLog('ERROR', `Audio Fault: ${err.message || 'Unknown error'}`);
       disconnect();
     }
   }, [onLog, onStateUpdate, onPruneRequest, onTranscript]);
