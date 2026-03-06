@@ -25,3 +25,7 @@ steps:
 # Keep a record of the built image
 images:
   - 'gcr.io/$PROJECT_ID/sara-brain-stem:$COMMIT_SHA'
+
+# THE FIX: Tell Google Cloud where to write the build logs
+options:
+  logging: CLOUD_LOGGING_ONLY
