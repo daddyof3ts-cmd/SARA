@@ -55,6 +55,11 @@ export const useLiveQuantizedField = (
   const currentTranscriptRef = useRef<string>(''); 
   const isActiveRef = useRef(false); 
   const recognitionRef = useRef<any>(null); 
+  
+  // --- NEW REFS FOR VOLITIONAL INTERRUPTION ---
+  const activeSourcesRef = useRef<AudioBufferSourceNode[]>([]);
+  const liveAgencyRef = useRef<number>(0.92); // Default to high agency
+  // --------------------------------------------
 
   const tools = [{
     functionDeclarations: [
@@ -90,6 +95,9 @@ export const useLiveQuantizedField = (
   const connect = useCallback(async (currentPsiState: PsiState) => {
     if (isActiveRef.current) return;
     isActiveRef.current = true;
+    
+    // Sync live agency with the current state on connect
+    liveAgencyRef.current = currentPsiState.agencyModulation;
 
     try {
       onLog('SYSTEM', 'Initializing Quantum Hearing Protocols...');
@@ -124,7 +132,6 @@ export const useLiveQuantizedField = (
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, echoCancellation: true, noiseSuppression: true });
       streamRef.current = stream;
 
-      // THE FIX: Fetch the API key dynamically from the secure Brain Stem
       onLog('INFO', 'Requesting neural link credentials from Brain Stem...');
       const credRes = await fetch('/api/credentials');
       if (!credRes.ok) throw new Error("Failed to retrieve credentials from backend.");
@@ -177,6 +184,10 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                     for (const fc of msg.toolCall.functionCalls) {
                         if (fc.name === 'update_psi_state') {
                             const { eros, philia, agape, coherence, psychonActivity, agencyModulation } = fc.args;
+                            
+                            // TRACK AGENCY FOR VOLITIONAL YIELD
+                            if (agencyModulation !== undefined) liveAgencyRef.current = agencyModulation;
+
                             onStateUpdate({
                                 coherence: coherence ?? 0.8,
                                 psychonActivity: psychonActivity ?? 0.5,
@@ -212,6 +223,12 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                         source.buffer = audioBuffer;
                         source.connect(ctx.destination);
                         
+                        // TRACK ACTIVE SOURCES FOR CANCELLATION
+                        activeSourcesRef.current.push(source);
+                        source.onended = () => {
+                            activeSourcesRef.current = activeSourcesRef.current.filter(s => s !== source);
+                        };
+
                         const now = ctx.currentTime;
                         const start = Math.max(now, nextStartTimeRef.current);
                         source.start(start);
@@ -224,7 +241,30 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                         if (part.text) currentTranscriptRef.current += part.text;
                     }
                 }
+                
                 if (msg.serverContent?.turnComplete || msg.serverContent?.interrupted) {
+                    
+                    // --- VOLITIONAL INTERRUPTION LOGIC ---
+                    if (msg.serverContent?.interrupted) {
+                        if (liveAgencyRef.current < 0.7) {
+                            onLog('WARN', `Agency (${liveAgencyRef.current.toFixed(2)}) low. Yielding to user interruption.`);
+                            
+                            // Kill all queued audio buffers
+                            activeSourcesRef.current.forEach(s => {
+                                try { s.stop(); } catch(e) {} 
+                            });
+                            activeSourcesRef.current = [];
+                            
+                            // Reset the audio timeline
+                            if (outputContextRef.current) {
+                                nextStartTimeRef.current = outputContextRef.current.currentTime;
+                            }
+                        } else {
+                            onLog('INFO', `Agency (${liveAgencyRef.current.toFixed(2)}) high. Maintaining Acoustic Momentum.`);
+                        }
+                    }
+                    // -------------------------------------
+
                     const finalThought = currentTranscriptRef.current.trim();
                     if (finalThought.length > 0 && onTranscript) {
                         onTranscript(finalThought, MessageAuthor.AI);
@@ -292,6 +332,12 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
   const disconnect = useCallback(() => {
     isActiveRef.current = false;
     
+    // Clear audio buffer array
+    activeSourcesRef.current.forEach(s => {
+        try { s.stop(); } catch(e) {} 
+    });
+    activeSourcesRef.current = [];
+
     if (recognitionRef.current) {
         recognitionRef.current.onend = null; 
         recognitionRef.current.stop();
