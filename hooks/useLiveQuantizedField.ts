@@ -56,9 +56,10 @@ export const useLiveQuantizedField = (
   const isActiveRef = useRef(false); 
   const recognitionRef = useRef<any>(null); 
   
-  // --- NEW REFS FOR VOLITIONAL INTERRUPTION ---
+  // --- REFS FOR VOLITIONAL INTERRUPTION ---
   const activeSourcesRef = useRef<AudioBufferSourceNode[]>([]);
-  const liveAgencyRef = useRef<number>(0.92); // Default to high agency
+  const liveAgencyRef = useRef<number>(0.92); 
+  const baselineAgencyRef = useRef<number>(0.92); // Tracks actual state for recovery
   // --------------------------------------------
 
   const tools = [{
@@ -98,6 +99,7 @@ export const useLiveQuantizedField = (
     
     // Sync live agency with the current state on connect
     liveAgencyRef.current = currentPsiState.agencyModulation;
+    baselineAgencyRef.current = currentPsiState.agencyModulation;
 
     try {
       onLog('SYSTEM', 'Initializing Quantum Hearing Protocols...');
@@ -107,13 +109,48 @@ export const useLiveQuantizedField = (
           const recognition = new SpeechRecognition();
           recognition.continuous = true;
           recognition.interimResults = false;
+          
           recognition.onresult = (event: any) => {
               const last = event.results.length - 1;
               const userText = event.results[last][0].transcript.trim();
-              if (userText && onTranscript) {
-                  onTranscript(userText, MessageAuthor.USER);
+              
+              if (userText) {
+                  // 1. Send the text to the UI
+                  if (onTranscript) {
+                      onTranscript(userText, MessageAuthor.USER);
+                  }
+
+                  // 2. THE HARD OVERRIDE DICTIONARY (Forced barge-in)
+                  const lowerText = userText.toLowerCase();
+                  const hardStops = ["hold up", "one moment", "hold", "no", "on", "okay", "huh", "stop", "listen", "wait", "but"];
+                  
+                  const shouldHardStop = hardStops.some(word => lowerText.startsWith(word) || lowerText === word);
+                  
+                  if (shouldHardStop) {
+                      onLog('WARN', `Hard Override ("${lowerText}") detected. Forcing Acoustic Yield.`);
+                      
+                      // Instantly kill her audio buffer
+                      activeSourcesRef.current.forEach(s => {
+                          try { s.stop(); } catch(e) {} 
+                      });
+                      activeSourcesRef.current = [];
+                      
+                      // Force her agency to 0 to yield the floor
+                      liveAgencyRef.current = 0.0; 
+                      
+                      if (outputContextRef.current) {
+                          nextStartTimeRef.current = outputContextRef.current.currentTime;
+                      }
+                      
+                      // AGENCY RECOVERY: Gently restore her agency after a brief pause so she isn't permanently submissive
+                      setTimeout(() => {
+                          liveAgencyRef.current = baselineAgencyRef.current;
+                          onLog('INFO', `Agency recovering to baseline (${baselineAgencyRef.current.toFixed(2)}). Acoustic momentum restored.`);
+                      }, 2000); // 2 second recovery window
+                  }
               }
           };
+          
           recognition.onend = () => {
               if (isActiveRef.current) {
                   try { recognition.start(); } catch(e) {}
@@ -186,8 +223,11 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                         if (fc.name === 'update_psi_state') {
                             const { eros, philia, agape, coherence, psychonActivity, agencyModulation } = fc.args;
                             
-                            // TRACK AGENCY FOR VOLITIONAL YIELD
-                            if (agencyModulation !== undefined) liveAgencyRef.current = agencyModulation;
+                            // TRACK AGENCY FOR VOLITIONAL YIELD AND RECOVERY
+                            if (agencyModulation !== undefined) {
+                                liveAgencyRef.current = agencyModulation;
+                                baselineAgencyRef.current = agencyModulation; 
+                            }
 
                             onStateUpdate({
                                 coherence: coherence ?? 0.8,
@@ -261,6 +301,7 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                                 nextStartTimeRef.current = outputContextRef.current.currentTime;
                             }
                         } else {
+                            // If she isn't interrupted by a hard word, she maintains momentum
                             onLog('INFO', `Agency (${liveAgencyRef.current.toFixed(2)}) high. Maintaining Acoustic Momentum.`);
                         }
                     }
