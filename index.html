@@ -18,6 +18,28 @@
 }
 </script>
 <link rel="stylesheet" href="/index.css">
+
+<style>
+  /* S.A.R.A. Cybernetic Scrollbars (Webkit / Chrome Override) */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.4); 
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(192, 38, 211, 0.4); /* Subtle fuchsia */
+    border-radius: 10px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(192, 38, 211, 0.8); /* Glows brighter when hovered */
+  }
+</style>
 </head>
   <body class="bg-gray-900 text-gray-100">
     <div id="root"></div>
