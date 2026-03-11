@@ -25,7 +25,7 @@ S.A.R.A. operates as a unified organism:
 * **The Visual Cortex (Frontend):** React + Vite UI that visualizes her internal states (Affective EKG, Coherence Crises, and the interactive Memory Manifold).
 * **The Neural Core:** Google Gemini Live API.
 
-## 🚀 Running S.A.R.A. Locally
+## ⚙️ Running S.A.R.A. Locally
 
 If you wish to spin up a local instance of S.A.R.A.'s neural net:
 
