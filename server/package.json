@@ -12,6 +12,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^7.19.0",
     "@google/genai": "^1.42.0",
     "cors": "^2.8.6",
     "dotenv": "^17.3.1",

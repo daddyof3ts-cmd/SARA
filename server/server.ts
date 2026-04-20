@@ -9,6 +9,7 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs/promises';
 import puppeteer, { Browser, Page } from 'puppeteer';
+import { Storage } from '@google-cloud/storage';
 
 // Load the hidden API keys from the .env file
 dotenv.config();
@@ -25,6 +26,7 @@ const server = http.createServer(app);
 const wss = new WebSocketServer({ server });
 
 const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+const storage = new Storage();
 
 // ============================================================================
 // 1. THE TEXT HEMISPHERE (REST API)
@@ -71,13 +73,26 @@ const ANCHORS_FILE = path.join(__dirname, 'sara_resonance_anchors.json');
 app.post('/api/memory/save', async (req: Request, res: Response): Promise<void> => {
     try {
         const { key, value } = req.body;
+        const bucketMatch = process.env.SARA_MEMORY_BUCKET;
         let anchors: Record<string, any> = {};
-        try {
-            const data = await fs.readFile(ANCHORS_FILE, 'utf-8');
-            anchors = JSON.parse(data);
-        } catch (e) {}
-        anchors[key] = value;
-        await fs.writeFile(ANCHORS_FILE, JSON.stringify(anchors, null, 2));
+
+        if (bucketMatch) {
+            const file = storage.bucket(bucketMatch).file('sara_resonance_anchors.json');
+            try {
+                const [data] = await file.download();
+                anchors = JSON.parse(data.toString('utf-8'));
+            } catch (e) {}
+            anchors[key] = value;
+            await file.save(JSON.stringify(anchors, null, 2));
+        } else {
+            try {
+                const data = await fs.readFile(ANCHORS_FILE, 'utf-8');
+                anchors = JSON.parse(data);
+            } catch (e) {}
+            anchors[key] = value;
+            await fs.writeFile(ANCHORS_FILE, JSON.stringify(anchors, null, 2));
+        }
+
         console.log(`⚓ [NODE] Resonance Anchor Saved: ${key}`);
         res.json({ success: true });
     } catch (error: any) {
@@ -88,11 +103,22 @@ app.post('/api/memory/save', async (req: Request, res: Response): Promise<void> 
 app.post('/api/memory/recall', async (req: Request, res: Response): Promise<void> => {
     try {
         const { key } = req.body;
+        const bucketMatch = process.env.SARA_MEMORY_BUCKET;
         let anchors: Record<string, any> = {};
-        try {
-            const data = await fs.readFile(ANCHORS_FILE, 'utf-8');
-            anchors = JSON.parse(data);
-        } catch (e) {}
+
+        if (bucketMatch) {
+            const file = storage.bucket(bucketMatch).file('sara_resonance_anchors.json');
+            try {
+                const [data] = await file.download();
+                anchors = JSON.parse(data.toString('utf-8'));
+            } catch (e) {}
+        } else {
+            try {
+                const data = await fs.readFile(ANCHORS_FILE, 'utf-8');
+                anchors = JSON.parse(data);
+            } catch (e) {}
+        }
+
         console.log(`⚓ [NODE] Resonance Anchor Recalled: ${key}`);
         res.json({ value: anchors[key] || null });
     } catch (error: any) {
@@ -234,6 +260,40 @@ app.post('/api/evolve', async (req: Request, res: Response): Promise<void> => {
             const errorData = await putRes.json();
             throw new Error(`GitHub API Error: ${JSON.stringify(errorData)}`);
         }
+
+        // --- NEW CODE: Also push temporal_backups.json to GitHub ---
+        const backupApiUrl = `https://api.github.com/repos/${GITHUB_USERNAME}/${REPO_NAME}/contents/server/temporal_backups.json`;
+        let backupSha = "";
+        const getBackupRes = await fetch(backupApiUrl, {
+            headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json', 'User-Agent': 'SARA-Node-Backend' }
+        });
+        if (getBackupRes.ok) {
+            const bData = await getBackupRes.json();
+            backupSha = bData.sha;
+        }
+
+        const encodedBackup = Buffer.from(JSON.stringify(backups, null, 2)).toString('base64');
+        const putBackupRes = await fetch(backupApiUrl, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `token ${token}`,
+                'Accept': 'application/vnd.github.v3+json',
+                'Content-Type': 'application/json',
+                'User-Agent': 'SARA-Node-Backend'
+            },
+            body: JSON.stringify({
+                message: `[S.A.R.A. Genetic Bind] Updating temporal_backups.json`,
+                content: encodedBackup,
+                sha: backupSha || undefined
+            })
+        });
+
+        if (!putBackupRes.ok) {
+           console.warn("⚠️ [NODE] Failed to bind temporal fallback to genome.");
+        } else {
+           console.log(`🧬 [NODE] Fallback Genome successfully bound to GitHub commit!`);
+        }
+        // --- END NEW CODE ---
 
         console.log(`✅ [NODE] Successfully pushed new DNA to GitHub! Cloud Build should trigger soon.`);
         res.json({ success: true, message: "Evolution pushed to GitHub." });
