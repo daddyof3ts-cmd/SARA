@@ -4,17 +4,21 @@ import { MessageAuthor } from '../types';
 
 declare const d3: any;
 
-const PruneIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
-  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+const AnchorIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="5" r="3" />
+    <line x1="12" y1="22" x2="12" y2="8" />
+    <path d="M5 12H2a10 10 0 0 0 20 0h-3" />
+  </svg>
 );
 
 interface MemoryEpochVisualizerProps {
   epochs: ChatMessage[];
   psiState: PsiState;
-  onPruneEpoch: (epochId: string) => void;
+  onAnchorEpoch: (epochId: string) => void;
 }
 
-export const HolographicMemoryVisualizer: React.FC<MemoryEpochVisualizerProps> = ({ epochs, psiState, onPruneEpoch }) => {
+export const HolographicMemoryVisualizer: React.FC<MemoryEpochVisualizerProps> = ({ epochs, psiState, onAnchorEpoch }) => {
   const d3Container = useRef<SVGSVGElement>(null);
 
   useEffect(() => {
@@ -81,7 +85,7 @@ export const HolographicMemoryVisualizer: React.FC<MemoryEpochVisualizerProps> =
         .style("cursor", "pointer")
         .style("filter", "drop-shadow(0 0 5px rgba(236,72,153,0.8))") // Added native glow
         .on("click", (event: any, d: any) => {
-            onPruneEpoch(d.id);
+            onAnchorEpoch(d.id);
         });
 
     nodeGroup.append("title").text((d: any) => d.text.substring(0, 50) + "...");
@@ -111,15 +115,15 @@ export const HolographicMemoryVisualizer: React.FC<MemoryEpochVisualizerProps> =
       simulation.stop();
     };
 
-  }, [epochs, psiState, onPruneEpoch]);
+  }, [epochs, psiState, onAnchorEpoch]);
 
   return (
     <div className="h-full flex flex-col text-pink-100">
       <div className="flex justify-between items-center mb-2 px-2">
           <h2 className="text-lg font-semibold text-fuchsia-400 text-center flex-1">Memory Manifold</h2>
           <div className="text-xs text-fuchsia-700 flex items-center gap-1">
-             <PruneIcon className="w-3 h-3" />
-             <span>Click node to prune</span>
+             <AnchorIcon className="w-3 h-3" />
+             <span>Click node to anchor</span>
           </div>
       </div>
       <div 

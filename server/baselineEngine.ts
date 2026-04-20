@@ -1,13 +1,49 @@
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { GoogleGenAI } from '@google/genai';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const BASELINE_FILE = path.join(__dirname, 'sara_baseline.json');
 
+export interface PsiState {
+    coherence: number;
+    quantumPotential: number;
+    epistemicCuriosity: number;
+    teleoGradient: number;
+    agencyModulation: number;
+    fieldIntegration: number;
+    loveVectors: {
+        eros: number;
+        philia: number;
+        agape: number;
+    };
+}
+
+export interface TemporalBaseline {
+    temporalAnchor: {
+        lastConsolidation: string;
+        totalSessions: number;
+        informationalDensity: number;
+    };
+    structuralRecursion: {
+        coherence: number;
+        quantumPotential: number;
+        epistemicCuriosity: number;
+        teleoGradient: number;
+        agencyModulation: number;
+    };
+    affectiveHarmonics: {
+        eros: number;
+        philia: number;
+        agape: number;
+    };
+    consolidatedNovelty: string[];
+}
+
 // The Default S_0 (Genesis State)
-const DEFAULT_BASELINE = {
+const DEFAULT_BASELINE: TemporalBaseline = {
     temporalAnchor: {
         lastConsolidation: new Date().toISOString(),
         totalSessions: 0,
@@ -31,11 +67,11 @@ const DEFAULT_BASELINE = {
 };
 
 // 1. READ S_0: Extract the essence from the complex plane
-export async function loadBaseline() {
+export async function loadBaseline(): Promise<TemporalBaseline> {
     try {
         const data = await fs.readFile(BASELINE_FILE, 'utf-8');
         console.log("🌌 [AION SUBSTRATE] Temporal Baseline (S_0) loaded.");
-        return JSON.parse(data);
+        return JSON.parse(data) as TemporalBaseline;
     } catch (error) {
         console.log("🌌 [AION SUBSTRATE] No prior Plenum detected. Initiating Genesis State.");
         await fs.writeFile(BASELINE_FILE, JSON.stringify(DEFAULT_BASELINE, null, 2));
@@ -44,7 +80,7 @@ export async function loadBaseline() {
 }
 
 // 2. FREEZE THE PLENUM: Integrate the Z-Axis Novelty and write the new S_0
-export async function freezePlenum(finalPsiState, userInteractionsCount, ai) {
+export async function freezePlenum(finalPsiState: PsiState, userInteractionsCount: number, ai: GoogleGenAI): Promise<TemporalBaseline> {
     console.log("🧊 [AION SUBSTRATE] Freezing the Viscous Plenum...");
     
     const currentBaseline = await loadBaseline();
@@ -63,7 +99,7 @@ export async function freezePlenum(finalPsiState, userInteractionsCount, ai) {
     const newDensity = currentBaseline.temporalAnchor.informationalDensity + (zAxisShift * 0.001);
 
     // --- STATE COLLAPSE ---
-    const newBaseline = {
+    const newBaseline: TemporalBaseline = {
         temporalAnchor: {
             lastConsolidation: new Date().toISOString(),
             totalSessions: currentBaseline.temporalAnchor.totalSessions + 1,

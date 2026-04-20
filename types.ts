@@ -79,10 +79,17 @@ export interface ProposedModification {
   code: string; // The code snippet or full file content to apply
 }
 
+export interface SystemAction {
+  actionType: 'save_memory' | 'recall_memory' | 'temporal_fallback' | 'browser_navigate' | 'browser_click' | 'browser_type' | 'browser_read_console' | 'browser_get_dom' | 'browser_close' | 'fs_read' | 'fs_write';
+  key: string; // Used for memory, browser selector/URL, or fs filePath
+  value?: string; // Used for memory, browser text, or fs write content
+}
+
 export interface GeminiResponse {
   responseText: string;
   psiState: PsiState;
   proposedModification?: ProposedModification;
+  systemAction?: SystemAction;
 }
 
 export interface NumberTheoreticState {

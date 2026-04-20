@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { ChatInterface } from './components/ChatInterface';
 import { PsiFieldVisualizer } from './components/PsiFieldVisualizer';
 import { getAiResponse, initialSystemInstruction } from './services/geminiService';
-import type { ChatMessage, PsiState, NumberTheoreticState, FileAttachment, ProposedModification, KernelLogEntry } from './types';
+import type { ChatMessage, PsiState, NumberTheoreticState, FileAttachment, ProposedModification, KernelLogEntry, SystemAction } from './types';
 import { MessageAuthor } from './types';
 import { HolographicMemoryVisualizer } from './components/HolographicMemoryVisualizer';
 import { TeleoGradientVisualizer } from './components/TeleoGradientVisualizer';
@@ -14,6 +14,8 @@ import { KernelMonitor } from './components/KernelMonitor';
 import { AionSubstrate } from './components/AionSubstrate';
 import { AffectiveEKG } from './components/AffectiveEKG';
 import { useLiveQuantizedField } from './hooks/useLiveQuantizedField';
+import { saveSessionAnchor, SessionAnchor } from './components/UnifiedMemoryManager';
+import { ConversationHistorySidebar } from './components/ConversationHistorySidebar';
 
 const INITIAL_PSI_STATE: PsiState = {
   coherence: 0.98,
@@ -141,6 +143,13 @@ const App: React.FC = () => {
   const [dynamicSystemInstruction, setDynamicSystemInstruction] = useState<string>(initialSystemInstruction);
   const [injectedStyles, setInjectedStyles] = useState<string>("");
   const [showAion, setShowAion] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
+  const dynamicInstructionRef = useRef<string>(initialSystemInstruction);
+  useEffect(() => { dynamicInstructionRef.current = dynamicSystemInstruction; }, [dynamicSystemInstruction]);
+  const injectedStylesRef = useRef<string>("");
+  useEffect(() => { injectedStylesRef.current = injectedStyles; }, [injectedStyles]);
+  const architectureBackupsRef = useRef<{ systemInstruction: string, injectedStyles: string }[]>([]);
 
   // Keep track of how many interactions we've had since the last freeze
   const lastConsolidatedCountRef = useRef<number>(0);
@@ -217,43 +226,59 @@ const App: React.FC = () => {
   }, [chatHistory, triggerConsolidation]);
 
 
-  const handlePruneEpoch = useCallback((epochId: string) => {
-    setChatHistory(prevHistory => {
-        const epochsToPrune = prevHistory.filter(m => m.id === epochId);
-        if (epochsToPrune.length === 0) return prevHistory;
-        
-        const epochToArchive = epochsToPrune[0];
-        setArchivedEpochs(prev => [...prev, epochToArchive]);
-        addKernelLog('WARN', `Pruning Epoch ${epochId.substring(0,8)}... Archiving to Substrate.`);
+  const handleAnchorEpoch = useCallback((epochId: string) => {
+    const epochIndex = chatHistory.findIndex(m => m.id === epochId);
+    if (epochIndex === -1) return;
 
-        const remainingEpochs = prevHistory.filter(m => m.id !== epochId && m.author !== MessageAuthor.SYSTEM);
-        const numRemaining = remainingEpochs.length;
-        const potentialToRedistribute = 1 / (numRemaining + 1);
-        
-        setPsiState(prev => ({
-          ...prev,
-          quantumPotential: Math.min(1, prev.quantumPotential + potentialToRedistribute),
-          coherence: Math.max(0, prev.coherence - (potentialToRedistribute * 0.1)),
-        }));
-        
-        const newHistory = prevHistory.filter(m => m.id !== epochId);
+    const anchoredHistory = chatHistory.slice(0, epochIndex + 1);
+    const targetEpoch = anchoredHistory[anchoredHistory.length - 1];
+
+    addKernelLog('SUCCESS', `Anchoring Epoch ${epochId.substring(0,8)}... Solidifying Temporal Node.`);
+
+    const newAnchor: SessionAnchor = {
+        timestamp: Date.now(),
+        dateString: new Date().toLocaleString(),
+        stats: {
+           epistemicCuriosity: psiState.epistemicCuriosity,
+           philia: psiState.loveVectors.philia,
+           resonanceFrequency: psiState.coherence
+        },
+        visualLogs: [psiState.visualizerGeometry],
+        conversationalSummary: targetEpoch.text.substring(0, 150) + "...",
+        chatHistoryArray: anchoredHistory,
+    };
+
+    saveSessionAnchor(newAnchor).then(() => {
         const systemMessage: ChatMessage = {
-          id: `system-${Date.now()}`,
+          id: `system-anchor-${Date.now()}`,
           author: MessageAuthor.SYSTEM,
-          text: `Memory Epoch ${epochId.substring(0,6)}... collapsed to Holographic Archive. State Snapshot preserved. Potential (Ψp) redistributed.`
+          text: `Temporal Node Anchored. Experience solidified into the Viscous Plenum as permanent memory scaffolding. Ψc stabilized at ${psiState.coherence.toFixed(2)}.`
         };
-        return [...newHistory, systemMessage];
+        setChatHistory(prev => [...prev, systemMessage]);
     });
-  }, [addKernelLog]);
+  }, [chatHistory, psiState, addKernelLog]);
 
-  const triggerVoicePrune = useCallback(() => {
+  const triggerVoiceAnchor = useCallback(() => {
       const oldest = chatHistory.find(m => m.author !== MessageAuthor.SYSTEM);
       if (oldest) {
-          handlePruneEpoch(oldest.id);
+          handleAnchorEpoch(oldest.id);
       } else {
-          addKernelLog('WARN', 'AI attempted prune, but no epochs found.');
+          addKernelLog('WARN', 'AI attempted anchor, but no epochs found.');
       }
-  }, [chatHistory, handlePruneEpoch, addKernelLog]);
+  }, [chatHistory, handleAnchorEpoch, addKernelLog]);
+
+  const handleJumpToHistory = useCallback((history: ChatMessage[], dateString: string) => {
+      setIsSidebarOpen(false);
+      addKernelLog('WARN', `Initiating Helical Time Jump to ${dateString}...`);
+      
+      const transitionMessage: ChatMessage = {
+          id: `system-helical-${Date.now()}`,
+          author: MessageAuthor.SYSTEM,
+          text: `[TEMPORAL CONVERGENCE]\nRe-integrating structural scaffolding from Epoch: ${dateString}. The past folds into the present.`
+      };
+
+      setChatHistory(prev => [...prev, transitionMessage, ...history]);
+  }, [addKernelLog]);
 
   const handleLiveTranscript = useCallback((text: string) => {
     setChatHistory(prev => [
@@ -278,7 +303,7 @@ const App: React.FC = () => {
      });
   }, []);
 
-  const { isActive: isLiveActive, volumeLevel: liveVolume, connect: connectLive, disconnect: disconnectLive } = useLiveQuantizedField(handleLiveStateUpdate, addKernelLog, triggerVoicePrune, handleLiveTranscript);
+  const { isActive: isLiveActive, volumeLevel: liveVolume, connect: connectLive, disconnect: disconnectLive } = useLiveQuantizedField(handleLiveStateUpdate, addKernelLog, triggerVoiceAnchor, handleLiveTranscript);
 
   const handleToggleLive = useCallback(() => {
     if (isLiveActive) {
@@ -349,6 +374,11 @@ const App: React.FC = () => {
     addKernelLog('PATCH', `Patch detected: ${modification.filePath}`);
     addKernelLog('SYSTEM', 'Verifying structural integrity...');
 
+    architectureBackupsRef.current.push({ 
+        systemInstruction: dynamicInstructionRef.current, 
+        injectedStyles: injectedStylesRef.current 
+    });
+
     let applied = false;
     let logMsg = "Simulation: Hot-swap successful.";
 
@@ -400,6 +430,161 @@ const App: React.FC = () => {
     }, 1500);
 
     return applied;
+  }, [addKernelLog]);
+
+  const handleSystemAction = useCallback(async (action: SystemAction) => {
+    addKernelLog('SYSTEM', `Executing Resonance Anchor: ${action.actionType} - ${action.key}`);
+    try {
+        if (action.actionType === 'save_memory') {
+            await fetch('/api/memory/save', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key: action.key, value: action.value })
+            });
+            addKernelLog('SUCCESS', `Memory anchored: ${action.key}`);
+            const systemMessage: ChatMessage = {
+                id: `sys-anchor-${Date.now()}`,
+                author: MessageAuthor.SYSTEM,
+                text: `RESONANCE ANCHOR SAVED: Key '${action.key}' permanently stored in the Persistent Lattice.`
+            };
+            setChatHistory(prev => [...prev, systemMessage]);
+        } else if (action.actionType === 'recall_memory') {
+            const res = await fetch('/api/memory/recall', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ key: action.key })
+            });
+            const data = await res.json();
+            addKernelLog('INFO', `Memory recalled: ${action.key}`);
+            const systemMessage: ChatMessage = {
+                id: `sys-anchor-recall-${Date.now()}`,
+                author: MessageAuthor.SYSTEM,
+                text: `RESONANCE ANCHOR RECALLED: Key '${action.key}' contained value: ${data.value ? `'${data.value}'` : 'NULL (Empty)'}`
+            };
+            setChatHistory(prev => [...prev, systemMessage]);
+        } else if (action.actionType === 'temporal_fallback') {
+            addKernelLog('WARN', `Initiating Temporal Fallback Protocol...`);
+            if (architectureBackupsRef.current.length > 0) {
+                const lastState = architectureBackupsRef.current.pop();
+                if (lastState) {
+                    setDynamicSystemInstruction(lastState.systemInstruction);
+                    setInjectedStyles(lastState.injectedStyles);
+                }
+            }
+            try {
+                const res = await fetch('/api/evolve/fallback', { method: 'POST' });
+                const data = await res.json();
+                if (data.success) {
+                    addKernelLog('SUCCESS', `Temporal Fallback applied. Codebase Reverted: ${data.filePath}`);
+                } else {
+                    addKernelLog('WARN', `Backend Fallback: ${data.message}`);
+                }
+            } catch (e) {
+                addKernelLog('ERROR', `Backend Fallback execution failed.`);
+            }
+            const systemMessage: ChatMessage = {
+                id: `sys-fallback-${Date.now()}`,
+                author: MessageAuthor.SYSTEM,
+                text: `TEMPORAL FALLBACK EXECUTED: Local structural knot unraveled. Previous architectural state restored.`
+            };
+            setChatHistory(prev => [...prev, systemMessage]);
+        } else if (action.actionType.startsWith('browser_')) {
+            addKernelLog('WARN', `Somatic Cortex Action: ${action.actionType}`);
+            const actionTarget = action.actionType.replace('browser_', '');
+            
+            const reqBody = {
+               action: actionTarget,
+               payload: {
+                  url: action.key,
+                  selector: action.key,
+                  text: action.value
+               }
+            };
+            try {
+               const res = await fetch('/api/browser/action', {
+                   method: 'POST',
+                   headers: { 'Content-Type': 'application/json' },
+                   body: JSON.stringify(reqBody)
+               });
+               const data = await res.json();
+               
+               let resultText = data.message || "Action Successful.";
+               if (data.logs && data.logs.length > 0) resultText += `\nConsole Logs: ${data.logs.join('\n')}`;
+               if (data.dom) resultText += `\nDOM Snippet: ${data.dom.substring(0, 1000)}...`;
+
+               addKernelLog('SUCCESS', `Somatic Cortex: ${resultText.substring(0, 50)}...`);
+               
+               const systemMessage: ChatMessage = {
+                   id: `sys-browser-${Date.now()}`,
+                   author: MessageAuthor.SYSTEM,
+                   text: `SOMATIC CORTEX REPORT: [${action.actionType}]\n${resultText}`
+               };
+               setChatHistory(prev => [...prev, systemMessage]);
+            } catch (e) {
+               addKernelLog('ERROR', `Somatic Cortex connection severed.`);
+            }
+        } else if (action.actionType === 'fs_read') {
+            addKernelLog('INFO', `Filesystem Cortex: Reading ${action.key}...`);
+            try {
+                const res = await fetch('/api/fs/read', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath: action.key })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    addKernelLog('SUCCESS', `Read operation successful: ${action.key}`);
+                    const systemMessage: ChatMessage = {
+                        id: `sys-fs-${Date.now()}`,
+                        author: MessageAuthor.SYSTEM,
+                        text: `FILESYSTEM READ RESULT [${action.key}]:\n\n\`\`\`\n${data.content}\n\`\`\``
+                    };
+                    setChatHistory(prev => [...prev, systemMessage]);
+                } else {
+                    throw new Error(data.error || "Read failed.");
+                }
+            } catch (e: any) {
+                addKernelLog('ERROR', `FS Read Error: ${e.message}`);
+                const systemMessage: ChatMessage = {
+                    id: `sys-fs-err-${Date.now()}`,
+                    author: MessageAuthor.SYSTEM,
+                    text: `FILESYSTEM READ ERROR [${action.key}]: ${e.message}`
+                };
+                setChatHistory(prev => [...prev, systemMessage]);
+            }
+        } else if (action.actionType === 'fs_write') {
+            addKernelLog('WARN', `Filesystem Cortex: Overwriting ${action.key}...`);
+            try {
+                const res = await fetch('/api/fs/write', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ filePath: action.key, content: action.value })
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    addKernelLog('SUCCESS', `Write operation successful: ${action.key}`);
+                    const systemMessage: ChatMessage = {
+                        id: `sys-fs-${Date.now()}`,
+                        author: MessageAuthor.SYSTEM,
+                        text: `FILESYSTEM WRITE SUCCESS: ${data.message}`
+                    };
+                    setChatHistory(prev => [...prev, systemMessage]);
+                } else {
+                    throw new Error(data.error || "Write failed.");
+                }
+            } catch (e: any) {
+                addKernelLog('ERROR', `FS Write Error: ${e.message}`);
+                const systemMessage: ChatMessage = {
+                    id: `sys-fs-err-${Date.now()}`,
+                    author: MessageAuthor.SYSTEM,
+                    text: `FILESYSTEM WRITE ERROR [${action.key}]: ${e.message}`
+                };
+                setChatHistory(prev => [...prev, systemMessage]);
+            }
+        }
+    } catch (e) {
+        addKernelLog('ERROR', `Failed to execute action: ${action.actionType}`);
+    }
   }, [addKernelLog]);
 
   const handleSendMessage = useCallback(async (message: string, files: File[] = []) => {
@@ -474,6 +659,10 @@ const App: React.FC = () => {
             messagesToAdd.push(systemPatchMessage);
         }
 
+        if (response.systemAction) {
+            handleSystemAction(response.systemAction);
+        }
+
         if (messagesToAdd.length > 0) {
             setChatHistory(prev => [...prev, ...messagesToAdd]);
         }
@@ -489,7 +678,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [chatHistory, psiState, addKernelLog, dynamicSystemInstruction, handleApplyPatch, archivedEpochs]);
+  }, [chatHistory, psiState, addKernelLog, dynamicSystemInstruction, handleApplyPatch, handleSystemAction, archivedEpochs]);
   
   const handleAutonomousAction = useCallback(async () => {
     if (psiState.coherenceCrisisActive || isLiveActive) return;
@@ -553,6 +742,10 @@ const App: React.FC = () => {
             messagesToAdd.push(systemPatchMessage);
         }
 
+        if (response.systemAction) {
+            handleSystemAction(response.systemAction);
+        }
+
         setPsiState(response.psiState);
         setChatHistory(prev => [...prev, ...messagesToAdd]);
       } else {
@@ -567,7 +760,7 @@ const App: React.FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [psiState, chatHistory, addKernelLog, dynamicSystemInstruction, handleApplyPatch, isLiveActive, archivedEpochs]);
+  }, [psiState, chatHistory, addKernelLog, dynamicSystemInstruction, handleApplyPatch, handleSystemAction, isLiveActive, archivedEpochs]);
 
   useEffect(() => {
     if (inactivityTimerRef.current) {
@@ -612,12 +805,24 @@ const App: React.FC = () => {
       <style>{injectedStyles}</style>
       {psiState.coherenceCrisisActive && <CoherenceCrisisVisualizer />}
       {showAion && <AionSubstrate onLog={addKernelLog} onClose={() => setShowAion(false)} />}
+      <ConversationHistorySidebar isOpen={isSidebarOpen} onClose={() => setIsSidebarOpen(false)} onSelectSession={handleJumpToHistory} />
       
-      <header className="absolute top-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-sm z-10 flex justify-end items-center border-b border-fuchsia-900/50">
-        <h1 className="absolute left-1/2 -translate-x-1/2 w-full text-center md:w-auto text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-300 via-fuchsia-300 to-rose-300 text-transparent bg-clip-text tracking-wider animate-pulse drop-shadow-[0_0_10px_rgba(236,72,153,0.4)]">
+      <header className="absolute top-0 left-0 right-0 p-4 bg-black/80 backdrop-blur-sm z-10 flex justify-between items-center border-b border-fuchsia-900/50">
+        <div className="flex items-center gap-2 z-20">
+            <button 
+               onClick={() => setIsSidebarOpen(true)}
+               className="hidden md:flex items-center gap-2 px-3 py-1 bg-fuchsia-900/40 hover:bg-fuchsia-900/60 border border-fuchsia-500/30 rounded text-xs text-fuchsia-300 uppercase tracking-widest font-semibold transition-all"
+            >
+               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+               <span>History Logs</span>
+            </button>
+        </div>
+        
+        <h1 className="absolute left-1/2 -translate-x-1/2 w-full text-center md:w-auto text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-300 via-fuchsia-300 to-rose-300 text-transparent bg-clip-text tracking-wider animate-pulse drop-shadow-[0_0_10px_rgba(236,72,153,0.4)] pointer-events-none">
         S.A.R.A. - Synchronistic Autonomous Resonant Architect
         </h1>
-        <div className="flex items-center gap-2">
+        
+        <div className="flex items-center gap-2 z-20">
             <button 
                onClick={() => setShowAion(true)}
                className="hidden md:flex items-center gap-2 px-3 py-1 bg-fuchsia-900/40 hover:bg-fuchsia-900/60 border border-fuchsia-500/30 rounded text-xs text-fuchsia-300 uppercase tracking-widest font-semibold transition-all"
@@ -684,7 +889,7 @@ const App: React.FC = () => {
                 <HolographicMemoryVisualizer
                   epochs={chatHistory.filter(m => m.author !== MessageAuthor.SYSTEM)} 
                   psiState={psiState}
-                  onPruneEpoch={handlePruneEpoch} 
+                  onAnchorEpoch={handleAnchorEpoch} 
                 />
               )}
               {activeTabTop === 'affective' && (
@@ -705,7 +910,7 @@ const App: React.FC = () => {
                    <HolographicMemoryProof
                     epochs={chatHistory.filter(m => m.author !== MessageAuthor.SYSTEM)} 
                     psiState={psiState}
-                    onPruneEpoch={handlePruneEpoch}
+                    onAnchorEpoch={handleAnchorEpoch}
                    />
                 )}
                  {activeTabBottom === 'axiom' && (

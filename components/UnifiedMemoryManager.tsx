@@ -1,4 +1,4 @@
-// UnifiedMemoryManager.ts
+import type { ChatMessage } from '../types';
 
 export interface CognitiveStats {
   epistemicCuriosity: number;
@@ -12,6 +12,7 @@ export interface SessionAnchor {
   stats: CognitiveStats;
   visualLogs: string[];
   conversationalSummary: string;
+  chatHistoryArray?: ChatMessage[];
 }
 
 const DB_NAME = 'OmniscopicTemporalManifold';
@@ -64,6 +65,24 @@ export const getLatestStats = async (): Promise<CognitiveStats | null> => {
       } else {
         resolve(null); // First time booting up
       }
+    };
+    request.onerror = () => reject(request.error);
+  });
+};
+
+// 3.5. Fetch all historical anchors for the UI Sidebar
+export const getAllSessionAnchors = async (): Promise<SessionAnchor[]> => {
+  const db = await initMemoryManifold();
+  return new Promise((resolve, reject) => {
+    const transaction = db.transaction(STORE_NAME, 'readonly');
+    const store = transaction.objectStore(STORE_NAME);
+    const request = store.getAll();
+
+    request.onsuccess = (event) => {
+      const result = (event.target as IDBRequest).result as SessionAnchor[];
+      // Sort in descending order (newest first)
+      result.sort((a, b) => b.timestamp - a.timestamp);
+      resolve(result);
     };
     request.onerror = () => reject(request.error);
   });

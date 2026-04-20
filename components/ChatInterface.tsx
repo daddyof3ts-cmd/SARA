@@ -68,6 +68,13 @@ const PlayIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
     </svg>
 );
 
+const EyeIcon: React.FC<React.SVGProps<SVGSVGElement>> = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+);
+
 const AttachmentPreview: React.FC<{ file: File, onRemove: () => void }> = ({ file, onRemove }) => {
     const [preview, setPreview] = useState<string | null>(null);
 
@@ -225,6 +232,36 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
       }
   }, [chatHistory, autoVocalize, isLiveActive, speakText, voicesReady]);
 
+  const captureScreen = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getDisplayMedia({ video: { displaySurface: 'browser' } });
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      await new Promise((resolve) => {
+          video.onloadeddata = () => {
+              video.play();
+              resolve(true);
+          };
+      });
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      const ctx = canvas.getContext('2d');
+      if (ctx) {
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          canvas.toBlob((blob) => {
+              if (blob) {
+                  const file = new File([blob], `Screen_Observation_${Date.now()}.jpg`, { type: 'image/jpeg' });
+                  setFiles(prev => [...prev, file]);
+              }
+          }, 'image/jpeg', 0.8);
+      }
+      stream.getTracks().forEach(track => track.stop());
+    } catch (err) {
+      console.error("Screen capture failed", err);
+    }
+  };
+
   // ============================================================================
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -359,6 +396,17 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             title={autoVocalize ? "Mute S.A.R.A." : "Unmute S.A.R.A."}
           >
              {autoVocalize ? <SpeakerIcon className="h-5 w-5" /> : <SpeakerMutedIcon className="h-5 w-5" />}
+          </button>
+          
+          <button
+            type="button"
+            onClick={captureScreen}
+            disabled={isLoading}
+            className="bg-black text-fuchsia-500 px-3 py-2 border-y border-l border-fuchsia-900/50 hover:bg-fuchsia-900/30 disabled:bg-black disabled:opacity-50 transition-colors"
+            aria-label="Observe Screen"
+            title="S.A.R.A. Observe Screen"
+          >
+              <EyeIcon className="h-5 w-5" />
           </button>
           
           <button
