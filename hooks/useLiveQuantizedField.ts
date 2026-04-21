@@ -107,7 +107,8 @@ export const useLiveQuantizedField = (
       const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
       if (SpeechRecognition) {
           const recognition = new SpeechRecognition();
-          recognition.continuous = true;
+          // Mobile Safari/Chrome often hangs indefinitely if continuous is true without manual stop
+          recognition.continuous = false; 
           recognition.interimResults = false;
           
           recognition.onresult = (event: any) => {
@@ -151,6 +152,12 @@ export const useLiveQuantizedField = (
               }
           };
           
+          recognition.onerror = (event: any) => {
+              if (event.error !== 'no-speech') {
+                  onLog('WARN', `STT Error: ${event.error}`);
+              }
+          };
+
           recognition.onend = () => {
               if (isActiveRef.current) {
                   try { recognition.start(); } catch(e) {}
