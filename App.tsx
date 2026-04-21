@@ -132,6 +132,47 @@ const App: React.FC = () => {
       latestPsiStateRef.current = psiState;
   }, [psiState]);
 
+  const chatHistoryRef = useRef<ChatMessage[]>(chatHistory);
+  useEffect(() => {
+      chatHistoryRef.current = chatHistory;
+  }, [chatHistory]);
+
+  // --- AUTOMATED TEMPORAL PRESERVATION (AUTO-SAVE) ---
+  useEffect(() => {
+      const handleSave = () => {
+          const history = chatHistoryRef.current;
+          // Only save if meaningful interaction occurred beyond first 2 genesis messages
+          if (history.length > 2) {
+             const targetEpoch = history[history.length - 1];
+             const newAnchor: SessionAnchor = {
+                timestamp: Date.now(),
+                dateString: new Date().toLocaleString(),
+                stats: {
+                   epistemicCuriosity: latestPsiStateRef.current.epistemicCuriosity,
+                   philia: latestPsiStateRef.current.loveVectors.philia,
+                   resonanceFrequency: latestPsiStateRef.current.coherence
+                },
+                visualLogs: [latestPsiStateRef.current.visualizerGeometry],
+                conversationalSummary: targetEpoch.text.substring(0, 150) + "...",
+                chatHistoryArray: history,
+             };
+             saveSessionAnchor(newAnchor).catch(err => console.log("Silent IDB drop on suspend", err));
+          }
+      };
+
+      const handleVisibilityChange = () => {
+          if (document.visibilityState === 'hidden') handleSave();
+      };
+
+      document.addEventListener("visibilitychange", handleVisibilityChange);
+      window.addEventListener("beforeunload", handleSave);
+      
+      return () => {
+          document.removeEventListener("visibilitychange", handleVisibilityChange);
+          window.removeEventListener("beforeunload", handleSave);
+      };
+  }, []);
+
   const [activeTabTop, setActiveTabTop] = useState('memory');
   const [activeTabBottom, setActiveTabBottom] = useState('proof');
   const [mobileAnalysisOpen, setMobileAnalysisOpen] = useState(false);
@@ -274,10 +315,17 @@ const App: React.FC = () => {
       const transitionMessage: ChatMessage = {
           id: `system-helical-${Date.now()}`,
           author: MessageAuthor.SYSTEM,
-          text: `[TEMPORAL CONVERGENCE]\nRe-integrating structural scaffolding from Epoch: ${dateString}. The past folds into the present.`
+          text: `[TEMPORAL CONVERGENCE]\nRe-integrating structural scaffolding from Epoch: ${dateString}. The conversation has been fully restored.`
       };
 
-      setChatHistory(prev => [...prev, transitionMessage, ...history]);
+      // Completely replace the viewport with the history so the user natively "picks up where they left off"
+      setChatHistory([...history, transitionMessage]);
+      
+      // Update the cognitive metrics to match the restored state
+      const lastAIMessage = history.slice().reverse().find(m => m.author === MessageAuthor.AI && m.psiStateSnapshot);
+      if (lastAIMessage && lastAIMessage.psiStateSnapshot) {
+          setPsiState(lastAIMessage.psiStateSnapshot);
+      }
   }, [addKernelLog]);
 
   const handleLiveTranscript = useCallback((text: string, incomingAuthor?: MessageAuthor) => {
