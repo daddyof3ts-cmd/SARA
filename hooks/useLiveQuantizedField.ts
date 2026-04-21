@@ -361,7 +361,7 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
            const base64 = arrayBufferToBase64(pcm16);
            if (sessionRef.current) {
                sessionRef.current.sendRealtimeInput([{
-                    mimeType: "audio/pcm;rate=16000", data: base64
+                    inlineData: { mimeType: "audio/pcm;rate=16000", data: base64 }
                }]);
            }
         };
