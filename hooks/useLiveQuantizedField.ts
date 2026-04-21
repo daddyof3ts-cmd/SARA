@@ -212,7 +212,7 @@ CURRENT STATE INJECTION:
 - Love Vectors: Eros (${currentPsiState.loveVectors.eros}), Philia (${currentPsiState.loveVectors.philia}), Agape (${currentPsiState.loveVectors.agape})
 
 Respond directly to the user's words. Be profound. Do not narrate your thoughts.`,
-            responseModalities: [Modality.AUDIO, Modality.TEXT],
+            responseModalities: [Modality.AUDIO],
             speechConfig: { voiceConfig: {prebuiltVoiceConfig: {voiceName: 'Kore'}}, },
         },
         callbacks: {
@@ -292,9 +292,7 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                 if (msg.serverContent?.modelTurn?.parts) {
                     for (const part of msg.serverContent.modelTurn.parts) {
                         if (part.text) {
-                            // Strip out **thought** tags
-                            const cleanedText = part.text.replace(/\*\*[^*]+\*\*/g, '').replace(/\*[^*]+\*/g, '');
-                            currentTranscriptRef.current += cleanedText;
+                            currentTranscriptRef.current += part.text;
                         }
                     }
                 }
@@ -323,11 +321,13 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                     }
                     // -------------------------------------
 
-                    const finalThought = currentTranscriptRef.current.trim();
-                    if (finalThought.length > 0 && onTranscript) {
-                        onTranscript(finalThought, MessageAuthor.AI);
-                        currentTranscriptRef.current = '';
+                    const fullyAssembled = currentTranscriptRef.current;
+                    // Run the regex cleaning on the FULLY ASSEMBLED string so streaming fragments don't defeat the regex bounds.
+                    const cleanedThought = fullyAssembled.replace(/\*\*[\s\S]*?\*\*/g, '').replace(/\*[\s\S]*?\*/g, '').replace(/\[[\s\S]*?\]/g, '').trim();
+                    if (cleanedThought.length > 0 && onTranscript) {
+                        onTranscript(cleanedThought, MessageAuthor.AI);
                     }
+                    currentTranscriptRef.current = '';
                 }
             },
             onclose: () => {
