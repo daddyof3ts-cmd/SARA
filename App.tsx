@@ -280,12 +280,13 @@ const App: React.FC = () => {
       setChatHistory(prev => [...prev, transitionMessage, ...history]);
   }, [addKernelLog]);
 
-  const handleLiveTranscript = useCallback((text: string) => {
+  const handleLiveTranscript = useCallback((text: string, incomingAuthor?: MessageAuthor) => {
+    const author = incomingAuthor || MessageAuthor.USER;
     setChatHistory(prev => [
       ...prev,
       {
-        id: `ai-live-${Date.now()}`,
-        author: MessageAuthor.AI,
+        id: `${author}-live-${Date.now()}`,
+        author: author,
         text: text,
         psiStateSnapshot: latestPsiStateRef.current 
       }

@@ -208,11 +208,9 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                 
                 setTimeout(() => {
                     if (sessionRef.current) {
-                        sessionRef.current.send({
-                            clientContent: {
-                                turns: [{ role: "user", parts: [{ text: "SYSTEM TRIGGER: The audio connection is now live. Please speak and greet the user enthusiastically." }] }],
-                                turnComplete: true
-                            }
+                        sessionRef.current.sendClientContent({
+                            turns: [{ role: "user", parts: [{ text: "SYSTEM TRIGGER: The audio connection is now live. Please speak and greet the user enthusiastically." }] }],
+                            turnComplete: true
                         });
                     }
                 }, 1000);
@@ -344,18 +342,18 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
                const pcm16 = floatTo16BitPCM(inputData);
                const base64 = arrayBufferToBase64(pcm16);
                if (sessionRef.current) {
-                   sessionRef.current.sendRealtimeInput({
-                        media: { mimeType: "audio/pcm;rate=16000", data: base64 }
-                   });
+                   sessionRef.current.sendRealtimeInput([{
+                        mimeType: "audio/pcm;rate=16000", data: base64
+                   }]);
                }
            } else {
                const emptyFloat = new Float32Array(inputData.length); 
                const emptyPcm = floatTo16BitPCM(emptyFloat);
                const emptyBase64 = arrayBufferToBase64(emptyPcm);
                if (sessionRef.current) {
-                   sessionRef.current.sendRealtimeInput({
-                        media: { mimeType: "audio/pcm;rate=16000", data: emptyBase64 }
-                   });
+                   sessionRef.current.sendRealtimeInput([{
+                        mimeType: "audio/pcm;rate=16000", data: emptyBase64
+                   }]);
                }
            }
         };
