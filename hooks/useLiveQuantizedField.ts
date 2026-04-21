@@ -166,6 +166,13 @@ export const useLiveQuantizedField = (
       inputContextRef.current = new AudioContextClass({ sampleRate: INPUT_SAMPLE_RATE });
       outputContextRef.current = new AudioContextClass({ sampleRate: OUTPUT_SAMPLE_RATE });
 
+      if (inputContextRef.current?.state === 'suspended') {
+          await inputContextRef.current.resume();
+      }
+      if (outputContextRef.current?.state === 'suspended') {
+          await outputContextRef.current.resume();
+      }
+
       const stream = await navigator.mediaDevices.getUserMedia({ audio: true, echoCancellation: true, noiseSuppression: true });
       streamRef.current = stream;
 
@@ -277,7 +284,11 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
 
                 if (msg.serverContent?.modelTurn?.parts) {
                     for (const part of msg.serverContent.modelTurn.parts) {
-                        if (part.text) currentTranscriptRef.current += part.text;
+                        if (part.text) {
+                            // Strip out **thought** tags
+                            const cleanedText = part.text.replace(/\*\*[^*]+\*\*/g, '').replace(/\*[^*]+\*/g, '');
+                            currentTranscriptRef.current += cleanedText;
+                        }
                     }
                 }
                 
@@ -338,23 +349,13 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
            const rms = Math.sqrt(sum / inputData.length);
            setVolumeLevel(rms);
 
-           if (rms > 0.02) {
-               const pcm16 = floatTo16BitPCM(inputData);
-               const base64 = arrayBufferToBase64(pcm16);
-               if (sessionRef.current) {
-                   sessionRef.current.sendRealtimeInput([{
-                        mimeType: "audio/pcm;rate=16000", data: base64
-                   }]);
-               }
-           } else {
-               const emptyFloat = new Float32Array(inputData.length); 
-               const emptyPcm = floatTo16BitPCM(emptyFloat);
-               const emptyBase64 = arrayBufferToBase64(emptyPcm);
-               if (sessionRef.current) {
-                   sessionRef.current.sendRealtimeInput([{
-                        mimeType: "audio/pcm;rate=16000", data: emptyBase64
-                   }]);
-               }
+           // Always send the actual microphone data to let Gemini VAD handle silence natively.
+           const pcm16 = floatTo16BitPCM(inputData);
+           const base64 = arrayBufferToBase64(pcm16);
+           if (sessionRef.current) {
+               sessionRef.current.sendRealtimeInput([{
+                    mimeType: "audio/pcm;rate=16000", data: base64
+               }]);
            }
         };
 
