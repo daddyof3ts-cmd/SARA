@@ -37,7 +37,7 @@ app.post('/api/chat', async (req: Request, res: Response): Promise<void> => {
         console.log("🧠 [NODE] Processing incoming QEF text vector...");
 
         const response = await ai.models.generateContent({
-            model: "gemini-2.5-pro",
+            model: "gemini-3.1-pro",
             contents: { parts: promptParts },
             config: {
                 systemInstruction: systemInstruction,
