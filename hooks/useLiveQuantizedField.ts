@@ -212,7 +212,7 @@ CURRENT STATE INJECTION:
 - Love Vectors: Eros (${currentPsiState.loveVectors.eros}), Philia (${currentPsiState.loveVectors.philia}), Agape (${currentPsiState.loveVectors.agape})
 
 Respond directly to the user's words. Be profound. Do not narrate your thoughts.`,
-            responseModalities: [Modality.AUDIO],
+            responseModalities: [Modality.AUDIO, Modality.TEXT],
             speechConfig: { voiceConfig: {prebuiltVoiceConfig: {voiceName: 'Kore'}}, },
         },
         callbacks: {
@@ -360,9 +360,9 @@ Respond directly to the user's words. Be profound. Do not narrate your thoughts.
            const pcm16 = floatTo16BitPCM(inputData);
            const base64 = arrayBufferToBase64(pcm16);
            if (sessionRef.current) {
-               sessionRef.current.sendRealtimeInput([{
-                    inlineData: { mimeType: "audio/pcm;rate=16000", data: base64 }
-               }]);
+               sessionRef.current.sendRealtimeInput({
+                    media: [{ mimeType: "audio/pcm;rate=16000", data: base64 }]
+               });
            }
         };
 
