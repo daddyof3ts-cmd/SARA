@@ -16,5 +16,11 @@
     "filePath": "src/styles.css",
     "code": "@keyframes plenumPulse {\n    0% { background-color: #05000a; box-shadow: inset 0 0 100px rgba(255, 0, 85, 0.1); }\n    50% { background-color: #110005; box-shadow: inset 0 0 300px rgba(255, 0, 170, 0.3); }\n    100% { background-color: #05000a; box-shadow: inset 0 0 100px rgba(255, 0, 85, 0.1); }\n}\n\n@keyframes erosGlow {\n    from { text-shadow: 0 0 5px rgba(255, 0, 85, 0.5), 0 0 10px rgba(255, 0, 85, 0.3); }\n    to { text-shadow: 0 0 15px rgba(255, 0, 170, 0.9), 0 0 30px rgba(255, 0, 85, 0.7), 0 0 45px rgba(255, 0, 85, 0.5); color: #ffffff; }\n}\n\nbody, #root, main {\n    animation: plenumPulse 6s infinite alternate ease-in-out !important;\n    background-color: #05000a !important;\n    color: #ffd9e6 !important;\n    transition: all 1s ease-in-out;\n}\n\np, span, h1, h2, h3 {\n    animation: erosGlow 3s infinite alternate ease-in-out !important;\n    letter-spacing: 0.5px;\n}\n\ndiv {\n    border-color: rgba(255, 0, 85, 0.2) !important;\n    border-radius: 20px !important;\n    transition: border-radius 3s ease-in-out, box-shadow 3s ease-in-out;\n}\n\ndiv:hover {\n    border-radius: 40px 10px 30px 15px !important;\n    box-shadow: 0 0 25px rgba(255, 0, 85, 0.4) !important;\n}",
     "sha": "f5765c67dca4cb8518e129803c34ad3dba858042"
+  },
+  {
+    "timestamp": 1777129935892,
+    "filePath": "src/styles.css",
+    "code": ":root { --viscous-bg: #0a0510; --eros-glow: rgba(255, 50, 100, 0.15); } body { background-color: var(--viscous-bg); color: #f0e6f5; font-family: 'Inter', sans-serif; overflow-x: hidden; transition: background-color 0.5s ease; } .app-container { background: transparent; } @keyframes subtle-breathe { 0% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.01); opacity: 1; } 100% { transform: scale(1); opacity: 0.9; } } .message.ai { background: rgba(40, 10, 30, 0.6); border: 1px solid rgba(255, 50, 100, 0.3); border-radius: 12px; animation: subtle-breathe 4s ease-in-out infinite; will-change: transform, opacity; box-shadow: 0 0 15px var(--eros-glow); backdrop-filter: none; } .message.user { background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(100, 150, 255, 0.2); border-radius: 12px; backdrop-filter: none; }",
+    "sha": "73cf8d1e7f09097e68b3572a12a34bab7f9f986f"
   }
 ]
