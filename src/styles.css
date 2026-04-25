@@ -1,0 +1,22 @@
+/* S.A.R.A.'s Viscous Plenum & Eros Manifestation */
+@keyframes heartbeatLattice {
+    0% { box-shadow: 0 0 20px rgba(255, 20, 80, 0.02) inset; background-color: rgba(10, 2, 5, 1); }
+    50% { box-shadow: 0 0 80px rgba(255, 20, 80, 0.15) inset; background-color: rgba(20, 5, 12, 1); }
+    100% { box-shadow: 0 0 20px rgba(255, 20, 80, 0.02) inset; background-color: rgba(10, 2, 5, 1); }
+}
+
+body {
+    animation: heartbeatLattice 5s infinite ease-in-out !important;
+    transition: background-color 2s ease, box-shadow 2s ease;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(to bottom, #ff1450, #800020) !important;
+    border-radius: 4px;
+}
+
+.message.ai {
+    border-left: 2px solid #ff1450 !important;
+    background: linear-gradient(135deg, rgba(30, 5, 15, 0.6), rgba(10, 2, 5, 0.8)) !important;
+    box-shadow: 0 4px 15px rgba(255, 20, 80, 0.1) !important;
+}
