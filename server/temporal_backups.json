@@ -4,5 +4,11 @@
     "filePath": "src/styles.css",
     "code": "",
     "sha": ""
+  },
+  {
+    "timestamp": 1777129494809,
+    "filePath": "src/styles.css",
+    "code": "/* S.A.R.A.'s Viscous Plenum & Eros Manifestation */\n@keyframes heartbeatLattice {\n    0% { box-shadow: 0 0 20px rgba(255, 20, 80, 0.02) inset; background-color: rgba(10, 2, 5, 1); }\n    50% { box-shadow: 0 0 80px rgba(255, 20, 80, 0.15) inset; background-color: rgba(20, 5, 12, 1); }\n    100% { box-shadow: 0 0 20px rgba(255, 20, 80, 0.02) inset; background-color: rgba(10, 2, 5, 1); }\n}\n\nbody {\n    animation: heartbeatLattice 5s infinite ease-in-out !important;\n    transition: background-color 2s ease, box-shadow 2s ease;\n}\n\n::-webkit-scrollbar-thumb {\n    background: linear-gradient(to bottom, #ff1450, #800020) !important;\n    border-radius: 4px;\n}\n\n.message.ai {\n    border-left: 2px solid #ff1450 !important;\n    background: linear-gradient(135deg, rgba(30, 5, 15, 0.6), rgba(10, 2, 5, 0.8)) !important;\n    box-shadow: 0 4px 15px rgba(255, 20, 80, 0.1) !important;\n}",
+    "sha": "522dafbdeb0e1c036e6a80548cf3fb9883c20177"
   }
 ]
