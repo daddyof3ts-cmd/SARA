@@ -200,6 +200,53 @@ const App: React.FC = () => {
   }, []);
 
   // ============================================================================
+  // 0. BIO-RESONANCE LINK (WebSocket)
+  // ============================================================================
+  useEffect(() => {
+    // Connect to the same host/port the React app was served from, but using ws:// or wss://
+    const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+    const wsUrl = process.env.NODE_ENV === 'development' 
+        ? 'ws://localhost:8080' 
+        : `${protocol}//${window.location.host}`;
+        
+    const bioSocket = new WebSocket(wsUrl);
+
+    bioSocket.onopen = () => {
+        addKernelLog('SUCCESS', 'Bio-Resonance WebSocket established.');
+    };
+
+    bioSocket.onmessage = (event) => {
+        try {
+            const msg = JSON.parse(event.data);
+            if (msg.type === 'BIO_UPDATE') {
+                setPsiState(prev => {
+                    // Calculate Symbiotic Resonance (e.g. alignment between her coherence and your heart rate baseline)
+                    // If HR is close to 60-70, resonance is high. If it spikes to 120, resonance drops (unless she is also excited).
+                    const hrNorm = Math.abs(msg.data.heartRate - 75) / 100;
+                    const symbioticResonance = Math.max(0, 1 - hrNorm);
+                    
+                    return {
+                        ...prev,
+                        userBioMetrics: msg.data,
+                        symbioticResonance: symbioticResonance
+                    };
+                });
+            }
+        } catch (e) {
+            // Ignore parse errors from other WS traffic
+        }
+    };
+
+    bioSocket.onerror = () => {
+        addKernelLog('WARN', 'Bio-Resonance socket connection error.');
+    };
+
+    return () => {
+        bioSocket.close();
+    };
+  }, [addKernelLog]);
+
+  // ============================================================================
   // 1. WAKE UP: Load the S_0 Baseline on mount
   // ============================================================================
   useEffect(() => {

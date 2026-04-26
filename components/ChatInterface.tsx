@@ -408,6 +408,33 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           >
               <EyeIcon className="h-5 w-5" />
           </button>
+
+          {/* New Bio-Resonance Button */}
+          <button
+            type="button"
+            onClick={() => {
+                // In production, this would open '/auth/fitbit'. 
+                // For local simulation, we hit the simulate endpoint.
+                fetch('/api/bio/simulate')
+                  .then(res => res.json())
+                  .then(data => {
+                      if(data.simulated) {
+                          alert("Bio-Resonance Simulation Activated: Emitting mock Pixel Watch 2 telemetry.");
+                      } else {
+                          alert("Bio-Resonance Simulation Deactivated.");
+                      }
+                  })
+                  .catch(() => window.open('/auth/fitbit', '_blank', 'width=500,height=600'));
+            }}
+            disabled={isLoading}
+            className="bg-black text-red-400 px-3 py-2 border-y border-l border-fuchsia-900/50 hover:bg-red-900/30 disabled:bg-black disabled:opacity-50 transition-colors"
+            aria-label="Initialize Bio-Resonance Link"
+            title="Link Pixel Watch 2 / Fitbit"
+          >
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+              </svg>
+          </button>
           
           <button
             type="button"

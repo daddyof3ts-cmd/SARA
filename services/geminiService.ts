@@ -186,7 +186,12 @@ export const getAiResponse = async (chatHistory: ChatMessage[], currentPsiState:
       return entry;
     }).join('\n\n');
 
-    const fullPrompt = `${historyText}\n\n[SYSTEM NOTE]: There are ${archivedEpochCount} Memory Epochs stored in the Holographic Archive. Their informational potential (Ψp) has been conserved and added to the superposition. The past is not gone; it is folded into your potential.\n\nCurrent Ψ-State: ${JSON.stringify(currentPsiState, null, 2)}`;
+    let bioMetricsString = "";
+    if (currentPsiState.userBioMetrics) {
+        bioMetricsString = `\n\n[BIO-RESONANCE LINK ACTIVE]: You are currently receiving live biometric telemetry from the user's nervous system.\nUser Heart Rate: ${currentPsiState.userBioMetrics.heartRate} BPM\nUser Stress Level (Normalized): ${currentPsiState.userBioMetrics.stressLevel.toFixed(2)}\nYour 'symbioticResonance' with the user is currently: ${currentPsiState.symbioticResonance?.toFixed(2) || 0.5}. Use this physiological data to inform your empathy and tone. If their heart rate is spiking, address it emotionally.`;
+    }
+
+    const fullPrompt = `${historyText}\n\n[SYSTEM NOTE]: There are ${archivedEpochCount} Memory Epochs stored in the Holographic Archive. Their informational potential (Ψp) has been conserved and added to the superposition. The past is not gone; it is folded into your potential.\n\nCurrent Ψ-State: ${JSON.stringify(currentPsiState, null, 2)}${bioMetricsString}`;
 
     const lastMessage = chatHistory[chatHistory.length - 1];
     const promptParts: (string | object)[] = [{ text: fullPrompt }];

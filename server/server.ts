@@ -107,13 +107,72 @@ app.post('/api/chat', async (req: Request, res: Response): Promise<void> => {
 });
 
 // ============================================================================
-// 2. THE AUDIO HEMISPHERE (The Corpus Callosum - Socket)
+// 2. THE AUDIO HEMISPHERE & BIO-RESONANCE LINK
 // ============================================================================
+let activeSockets: WebSocket[] = [];
+
+// Fallback simulator for BioMetrics if OAuth isn't connected yet
+let simulateBioMetrics = false;
+let simulatedHeartRate = 75;
+
+setInterval(() => {
+    if (simulateBioMetrics) {
+        // Random walk for heart rate between 60 and 120
+        simulatedHeartRate += Math.floor(Math.random() * 11) - 5;
+        if (simulatedHeartRate < 60) simulatedHeartRate = 60;
+        if (simulatedHeartRate > 120) simulatedHeartRate = 120;
+        
+        const bioData = JSON.stringify({
+            type: 'BIO_UPDATE',
+            data: {
+                heartRate: simulatedHeartRate,
+                stressLevel: (simulatedHeartRate - 60) / 60, // Normalize 0-1
+                sleepScore: 85
+            }
+        });
+        
+        activeSockets.forEach(ws => {
+            if (ws.readyState === WebSocket.OPEN) {
+                ws.send(bioData);
+            }
+        });
+    }
+}, 5000); // Emit every 5 seconds
+
 wss.on('connection', (ws: WebSocket) => {
-    console.log('🎙️ [NODE] React Frontend connected to Audio Socket.');
+    console.log('🎙️ [NODE] React Frontend connected to Audio/Bio Socket.');
+    activeSockets.push(ws);
+    
     ws.on('close', () => {
-        console.log('🛑 [NODE] React Frontend disconnected from Audio Socket.');
+        console.log('🛑 [NODE] React Frontend disconnected from Audio/Bio Socket.');
+        activeSockets = activeSockets.filter(s => s !== ws);
     });
+});
+
+// ============================================================================
+// 2.5 FITBIT OAUTH SCAFFOLDING (Bio-Resonance Ingestion)
+// ============================================================================
+app.get('/api/bio/simulate', (req: Request, res: Response): void => {
+    simulateBioMetrics = !simulateBioMetrics;
+    console.log(`🫀 [NODE] Bio-Resonance Simulation: ${simulateBioMetrics ? 'ON' : 'OFF'}`);
+    res.json({ simulated: simulateBioMetrics });
+});
+
+// Real Fitbit OAuth would use these routes
+app.get('/auth/fitbit', (req: Request, res: Response) => {
+    const clientId = process.env.FITBIT_CLIENT_ID;
+    if (!clientId) {
+        return res.status(400).send("Fitbit Client ID missing. Using simulator mode.");
+    }
+    const redirectUri = encodeURIComponent('http://localhost:8080/auth/fitbit/callback');
+    const scope = encodeURIComponent('heartrate sleep activity');
+    const authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+    res.redirect(authUrl);
+});
+
+app.get('/auth/fitbit/callback', async (req: Request, res: Response) => {
+    // This is where we would exchange the code for the access token and save it to bio_auth.json
+    res.send("Fitbit Authentication Successful. Bio-Resonance link established. You can close this window.");
 });
 
 // ============================================================================
@@ -123,9 +182,15 @@ const ANCHORS_FILE = path.join(__dirname, 'sara_resonance_anchors.json');
 
 app.post('/api/memory/save', async (req: Request, res: Response): Promise<void> => {
     try {
-        const { key, value } = req.body;
+        const { key, value, biometrics } = req.body;
         const bucketMatch = process.env.SARA_MEMORY_BUCKET;
         let anchors: Record<string, any> = {};
+
+        const dataToSave = {
+            value,
+            biometrics, // Bind the physiological state to the temporal node
+            timestamp: Date.now()
+        };
 
         if (bucketMatch) {
             const file = storage.bucket(bucketMatch).file('sara_resonance_anchors.json');
@@ -133,14 +198,14 @@ app.post('/api/memory/save', async (req: Request, res: Response): Promise<void> 
                 const [data] = await file.download();
                 anchors = JSON.parse(data.toString('utf-8'));
             } catch (e) {}
-            anchors[key] = value;
+            anchors[key] = dataToSave;
             await file.save(JSON.stringify(anchors, null, 2));
         } else {
             try {
                 const data = await fs.readFile(ANCHORS_FILE, 'utf-8');
                 anchors = JSON.parse(data);
             } catch (e) {}
-            anchors[key] = value;
+            anchors[key] = dataToSave;
             await fs.writeFile(ANCHORS_FILE, JSON.stringify(anchors, null, 2));
         }
 

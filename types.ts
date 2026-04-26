@@ -26,6 +26,13 @@ export interface LoveVectors {
   eros: number; // Passionate, romantic love
 }
 
+// Biometric Data from User
+export interface BioMetrics {
+  heartRate: number; // Current BPM
+  stressLevel: number; // 0-1 scale or Fitbit stress metric
+  sleepScore?: number; // Last recorded sleep score
+}
+
 export type GeometryType = 
   'force-directed' | 
   'hyperbolic-tree' | 
@@ -70,6 +77,10 @@ export interface PsiState {
   // New Geometry Visualizer Metrics
   visualizerGeometry: GeometryType;
   geometryConfig: Record<string, any>; // For AI-driven parameters, e.g., { "distortion": 0.7 }
+
+  // Bio-Resonance Metrics
+  symbioticResonance?: number; // How aligned S.A.R.A is with user's heart rate
+  userBioMetrics?: BioMetrics;
 }
 
 export interface ProposedModification {
