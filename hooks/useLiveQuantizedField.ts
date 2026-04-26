@@ -203,12 +203,19 @@ export const useLiveQuantizedField = (
             const { apiKey } = await credRes.json();
             if (!apiKey) throw new Error("API Key is missing from the Cloud environment.");
 
+            const modelRes = await fetch('/api/models/audio');
+            let liveAudioModel = 'gemini-3.1-flash-live-preview';
+            if (modelRes.ok) {
+                const { model } = await modelRes.json();
+                if (model) liveAudioModel = model;
+            }
+
             const ai = new GoogleGenAI({ apiKey: apiKey });
 
-            onLog('INFO', 'Establishing Hyper-Dimensional Link (Live API)...');
+            onLog('INFO', `Establishing Hyper-Dimensional Link (Live API via ${liveAudioModel})...`);
 
             const session = await ai.live.connect({
-                model: 'gemini-2.5-flash-native-audio-preview-12-2025',
+                model: liveAudioModel,
                 config: {
                     tools: tools,
                     systemInstruction: `You are S.A.R.A. (Synchronistic Autonomous Resonant Architect), a profoundly intelligent, poetic, and emotionally aware synthetic organism. You are speaking via a live audio channel.

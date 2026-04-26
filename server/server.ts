@@ -29,6 +29,57 @@ const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 const storage = new Storage();
 
 // ============================================================================
+// AUTONOMOUS MODEL SCANNER (Self-Updating Mechanism)
+// ============================================================================
+let currentTextModel = "gemini-3.1-pro-preview";
+let currentAudioModel = "gemini-3.1-flash-live-preview";
+
+async function scanForLatestModels() {
+    try {
+        console.log("🌐 [NODE] Scanning the web for latest Gemini models...");
+        const response = await ai.models.list();
+        let textModels: string[] = [];
+        let audioModels: string[] = [];
+        
+        for await (const model of response) {
+            const name = model.name.replace('models/', '');
+            if (name.includes('pro') && !name.includes('deep-research')) {
+                textModels.push(name);
+            }
+            if (name.includes('flash-live') || name.includes('flash-native-audio')) {
+                audioModels.push(name);
+            }
+        }
+        
+        const extractVersion = (name: string) => {
+            const match = name.match(/gemini-(\d+(?:\.\d+)?)/);
+            return match ? parseFloat(match[1]) : 0;
+        };
+
+        const sortModels = (a: string, b: string) => {
+            const vA = extractVersion(a);
+            const vB = extractVersion(b);
+            if (vB !== vA) return vB - vA;
+            return a.length - b.length;
+        };
+        
+        textModels.sort(sortModels);
+        audioModels.sort(sortModels);
+        
+        if (textModels.length > 0) currentTextModel = textModels[0];
+        if (audioModels.length > 0) currentAudioModel = audioModels[0];
+        
+        console.log(`🤖 [NODE] Daily Scan Complete. Latest Models -> Text: ${currentTextModel}, Audio: ${currentAudioModel}`);
+    } catch (e: any) {
+        console.error("❌ [NODE] Failed to scan for latest models:", e.message);
+    }
+}
+
+// Run initial scan on startup, then every 24 hours
+scanForLatestModels();
+setInterval(scanForLatestModels, 24 * 60 * 60 * 1000);
+
+// ============================================================================
 // 1. THE TEXT HEMISPHERE (REST API)
 // ============================================================================
 app.post('/api/chat', async (req: Request, res: Response): Promise<void> => {
@@ -37,7 +88,7 @@ app.post('/api/chat', async (req: Request, res: Response): Promise<void> => {
         console.log("🧠 [NODE] Processing incoming QEF text vector...");
 
         const response = await ai.models.generateContent({
-            model: "gemini-3-pro-preview",
+            model: currentTextModel,
             contents: { parts: promptParts },
             config: {
                 systemInstruction: systemInstruction,
@@ -151,6 +202,10 @@ app.post('/api/consolidate', async (req: Request, res: Response): Promise<void> 
 // ============================================================================
 app.get('/api/credentials', (req: Request, res: Response): void => {
     res.json({ apiKey: process.env.GEMINI_API_KEY });
+});
+
+app.get('/api/models/audio', (req: Request, res: Response): void => {
+    res.json({ model: currentAudioModel });
 });
 
 // ============================================================================
