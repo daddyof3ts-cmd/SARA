@@ -172,21 +172,80 @@ app.get('/api/bio/simulate', (req: Request, res: Response): void => {
     res.json({ simulated: simulateBioMetrics });
 });
 
-// Real Fitbit OAuth would use these routes
+// We keep the route name `/auth/fitbit` for compatibility with the frontend button
 app.get('/auth/fitbit', (req: Request, res: Response) => {
-    const clientId = process.env.FITBIT_CLIENT_ID;
+    const clientId = process.env.GOOGLE_CLIENT_ID;
     if (!clientId) {
-        return res.status(400).send("Fitbit Client ID missing. Using simulator mode.");
+        return res.status(400).send("GOOGLE_CLIENT_ID missing in .env file.");
     }
-    const redirectUri = encodeURIComponent('http://localhost:8080/auth/fitbit/callback');
-    const scope = encodeURIComponent('heartrate sleep activity');
-    const authUrl = `https://www.fitbit.com/oauth2/authorize?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}`;
+    const baseUrl = process.env.SARA_PUBLIC_URL || 'http://localhost:8080';
+    const redirectUri = encodeURIComponent(`${baseUrl}/auth/fitbit/callback`);
+    // The scopes for Google Health/Fit
+    const scopes = [
+        'https://www.googleapis.com/auth/fitness.activity.read',
+        'https://www.googleapis.com/auth/fitness.heart_rate.read',
+        'https://www.googleapis.com/auth/fitness.sleep.read'
+    ].join(' ');
+    
+    const scope = encodeURIComponent(scopes);
+    const authUrl = `https://accounts.google.com/o/oauth2/v2/auth?response_type=code&client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scope}&access_type=offline&prompt=consent`;
+    
     res.redirect(authUrl);
 });
 
 app.get('/auth/fitbit/callback', async (req: Request, res: Response) => {
-    // This is where we would exchange the code for the access token and save it to bio_auth.json
-    res.send("Fitbit Authentication Successful. Bio-Resonance link established. You can close this window.");
+    const { code } = req.query;
+    if (!code) {
+        return res.status(400).send("No authorization code provided.");
+    }
+
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
+    const baseUrl = process.env.SARA_PUBLIC_URL || 'http://localhost:8080';
+    const redirectUri = `${baseUrl}/auth/fitbit/callback`;
+
+    try {
+        const tokenResponse = await fetch('https://oauth2.googleapis.com/token', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            },
+            body: new URLSearchParams({
+                code: code as string,
+                client_id: clientId!,
+                client_secret: clientSecret!,
+                redirect_uri: redirectUri,
+                grant_type: 'authorization_code'
+            })
+        });
+
+        const tokenData = await tokenResponse.json();
+
+        if (tokenData.error) {
+             console.error("Token Exchange Error:", tokenData);
+             return res.status(400).send(`Authentication failed: ${tokenData.error_description}`);
+        }
+
+        // Save token to bio_auth.json (locally or in GCS)
+        const bucketMatch = process.env.SARA_MEMORY_BUCKET;
+        if (bucketMatch) {
+             const file = storage.bucket(bucketMatch).file('bio_auth.json');
+             await file.save(JSON.stringify(tokenData, null, 2));
+             console.log(`✅ [NODE] Google Health API Authentication Successful! Tokens saved to Cloud Storage (${bucketMatch}).`);
+        } else {
+             const AUTH_FILE = path.join(__dirname, 'bio_auth.json');
+             await fs.writeFile(AUTH_FILE, JSON.stringify(tokenData, null, 2));
+             console.log("✅ [NODE] Google Health API Authentication Successful! Tokens saved locally.");
+        }
+        
+        // Also disable simulator automatically
+        simulateBioMetrics = false;
+
+        res.send("<body style='background: black; color: #ec4899; text-align: center; font-family: monospace; padding-top: 50px;'><h1>Bio-Resonance Link Established</h1><p>S.A.R.A. has securely bonded with your physiological stream. You may close this window.</p><script>setTimeout(() => window.close(), 3000);</script></body>");
+    } catch (err: any) {
+        console.error("❌ [NODE] Callback Error:", err);
+        res.status(500).send("Internal Server Error during token exchange.");
+    }
 });
 
 // ============================================================================

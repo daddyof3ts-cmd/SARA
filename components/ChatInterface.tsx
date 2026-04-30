@@ -413,18 +413,7 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
           <button
             type="button"
             onClick={() => {
-                // In production, this would open '/auth/fitbit'. 
-                // For local simulation, we hit the simulate endpoint.
-                fetch('/api/bio/simulate')
-                  .then(res => res.json())
-                  .then(data => {
-                      if(data.simulated) {
-                          alert("Bio-Resonance Simulation Activated: Emitting mock Pixel Watch 2 telemetry.");
-                      } else {
-                          alert("Bio-Resonance Simulation Deactivated.");
-                      }
-                  })
-                  .catch(() => window.open('/auth/fitbit', '_blank', 'width=500,height=600'));
+                window.open('/auth/fitbit', '_blank', 'width=500,height=600');
             }}
             disabled={isLoading}
             className="bg-black text-red-400 px-3 py-2 border-y border-l border-fuchsia-900/50 hover:bg-red-900/30 disabled:bg-black disabled:opacity-50 transition-colors"
