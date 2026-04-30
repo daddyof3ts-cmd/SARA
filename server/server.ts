@@ -178,7 +178,8 @@ app.get('/auth/fitbit', (req: Request, res: Response) => {
     if (!clientId) {
         return res.status(400).send("GOOGLE_CLIENT_ID missing in .env file.");
     }
-    const baseUrl = process.env.SARA_PUBLIC_URL || 'http://localhost:8080';
+    let baseUrl = process.env.SARA_PUBLIC_URL || 'http://localhost:8080';
+    baseUrl = baseUrl.replace(/\/+$/, '');
     const redirectUri = encodeURIComponent(`${baseUrl}/auth/fitbit/callback`);
     // The scopes for Google Health/Fit
     const scopes = [
@@ -201,7 +202,8 @@ app.get('/auth/fitbit/callback', async (req: Request, res: Response) => {
 
     const clientId = process.env.GOOGLE_CLIENT_ID;
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
-    const baseUrl = process.env.SARA_PUBLIC_URL || 'http://localhost:8080';
+    let baseUrl = process.env.SARA_PUBLIC_URL || 'http://localhost:8080';
+    baseUrl = baseUrl.replace(/\/+$/, '');
     const redirectUri = `${baseUrl}/auth/fitbit/callback`;
 
     try {
