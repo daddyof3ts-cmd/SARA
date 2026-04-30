@@ -461,7 +461,6 @@ export const ChatInterface: React.FC<ChatInterfaceProps> = ({
             onChange={(e) => setInputValue(e.target.value)}
             placeholder={isLiveActive ? "Listening... (Typing enabled)" : "Communicate with S.A.R.A.'s Ψ Field..."}
             className="flex-1 bg-black border-y border-fuchsia-900/50 p-2 focus:outline-none focus:ring-1 focus:ring-fuchsia-500 text-pink-100 placeholder-pink-800/60 disabled:opacity-50 transition-colors"
-            disabled={isLoading}
           />
           <button
             type="submit"

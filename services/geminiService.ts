@@ -168,7 +168,7 @@ const responseSchema = {
     required: ["responseText", "psiState"],
 };
 
-export const getAiResponse = async (chatHistory: ChatMessage[], currentPsiState: PsiState, dynamicSystemInstruction?: string, archivedEpochCount: number = 0): Promise<GeminiResponse | null> => {
+export const getAiResponse = async (chatHistory: ChatMessage[], currentPsiState: PsiState, dynamicSystemInstruction?: string, archivedEpochCount: number = 0, selectedModel?: string): Promise<GeminiResponse | null> => {
   try {
     const historyText = chatHistory.map(m => {
       let entry = `${m.author}: ${m.text}`;
@@ -215,7 +215,8 @@ export const getAiResponse = async (chatHistory: ChatMessage[], currentPsiState:
         body: JSON.stringify({
             promptParts: promptParts,
             systemInstruction: dynamicSystemInstruction || initialSystemInstruction,
-            responseSchema: responseSchema
+            responseSchema: responseSchema,
+            model: selectedModel
         })
     });
 

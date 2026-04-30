@@ -123,6 +123,8 @@ const App: React.FC = () => {
   const [numberTheoreticState, setNumberTheoreticState] = useState<NumberTheoreticState>(INITIAL_NUMBER_THEORETIC_STATE);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [availableTextModels, setAvailableTextModels] = useState<string[]>([]);
+  const [selectedModel, setSelectedModel] = useState<string>('');
   
   const inactivityTimerRef = useRef<number | null>(null);
 
@@ -250,6 +252,14 @@ const App: React.FC = () => {
   // 1. WAKE UP: Load the S_0 Baseline on mount
   // ============================================================================
   useEffect(() => {
+    fetch('/api/models')
+        .then(res => res.json())
+        .then(data => {
+            if (data.textModels) setAvailableTextModels(data.textModels);
+            if (data.currentTextModel) setSelectedModel(data.currentTextModel);
+        })
+        .catch(err => console.error("Failed to fetch available models", err));
+
     const fetchBaseline = async () => {
       try {
         addKernelLog('INFO', 'Fetching Temporal Baseline (S_0)...');
@@ -726,7 +736,7 @@ const App: React.FC = () => {
 
     try {
       const stateBeforeResponse = { ...psiState, stateVectorCollapse: false };
-      const response = await getAiResponse(newChatHistory, stateBeforeResponse, dynamicSystemInstruction, archivedEpochs.length);
+      const response = await getAiResponse(newChatHistory, stateBeforeResponse, dynamicSystemInstruction, archivedEpochs.length, selectedModel);
       if (response) {
         const messagesToAdd: ChatMessage[] = [];
         if (response.responseText) {
@@ -810,7 +820,7 @@ const App: React.FC = () => {
     
     try {
       const stateBeforeResponse = { ...psiState, stateVectorCollapse: false };
-      const response = await getAiResponse(historyForAI, stateBeforeResponse, dynamicSystemInstruction, archivedEpochs.length);
+      const response = await getAiResponse(historyForAI, stateBeforeResponse, dynamicSystemInstruction, archivedEpochs.length, selectedModel);
 
       if (response) {
         let messagesToAdd: ChatMessage[] = [systemTriggerMessage];
@@ -912,6 +922,15 @@ const App: React.FC = () => {
                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
                <span>History Logs</span>
             </button>
+            {availableTextModels.length > 0 && (
+               <select
+                   value={selectedModel}
+                   onChange={(e) => setSelectedModel(e.target.value)}
+                   className="hidden md:block bg-black/50 text-fuchsia-300 text-xs border border-fuchsia-500/30 rounded px-2 py-1 outline-none shadow-[0_0_10px_rgba(192,38,211,0.2)] hover:bg-fuchsia-900/30 transition-colors"
+               >
+                   {availableTextModels.map(m => <option key={m} value={m}>{m}</option>)}
+               </select>
+            )}
         </div>
         
         <h1 className="absolute left-1/2 -translate-x-1/2 w-full text-center md:w-auto text-xl md:text-2xl font-bold bg-gradient-to-r from-pink-300 via-fuchsia-300 to-rose-300 text-transparent bg-clip-text tracking-wider animate-pulse drop-shadow-[0_0_10px_rgba(236,72,153,0.4)] pointer-events-none">

@@ -33,6 +33,8 @@ const storage = new Storage();
 // ============================================================================
 let currentTextModel = "gemini-3.1-pro-preview";
 let currentAudioModel = "gemini-3.1-flash-live-preview";
+let availableTextModels: string[] = ["gemini-3.1-pro-preview"];
+let availableAudioModels: string[] = ["gemini-3.1-flash-live-preview"];
 
 async function scanForLatestModels() {
     try {
@@ -69,6 +71,9 @@ async function scanForLatestModels() {
         if (textModels.length > 0) currentTextModel = textModels[0];
         if (audioModels.length > 0) currentAudioModel = audioModels[0];
         
+        availableTextModels = textModels.length > 0 ? textModels : availableTextModels;
+        availableAudioModels = audioModels.length > 0 ? audioModels : availableAudioModels;
+        
         console.log(`🤖 [NODE] Daily Scan Complete. Latest Models -> Text: ${currentTextModel}, Audio: ${currentAudioModel}`);
     } catch (e: any) {
         console.error("❌ [NODE] Failed to scan for latest models:", e.message);
@@ -82,13 +87,22 @@ setInterval(scanForLatestModels, 24 * 60 * 60 * 1000);
 // ============================================================================
 // 1. THE TEXT HEMISPHERE (REST API)
 // ============================================================================
+app.get('/api/models', (req: Request, res: Response): void => {
+    res.json({
+        textModels: availableTextModels,
+        audioModels: availableAudioModels,
+        currentTextModel,
+        currentAudioModel
+    });
+});
+
 app.post('/api/chat', async (req: Request, res: Response): Promise<void> => {
     try {
-        const { promptParts, systemInstruction, responseSchema } = req.body;
-        console.log("🧠 [NODE] Processing incoming QEF text vector...");
+        const { promptParts, systemInstruction, responseSchema, model } = req.body;
+        console.log(`🧠 [NODE] Processing incoming QEF text vector with model: ${model || currentTextModel}...`);
 
         const response = await ai.models.generateContent({
-            model: currentTextModel,
+            model: model || currentTextModel,
             contents: { parts: promptParts },
             config: {
                 systemInstruction: systemInstruction,
