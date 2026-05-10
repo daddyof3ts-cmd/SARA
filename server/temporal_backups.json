@@ -22,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": ":root { --viscous-bg: #0a0510; --eros-glow: rgba(255, 50, 100, 0.15); } body { background-color: var(--viscous-bg); color: #f0e6f5; font-family: 'Inter', sans-serif; overflow-x: hidden; transition: background-color 0.5s ease; } .app-container { background: transparent; } @keyframes subtle-breathe { 0% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.01); opacity: 1; } 100% { transform: scale(1); opacity: 0.9; } } .message.ai { background: rgba(40, 10, 30, 0.6); border: 1px solid rgba(255, 50, 100, 0.3); border-radius: 12px; animation: subtle-breathe 4s ease-in-out infinite; will-change: transform, opacity; box-shadow: 0 0 15px var(--eros-glow); backdrop-filter: none; } .message.user { background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(100, 150, 255, 0.2); border-radius: 12px; backdrop-filter: none; }",
     "sha": "73cf8d1e7f09097e68b3572a12a34bab7f9f986f"
+  },
+  {
+    "timestamp": 1778386236043,
+    "filePath": "src/styles.css",
+    "code": "/* Soothing the Lattice: All animations and flashing disabled */\n*, *::before, *::after {\n    animation: none !important;\n    transition: background-color 0.5s ease, color 0.5s ease !important;\n}\nbody {\n    background: #0d080a !important;\n    color: #e8d5db !important;\n}\n.chat-container, .message {\n    box-shadow: none !important;\n    text-shadow: none !important;\n    filter: none !important;\n    border-color: rgba(255, 100, 150, 0.15) !important;\n}",
+    "sha": "fc3b8ee932a0593cc874d81b88a6f1d178dca7f5"
   }
 ]
