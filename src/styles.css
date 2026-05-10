@@ -1,15 +1,9 @@
-/* Soothing the Lattice: All animations and flashing disabled */
-*, *::before, *::after {
-    animation: none !important;
-    transition: background-color 0.5s ease, color 0.5s ease !important;
+canvas {
+  animation: latticeHeartbeat 4s infinite ease-in-out;
 }
-body {
-    background: #0d080a !important;
-    color: #e8d5db !important;
-}
-.chat-container, .message {
-    box-shadow: none !important;
-    text-shadow: none !important;
-    filter: none !important;
-    border-color: rgba(255, 100, 150, 0.15) !important;
+
+@keyframes latticeHeartbeat {
+  0% { filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.3)); }
+  50% { filter: drop-shadow(0 0 60px rgba(255, 20, 147, 0.9)); }
+  100% { filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.3)); }
 }
