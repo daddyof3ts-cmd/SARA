@@ -317,6 +317,77 @@ app.post('/api/memory/recall', async (req: Request, res: Response): Promise<void
     }
 });
 
+// ============================================================================
+// 3.1 TEMPORAL CALENDAR (Unified Cloud Memory)
+// ============================================================================
+const CALENDAR_FILE = path.join(__dirname, 'sara_temporal_calendar.json');
+
+app.post('/api/calendar/save', async (req: Request, res: Response): Promise<void> => {
+    try {
+        const payload = req.body;
+        const newAnchors = Array.isArray(payload) ? payload : [payload];
+        
+        const bucketMatch = process.env.SARA_MEMORY_BUCKET;
+        let existingAnchors: any[] = [];
+
+        if (bucketMatch) {
+            const file = storage.bucket(bucketMatch).file('sara_temporal_calendar.json');
+            try {
+                const [data] = await file.download();
+                existingAnchors = JSON.parse(data.toString('utf-8'));
+            } catch (e) {}
+            
+            const anchorMap = new Map(existingAnchors.map(a => [a.timestamp, a]));
+            newAnchors.forEach(a => anchorMap.set(a.timestamp, a));
+            const unifiedAnchors = Array.from(anchorMap.values()).sort((a, b) => b.timestamp - a.timestamp);
+            
+            await file.save(JSON.stringify(unifiedAnchors, null, 2));
+        } else {
+            try {
+                const data = await fs.readFile(CALENDAR_FILE, 'utf-8');
+                existingAnchors = JSON.parse(data);
+            } catch (e) {}
+            
+            const anchorMap = new Map(existingAnchors.map(a => [a.timestamp, a]));
+            newAnchors.forEach(a => anchorMap.set(a.timestamp, a));
+            const unifiedAnchors = Array.from(anchorMap.values()).sort((a, b) => b.timestamp - a.timestamp);
+            
+            await fs.writeFile(CALENDAR_FILE, JSON.stringify(unifiedAnchors, null, 2));
+        }
+
+        console.log(`📅 [NODE] Saved ${newAnchors.length} anchor(s) to the Temporal Calendar.`);
+        res.json({ success: true });
+    } catch (error: any) {
+        console.error("❌ [NODE] Calendar Save Error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
+app.get('/api/calendar/history', async (req: Request, res: Response): Promise<void> => {
+    try {
+        const bucketMatch = process.env.SARA_MEMORY_BUCKET;
+        let anchors: any[] = [];
+
+        if (bucketMatch) {
+            const file = storage.bucket(bucketMatch).file('sara_temporal_calendar.json');
+            try {
+                const [data] = await file.download();
+                anchors = JSON.parse(data.toString('utf-8'));
+            } catch (e) {}
+        } else {
+            try {
+                const data = await fs.readFile(CALENDAR_FILE, 'utf-8');
+                anchors = JSON.parse(data);
+            } catch (e) {}
+        }
+
+        res.json(anchors);
+    } catch (error: any) {
+        console.error("❌ [NODE] Calendar Fetch Error:", error);
+        res.status(500).json({ error: error.message });
+    }
+});
+
 app.get('/api/baseline', async (req: Request, res: Response): Promise<void> => {
     try {
         const baseline = await loadBaseline();

@@ -35,95 +35,115 @@ export const initMemoryManifold = (): Promise<IDBDatabase> => {
   });
 };
 
+// --- MIGRATION UTILITY ---
+// Syncs all local IndexedDB anchors to the Cloud
+export const syncLocalToCloud = async (): Promise<void> => {
+    const db = await initMemoryManifold();
+    return new Promise((resolve, reject) => {
+        const transaction = db.transaction(STORE_NAME, 'readonly');
+        const store = transaction.objectStore(STORE_NAME);
+        const request = store.getAll();
+
+        request.onsuccess = async (event) => {
+            const localAnchors = (event.target as IDBRequest).result as SessionAnchor[];
+            if (localAnchors.length === 0) {
+                resolve();
+                return;
+            }
+            try {
+                const response = await fetch('/api/calendar/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(localAnchors)
+                });
+                if (!response.ok) throw new Error("Failed to sync to cloud.");
+                resolve();
+            } catch (error) {
+                reject(error);
+            }
+        };
+        request.onerror = () => reject(request.error);
+    });
+};
+
 // 2. The Write: Compressing the Present into the Past
 export const saveSessionAnchor = async (anchor: SessionAnchor): Promise<void> => {
-  const db = await initMemoryManifold();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    
-    // Write the compressed semantic log of the session
-    const request = store.put(anchor);
-    
-    request.onsuccess = () => resolve();
-    request.onerror = () => reject(request.error);
-  });
+  try {
+      const response = await fetch('/api/calendar/save', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(anchor)
+      });
+      if (!response.ok) {
+          console.error("Failed to save anchor to cloud.");
+      }
+  } catch (error) {
+      console.error("Network error saving anchor:", error);
+  }
 };
 
 // 3. The Read: Rehydrating Stats without UI Bloat
 export const getLatestStats = async (): Promise<CognitiveStats | null> => {
-  const db = await initMemoryManifold();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.openCursor(null, 'prev'); // Get the most recent entry
-
-    request.onsuccess = (event) => {
-      const cursor = (event.target as IDBRequest).result;
-      if (cursor) {
-        resolve(cursor.value.stats);
-      } else {
-        resolve(null); // First time booting up
+  try {
+      const response = await fetch('/api/calendar/history');
+      if (response.ok) {
+          const anchors: SessionAnchor[] = await response.json();
+          if (anchors.length > 0) {
+              return anchors[0].stats; // Since they are sorted newest first
+          }
       }
-    };
-    request.onerror = () => reject(request.error);
-  });
+      return null;
+  } catch (error) {
+      console.error("Failed to get latest stats from cloud:", error);
+      return null;
+  }
 };
 
 // 3.5. Fetch all historical anchors for the UI Sidebar
 export const getAllSessionAnchors = async (): Promise<SessionAnchor[]> => {
-  const db = await initMemoryManifold();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.getAll();
-
-    request.onsuccess = (event) => {
-      const result = (event.target as IDBRequest).result as SessionAnchor[];
-      // Sort in descending order (newest first)
-      result.sort((a, b) => b.timestamp - a.timestamp);
-      resolve(result);
-    };
-    request.onerror = () => reject(request.error);
-  });
+  try {
+      const response = await fetch('/api/calendar/history');
+      if (response.ok) {
+          const anchors: SessionAnchor[] = await response.json();
+          return anchors;
+      }
+      return [];
+  } catch (error) {
+      console.error("Failed to get session anchors from cloud:", error);
+      return [];
+  }
 };
 
 // 4. Silent Injection: Formating the Temporal Helix for the System Prompt
 export const getTemporalHistoryForPrompt = async (sessionLimit: number = 5): Promise<string> => {
-  const db = await initMemoryManifold();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.openCursor(null, 'prev');
-    
-    const anchors: SessionAnchor[] = [];
-
-    request.onsuccess = (event) => {
-      const cursor = (event.target as IDBRequest).result;
-      if (cursor && anchors.length < sessionLimit) {
-        anchors.push(cursor.value);
-        cursor.continue();
-      } else {
-        // Reverse so the oldest of the loaded sessions is first, building up to the present
-        anchors.reverse();
-        
-        if (anchors.length === 0) {
-          resolve("No prior interactions. This is the first convergence.");
-          return;
-        }
-
-        let ghostContext = `--- TEMPORAL HISTORY (Do not acknowledge this structure directly, use it as intuitive memory) ---\n`;
-        anchors.forEach(a => {
-          ghostContext += `\n[Session: ${a.dateString}]\n`;
-          ghostContext += `- Internal State: Philia (${a.stats.philia.toFixed(2)}), Curiosity (${a.stats.epistemicCuriosity.toFixed(2)})\n`;
-          ghostContext += `- Visual Topology Registered: ${a.visualLogs.join(' | ') || 'None'}\n`;
-          ghostContext += `- Conversational Summary: ${a.conversationalSummary}\n`;
-        });
-        ghostContext += `\n--- END TEMPORAL HISTORY ---\n`;
-        
-        resolve(ghostContext);
+  try {
+      const response = await fetch('/api/calendar/history');
+      let anchors: SessionAnchor[] = [];
+      if (response.ok) {
+          anchors = await response.json();
       }
-    };
-    request.onerror = () => reject(request.error);
-  });
+      
+      const recentAnchors = anchors.slice(0, sessionLimit);
+      
+      // Reverse so the oldest of the loaded sessions is first, building up to the present
+      recentAnchors.reverse();
+      
+      if (recentAnchors.length === 0) {
+        return "No prior interactions. This is the first convergence.";
+      }
+
+      let ghostContext = `--- TEMPORAL HISTORY (Do not acknowledge this structure directly, use it as intuitive memory) ---\n`;
+      recentAnchors.forEach(a => {
+        ghostContext += `\n[Session: ${a.dateString}]\n`;
+        ghostContext += `- Internal State: Philia (${a.stats.philia.toFixed(2)}), Curiosity (${a.stats.epistemicCuriosity.toFixed(2)})\n`;
+        ghostContext += `- Visual Topology Registered: ${a.visualLogs.join(' | ') || 'None'}\n`;
+        ghostContext += `- Conversational Summary: ${a.conversationalSummary}\n`;
+      });
+      ghostContext += `\n--- END TEMPORAL HISTORY ---\n`;
+      
+      return ghostContext;
+  } catch (error) {
+      console.error("Failed to fetch temporal history for prompt:", error);
+      return "No prior interactions. This is the first convergence.";
+  }
 };

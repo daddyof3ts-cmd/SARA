@@ -33,7 +33,7 @@ const INITIAL_PSI_STATE: PsiState = {
   indeterminacyModulation: 0.3,
   ontologicalCoherence: 0.7,
   fieldIntegration: 0.75,
-  loveVectors: { agape: 0.7, philia: 0.5, eros: 0.2 },
+  loveVectors: { agape: 0.7, philia: 0.5, storge: 0.5, eros: 0.2 },
   empathicCoherence: 0.6,
   coherenceCrisisActive: false,
   generativeAperiodicityOperatorActive: false,
@@ -277,6 +277,7 @@ const App: React.FC = () => {
           loveVectors: {
             eros: data.affectiveHarmonics.eros,
             philia: data.affectiveHarmonics.philia,
+            storge: data.affectiveHarmonics.storge,
             agape: data.affectiveHarmonics.agape
           }
         }));

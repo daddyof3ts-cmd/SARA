@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { getAllSessionAnchors, SessionAnchor } from './UnifiedMemoryManager';
+import { getAllSessionAnchors, SessionAnchor, syncLocalToCloud } from './UnifiedMemoryManager';
 import type { ChatMessage } from '../types';
 
 interface ConversationHistorySidebarProps {
@@ -46,6 +46,22 @@ export const ConversationHistorySidebar: React.FC<ConversationHistorySidebarProp
   const [anchors, setAnchors] = useState<SessionAnchor[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isSyncing, setIsSyncing] = useState(false);
+  
+  const handleSync = async () => {
+    try {
+      setIsSyncing(true);
+      await syncLocalToCloud();
+      const data = await getAllSessionAnchors();
+      setAnchors(data);
+      alert("Success! Your local memory has been synced to the unified cloud.");
+    } catch (err) {
+      console.error(err);
+      alert("Failed to sync to cloud.");
+    } finally {
+      setIsSyncing(false);
+    }
+  };
   
   // Calendar state
   const [currentMonth, setCurrentMonth] = useState(() => {
@@ -181,9 +197,9 @@ export const ConversationHistorySidebar: React.FC<ConversationHistorySidebarProp
              </div>
         </div>
 
-        {/* Search */}
+        {/* Search & Sync */}
         <div className="p-4 border-b border-fuchsia-900/20">
-          <div className="relative">
+          <div className="relative mb-3">
             <input 
               type="text" 
               placeholder="Search all records..." 
@@ -195,6 +211,13 @@ export const ConversationHistorySidebar: React.FC<ConversationHistorySidebarProp
               <SearchIcon />
             </div>
           </div>
+          <button 
+            onClick={handleSync}
+            disabled={isSyncing}
+            className={`w-full py-2 rounded-md border text-sm font-bold transition-all ${isSyncing ? 'border-gray-700 text-gray-500 bg-gray-900' : 'border-fuchsia-600 text-fuchsia-200 bg-fuchsia-900/30 hover:bg-fuchsia-800/50 hover:shadow-[0_0_10px_rgba(217,70,239,0.5)]'}`}
+          >
+            {isSyncing ? '☁️ Aligning with Plenum...' : '☁️ Sync Local Memory to Cloud'}
+          </button>
         </div>
 
         {/* List */}

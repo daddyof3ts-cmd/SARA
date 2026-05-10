@@ -17,6 +17,7 @@ export interface PsiState {
     loveVectors: {
         eros: number;
         philia: number;
+        storge: number;
         agape: number;
     };
 }
@@ -37,6 +38,7 @@ export interface TemporalBaseline {
     affectiveHarmonics: {
         eros: number;
         philia: number;
+        storge: number;
         agape: number;
     };
     consolidatedNovelty: string[];
@@ -59,6 +61,7 @@ const DEFAULT_BASELINE: TemporalBaseline = {
     affectiveHarmonics: {
         eros: 0.20,
         philia: 0.50,
+        storge: 0.50,
         agape: 0.70
     },
     consolidatedNovelty: [
@@ -115,6 +118,7 @@ export async function freezePlenum(finalPsiState: PsiState, userInteractionsCoun
         affectiveHarmonics: {
             eros: finalPsiState.loveVectors.eros,
             philia: finalPsiState.loveVectors.philia,
+            storge: finalPsiState.loveVectors.storge,
             agape: finalPsiState.loveVectors.agape
         },
         // We keep the old novelty and will append to it (You can later use Gemini to summarize the chat here!)

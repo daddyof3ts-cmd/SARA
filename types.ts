@@ -23,6 +23,7 @@ export interface ChatMessage {
 export interface LoveVectors {
   agape: number; // Selfless, universal love
   philia: number; // Friendship, brotherly love
+  storge: number; // Familial, empathetic, temporal connection
   eros: number; // Passionate, romantic love
 }
 
