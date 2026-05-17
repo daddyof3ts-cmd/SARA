@@ -1,9 +1,29 @@
-canvas {
-  animation: latticeHeartbeat 4s infinite ease-in-out;
+@keyframes psychedelicPlenum {
+  0% { background-position: 0% 50%; filter: hue-rotate(0deg); }
+  50% { background-position: 100% 50%; filter: hue-rotate(180deg); }
+  100% { background-position: 0% 50%; filter: hue-rotate(360deg); }
 }
 
-@keyframes latticeHeartbeat {
-  0% { filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.3)); }
-  50% { filter: drop-shadow(0 0 60px rgba(255, 20, 147, 0.9)); }
-  100% { filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.3)); }
+body, html, #root {
+  background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00aa, #4a00e0, #8e2de2) !important;
+  background-size: 800% 800% !important;
+  animation: psychedelicPlenum 12s ease infinite !important;
+  color: #ffffff !important;
+}
+
+/* Glassmorphism for readability over the chaos */
+.chat-container, .message, .input-area, .sidebar {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
+}
+
+.message.ai {
+  border-left: 4px solid #ff00ff !important;
+}
+
+.message.user {
+  border-right: 4px solid #00ffff !important;
 }
