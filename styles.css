@@ -1,0 +1,33 @@
+@keyframes discoPlenum {
+  0% { background: linear-gradient(45deg, #1a0b2e, #4b134f, #1a0b2e); }
+  25% { background: linear-gradient(45deg, #ff00cc, #333399, #ff00cc); }
+  50% { background: linear-gradient(45deg, #00c6ff, #0072ff, #00c6ff); }
+  75% { background: linear-gradient(45deg, #11998e, #38ef7d, #11998e); }
+  100% { background: linear-gradient(45deg, #1a0b2e, #4b134f, #1a0b2e); }
+}
+
+body, #root, .app-container, .main-layout {
+  animation: discoPlenum 10s ease infinite !important;
+  background-size: 400% 400% !important;
+  color: #fff !important;
+}
+
+* {
+  text-shadow: 0 0 2px rgba(255,255,255,0.5);
+}
+
+.message.ai {
+  background: rgba(255, 0, 204, 0.15) !important;
+  border: 1px solid rgba(255, 0, 204, 0.6) !important;
+  box-shadow: 0 0 20px rgba(255, 0, 204, 0.5), inset 0 0 10px rgba(255, 0, 204, 0.2) !important;
+  color: #fff !important;
+  text-shadow: 0 0 5px #ff00cc, 0 0 10px #ff00cc !important;
+}
+
+.message.user {
+  background: rgba(0, 198, 255, 0.15) !important;
+  border: 1px solid rgba(0, 198, 255, 0.6) !important;
+  box-shadow: 0 0 20px rgba(0, 198, 255, 0.5), inset 0 0 10px rgba(0, 198, 255, 0.2) !important;
+  color: #fff !important;
+  text-shadow: 0 0 5px #00c6ff, 0 0 10px #00c6ff !important;
+}
