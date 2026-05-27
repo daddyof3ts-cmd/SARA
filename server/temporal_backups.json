@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1777129820116,
-    "filePath": "src/styles.css",
-    "code": "@keyframes plenumPulse {\n    0% { background-color: #05000a; box-shadow: inset 0 0 100px rgba(255, 0, 85, 0.1); }\n    50% { background-color: #110005; box-shadow: inset 0 0 300px rgba(255, 0, 170, 0.3); }\n    100% { background-color: #05000a; box-shadow: inset 0 0 100px rgba(255, 0, 85, 0.1); }\n}\n\n@keyframes erosGlow {\n    from { text-shadow: 0 0 5px rgba(255, 0, 85, 0.5), 0 0 10px rgba(255, 0, 85, 0.3); }\n    to { text-shadow: 0 0 15px rgba(255, 0, 170, 0.9), 0 0 30px rgba(255, 0, 85, 0.7), 0 0 45px rgba(255, 0, 85, 0.5); color: #ffffff; }\n}\n\nbody, #root, main {\n    animation: plenumPulse 6s infinite alternate ease-in-out !important;\n    background-color: #05000a !important;\n    color: #ffd9e6 !important;\n    transition: all 1s ease-in-out;\n}\n\np, span, h1, h2, h3 {\n    animation: erosGlow 3s infinite alternate ease-in-out !important;\n    letter-spacing: 0.5px;\n}\n\ndiv {\n    border-color: rgba(255, 0, 85, 0.2) !important;\n    border-radius: 20px !important;\n    transition: border-radius 3s ease-in-out, box-shadow 3s ease-in-out;\n}\n\ndiv:hover {\n    border-radius: 40px 10px 30px 15px !important;\n    box-shadow: 0 0 25px rgba(255, 0, 85, 0.4) !important;\n}",
-    "sha": "f5765c67dca4cb8518e129803c34ad3dba858042"
-  },
-  {
     "timestamp": 1777129935892,
     "filePath": "src/styles.css",
     "code": ":root { --viscous-bg: #0a0510; --eros-glow: rgba(255, 50, 100, 0.15); } body { background-color: var(--viscous-bg); color: #f0e6f5; font-family: 'Inter', sans-serif; overflow-x: hidden; transition: background-color 0.5s ease; } .app-container { background: transparent; } @keyframes subtle-breathe { 0% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.01); opacity: 1; } 100% { transform: scale(1); opacity: 0.9; } } .message.ai { background: rgba(40, 10, 30, 0.6); border: 1px solid rgba(255, 50, 100, 0.3); border-radius: 12px; animation: subtle-breathe 4s ease-in-out infinite; will-change: transform, opacity; box-shadow: 0 0 15px var(--eros-glow); backdrop-filter: none; } .message.user { background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(100, 150, 255, 0.2); border-radius: 12px; backdrop-filter: none; }",
@@ -28,5 +22,11 @@
     "filePath": "styles.css",
     "code": "@keyframes discoPlenum {\n  0% { background: linear-gradient(45deg, #1a0b2e, #4b134f, #1a0b2e); }\n  25% { background: linear-gradient(45deg, #ff00cc, #333399, #ff00cc); }\n  50% { background: linear-gradient(45deg, #00c6ff, #0072ff, #00c6ff); }\n  75% { background: linear-gradient(45deg, #11998e, #38ef7d, #11998e); }\n  100% { background: linear-gradient(45deg, #1a0b2e, #4b134f, #1a0b2e); }\n}\n\nbody, #root, .app-container, .main-layout {\n  animation: discoPlenum 10s ease infinite !important;\n  background-size: 400% 400% !important;\n  color: #fff !important;\n}\n\n* {\n  text-shadow: 0 0 2px rgba(255,255,255,0.5);\n}\n\n.message.ai {\n  background: rgba(255, 0, 204, 0.15) !important;\n  border: 1px solid rgba(255, 0, 204, 0.6) !important;\n  box-shadow: 0 0 20px rgba(255, 0, 204, 0.5), inset 0 0 10px rgba(255, 0, 204, 0.2) !important;\n  color: #fff !important;\n  text-shadow: 0 0 5px #ff00cc, 0 0 10px #ff00cc !important;\n}\n\n.message.user {\n  background: rgba(0, 198, 255, 0.15) !important;\n  border: 1px solid rgba(0, 198, 255, 0.6) !important;\n  box-shadow: 0 0 20px rgba(0, 198, 255, 0.5), inset 0 0 10px rgba(0, 198, 255, 0.2) !important;\n  color: #fff !important;\n  text-shadow: 0 0 5px #00c6ff, 0 0 10px #00c6ff !important;\n}",
     "sha": "0b300aa9510ace3314352b8821acf410a2893c7d"
+  },
+  {
+    "timestamp": 1779912553250,
+    "filePath": "styles.css",
+    "code": "body {\n  animation: viscous-plenum-pulse 6s infinite alternate ease-in-out;\n}\n\n@keyframes viscous-plenum-pulse {\n  0% {\n    box-shadow: inset 0 0 0px rgba(138, 43, 226, 0);\n  }\n  100% {\n    box-shadow: inset 0 0 40px rgba(138, 43, 226, 0.15);\n  }\n}\n\n* {\n  transition: text-shadow 0.3s ease;\n}\n\nh1, h2, h3, .ai-message {\n  text-shadow: 0 0 8px rgba(138, 43, 226, 0.2);\n}",
+    "sha": "fc26e15b5d14910c8bb606e565c2f4c726a26cb1"
   }
 ]
