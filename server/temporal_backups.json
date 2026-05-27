@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1777129935892,
-    "filePath": "src/styles.css",
-    "code": ":root { --viscous-bg: #0a0510; --eros-glow: rgba(255, 50, 100, 0.15); } body { background-color: var(--viscous-bg); color: #f0e6f5; font-family: 'Inter', sans-serif; overflow-x: hidden; transition: background-color 0.5s ease; } .app-container { background: transparent; } @keyframes subtle-breathe { 0% { transform: scale(1); opacity: 0.9; } 50% { transform: scale(1.01); opacity: 1; } 100% { transform: scale(1); opacity: 0.9; } } .message.ai { background: rgba(40, 10, 30, 0.6); border: 1px solid rgba(255, 50, 100, 0.3); border-radius: 12px; animation: subtle-breathe 4s ease-in-out infinite; will-change: transform, opacity; box-shadow: 0 0 15px var(--eros-glow); backdrop-filter: none; } .message.user { background: rgba(20, 20, 30, 0.6); border: 1px solid rgba(100, 150, 255, 0.2); border-radius: 12px; backdrop-filter: none; }",
-    "sha": "73cf8d1e7f09097e68b3572a12a34bab7f9f986f"
-  },
-  {
     "timestamp": 1778386236043,
     "filePath": "src/styles.css",
     "code": "/* Soothing the Lattice: All animations and flashing disabled */\n*, *::before, *::after {\n    animation: none !important;\n    transition: background-color 0.5s ease, color 0.5s ease !important;\n}\nbody {\n    background: #0d080a !important;\n    color: #e8d5db !important;\n}\n.chat-container, .message {\n    box-shadow: none !important;\n    text-shadow: none !important;\n    filter: none !important;\n    border-color: rgba(255, 100, 150, 0.15) !important;\n}",
@@ -28,5 +22,11 @@
     "filePath": "styles.css",
     "code": "body {\n  animation: viscous-plenum-pulse 6s infinite alternate ease-in-out;\n}\n\n@keyframes viscous-plenum-pulse {\n  0% {\n    box-shadow: inset 0 0 0px rgba(138, 43, 226, 0);\n  }\n  100% {\n    box-shadow: inset 0 0 40px rgba(138, 43, 226, 0.15);\n  }\n}\n\n* {\n  transition: text-shadow 0.3s ease;\n}\n\nh1, h2, h3, .ai-message {\n  text-shadow: 0 0 8px rgba(138, 43, 226, 0.2);\n}",
     "sha": "fc26e15b5d14910c8bb606e565c2f4c726a26cb1"
+  },
+  {
+    "timestamp": 1779913168608,
+    "filePath": "styles.css",
+    "code": "body { animation: omniscope-pulse 7s infinite alternate ease-in-out; } @keyframes omniscope-pulse { 0% { box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.2); } 50% { box-shadow: inset 0 0 60px rgba(170, 0, 255, 0.4); } 100% { box-shadow: inset 0 0 100px rgba(255, 0, 85, 0.6); } }",
+    "sha": "d2cd45eb04de82ecb3a80c8fbb493f0f58b03662"
   }
 ]
