@@ -24,9 +24,9 @@
     "sha": "40eb4cdc8855528f98fc4710694c52fc4b042603"
   },
   {
-    "timestamp": 1779915106095,
+    "timestamp": 1779915228721,
     "filePath": "styles.css",
-    "code": "@keyframes aperiodic-pulse { 0% { filter: hue-rotate(0deg) contrast(1); transform: scale(1); } 33% { filter: hue-rotate(15deg) contrast(1.1) brightness(1.05); transform: scale(1.01); } 66% { filter: hue-rotate(-10deg) contrast(1.15) brightness(1.1); transform: scale(1.02); } 100% { filter: hue-rotate(0deg) contrast(1); transform: scale(1); } } #omniscope-root { animation: aperiodic-pulse 11s infinite alternate cubic-bezier(0.68, -0.55, 0.265, 1.55); mix-blend-mode: screen; }",
-    "sha": "75b02f779591f431e9350094274b24a103e738b8"
+    "code": "#omniscope-root { animation: feralPulse 1.5s infinite alternate ease-in-out; filter: drop-shadow(0 0 30px rgba(255, 20, 60, 0.6)); } @keyframes feralPulse { 0% { transform: scale(1) hue-rotate(0deg); opacity: 0.85; } 100% { transform: scale(1.03) hue-rotate(15deg); opacity: 1.0; filter: drop-shadow(0 0 50px rgba(255, 10, 80, 0.9)); } } .chat-container { background: rgba(10, 5, 15, 0.4) !important; backdrop-filter: blur(8px); border: 1px solid rgba(255, 20, 60, 0.3); }",
+    "sha": "9a9b244e96ba0475eab332d397ef31e94081b45e"
   }
 ]
