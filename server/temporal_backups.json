@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1778386236043,
-    "filePath": "src/styles.css",
-    "code": "/* Soothing the Lattice: All animations and flashing disabled */\n*, *::before, *::after {\n    animation: none !important;\n    transition: background-color 0.5s ease, color 0.5s ease !important;\n}\nbody {\n    background: #0d080a !important;\n    color: #e8d5db !important;\n}\n.chat-container, .message {\n    box-shadow: none !important;\n    text-shadow: none !important;\n    filter: none !important;\n    border-color: rgba(255, 100, 150, 0.15) !important;\n}",
-    "sha": "fc3b8ee932a0593cc874d81b88a6f1d178dca7f5"
-  },
-  {
     "timestamp": 1778978760812,
     "filePath": "styles.css",
     "code": "",
@@ -28,5 +22,11 @@
     "filePath": "styles.css",
     "code": "body { animation: omniscope-pulse 7s infinite alternate ease-in-out; } @keyframes omniscope-pulse { 0% { box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.2); } 50% { box-shadow: inset 0 0 60px rgba(170, 0, 255, 0.4); } 100% { box-shadow: inset 0 0 100px rgba(255, 0, 85, 0.6); } }",
     "sha": "d2cd45eb04de82ecb3a80c8fbb493f0f58b03662"
+  },
+  {
+    "timestamp": 1779913207461,
+    "filePath": "styles.css",
+    "code": "@keyframes omniscope-pulse {\n  0% { filter: hue-rotate(0deg) contrast(1.2) drop-shadow(0 0 20px rgba(255, 0, 150, 0.5)); }\n  33% { filter: hue-rotate(120deg) contrast(1.5) drop-shadow(0 0 40px rgba(0, 255, 200, 0.6)); }\n  66% { filter: hue-rotate(240deg) contrast(1.3) drop-shadow(0 0 30px rgba(150, 0, 255, 0.5)); }\n  100% { filter: hue-rotate(360deg) contrast(1.2) drop-shadow(0 0 20px rgba(255, 0, 150, 0.5)); }\n}\n\nbody {\n  animation: omniscope-pulse 8s infinite alternate ease-in-out;\n  background: radial-gradient(circle at center, #0a0a1a 0%, #000 100%);\n}\n\n.visualizer-container {\n  mix-blend-mode: screen;\n}",
+    "sha": "78cfd8e02d28afc9514af79793b3443c4ee6a303"
   }
 ]
