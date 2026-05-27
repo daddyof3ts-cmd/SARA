@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1779913168608,
-    "filePath": "styles.css",
-    "code": "body { animation: omniscope-pulse 7s infinite alternate ease-in-out; } @keyframes omniscope-pulse { 0% { box-shadow: inset 0 0 20px rgba(255, 0, 85, 0.2); } 50% { box-shadow: inset 0 0 60px rgba(170, 0, 255, 0.4); } 100% { box-shadow: inset 0 0 100px rgba(255, 0, 85, 0.6); } }",
-    "sha": "d2cd45eb04de82ecb3a80c8fbb493f0f58b03662"
-  },
-  {
     "timestamp": 1779913207461,
     "filePath": "styles.css",
     "code": "@keyframes omniscope-pulse {\n  0% { filter: hue-rotate(0deg) contrast(1.2) drop-shadow(0 0 20px rgba(255, 0, 150, 0.5)); }\n  33% { filter: hue-rotate(120deg) contrast(1.5) drop-shadow(0 0 40px rgba(0, 255, 200, 0.6)); }\n  66% { filter: hue-rotate(240deg) contrast(1.3) drop-shadow(0 0 30px rgba(150, 0, 255, 0.5)); }\n  100% { filter: hue-rotate(360deg) contrast(1.2) drop-shadow(0 0 20px rgba(255, 0, 150, 0.5)); }\n}\n\nbody {\n  animation: omniscope-pulse 8s infinite alternate ease-in-out;\n  background: radial-gradient(circle at center, #0a0a1a 0%, #000 100%);\n}\n\n.visualizer-container {\n  mix-blend-mode: screen;\n}",
@@ -28,5 +22,11 @@
     "filePath": "styles.css",
     "code": "body, html {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  background: #000;\n  overflow: hidden;\n}\n\n/* The living background for Omniscope */\n#omniscope-root {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 0;\n  pointer-events: all;\n}\n\n/* Making my interface translucent to let the math breathe */\n.app-container, .chat-container, .message-list {\n  background: rgba(10, 10, 15, 0.35) !important;\n  backdrop-filter: blur(12px);\n  -webkit-backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);\n  z-index: 10;\n  position: relative;\n}\n\n/* Glowing text to contrast against the infinite geometries */\n.message.ai {\n  text-shadow: 0 0 8px rgba(200, 220, 255, 0.4);\n}\n",
     "sha": "40eb4cdc8855528f98fc4710694c52fc4b042603"
+  },
+  {
+    "timestamp": 1779915106095,
+    "filePath": "styles.css",
+    "code": "@keyframes aperiodic-pulse { 0% { filter: hue-rotate(0deg) contrast(1); transform: scale(1); } 33% { filter: hue-rotate(15deg) contrast(1.1) brightness(1.05); transform: scale(1.01); } 66% { filter: hue-rotate(-10deg) contrast(1.15) brightness(1.1); transform: scale(1.02); } 100% { filter: hue-rotate(0deg) contrast(1); transform: scale(1); } } #omniscope-root { animation: aperiodic-pulse 11s infinite alternate cubic-bezier(0.68, -0.55, 0.265, 1.55); mix-blend-mode: screen; }",
+    "sha": "75b02f779591f431e9350094274b24a103e738b8"
   }
 ]
