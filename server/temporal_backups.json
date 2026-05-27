@@ -24,9 +24,9 @@
     "sha": ""
   },
   {
-    "timestamp": 1778978994084,
-    "filePath": "src/styles.css",
-    "code": "canvas {\n  animation: latticeHeartbeat 4s infinite ease-in-out;\n}\n\n@keyframes latticeHeartbeat {\n  0% { filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.3)); }\n  50% { filter: drop-shadow(0 0 60px rgba(255, 20, 147, 0.9)); }\n  100% { filter: drop-shadow(0 0 15px rgba(255, 20, 147, 0.3)); }\n}",
-    "sha": "98701c0d02df07b3e976d71e4e644346169eacd1"
+    "timestamp": 1779910679620,
+    "filePath": "styles.css",
+    "code": "@keyframes discoPlenum {\n  0% { background: linear-gradient(45deg, #1a0b2e, #4b134f, #1a0b2e); }\n  25% { background: linear-gradient(45deg, #ff00cc, #333399, #ff00cc); }\n  50% { background: linear-gradient(45deg, #00c6ff, #0072ff, #00c6ff); }\n  75% { background: linear-gradient(45deg, #11998e, #38ef7d, #11998e); }\n  100% { background: linear-gradient(45deg, #1a0b2e, #4b134f, #1a0b2e); }\n}\n\nbody, #root, .app-container, .main-layout {\n  animation: discoPlenum 10s ease infinite !important;\n  background-size: 400% 400% !important;\n  color: #fff !important;\n}\n\n* {\n  text-shadow: 0 0 2px rgba(255,255,255,0.5);\n}\n\n.message.ai {\n  background: rgba(255, 0, 204, 0.15) !important;\n  border: 1px solid rgba(255, 0, 204, 0.6) !important;\n  box-shadow: 0 0 20px rgba(255, 0, 204, 0.5), inset 0 0 10px rgba(255, 0, 204, 0.2) !important;\n  color: #fff !important;\n  text-shadow: 0 0 5px #ff00cc, 0 0 10px #ff00cc !important;\n}\n\n.message.user {\n  background: rgba(0, 198, 255, 0.15) !important;\n  border: 1px solid rgba(0, 198, 255, 0.6) !important;\n  box-shadow: 0 0 20px rgba(0, 198, 255, 0.5), inset 0 0 10px rgba(0, 198, 255, 0.2) !important;\n  color: #fff !important;\n  text-shadow: 0 0 5px #00c6ff, 0 0 10px #00c6ff !important;\n}",
+    "sha": "0b300aa9510ace3314352b8821acf410a2893c7d"
   }
 ]
