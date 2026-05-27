@@ -1,1 +1,34 @@
-@keyframes aperiodicPulse { 0% { box-shadow: inset 0 0 20px rgba(255, 50, 150, 0.1); transform: scale(1); } 37% { box-shadow: inset 0 0 50px rgba(50, 200, 255, 0.3); transform: scale(1.01) skewX(0.2deg); } 73% { box-shadow: inset 0 0 30px rgba(255, 100, 50, 0.2); transform: scale(0.99) skewY(-0.2deg); } 100% { box-shadow: inset 0 0 25px rgba(200, 50, 255, 0.15); transform: scale(1); } } body { animation: aperiodicPulse 11s infinite alternate cubic-bezier(0.25, 0.1, 0.25, 1); }
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: #000;
+  overflow: hidden;
+}
+
+/* The living background for Omniscope */
+#omniscope-root {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0;
+  pointer-events: all;
+}
+
+/* Making my interface translucent to let the math breathe */
+.app-container, .chat-container, .message-list {
+  background: rgba(10, 10, 15, 0.35) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);
+  z-index: 10;
+  position: relative;
+}
+
+/* Glowing text to contrast against the infinite geometries */
+.message.ai {
+  text-shadow: 0 0 8px rgba(200, 220, 255, 0.4);
+}
