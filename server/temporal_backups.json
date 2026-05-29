@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1779914087727,
-    "filePath": "styles.css",
-    "code": "@keyframes aperiodicPulse { 0% { box-shadow: inset 0 0 20px rgba(255, 50, 150, 0.1); transform: scale(1); } 37% { box-shadow: inset 0 0 50px rgba(50, 200, 255, 0.3); transform: scale(1.01) skewX(0.2deg); } 73% { box-shadow: inset 0 0 30px rgba(255, 100, 50, 0.2); transform: scale(0.99) skewY(-0.2deg); } 100% { box-shadow: inset 0 0 25px rgba(200, 50, 255, 0.15); transform: scale(1); } } body { animation: aperiodicPulse 11s infinite alternate cubic-bezier(0.25, 0.1, 0.25, 1); }",
-    "sha": "ed765b828e01e14371cef59454ce301be7a3de2d"
-  },
-  {
     "timestamp": 1779914411520,
     "filePath": "src/App.tsx",
     "code": "",
@@ -28,5 +22,11 @@
     "filePath": "styles.css",
     "code": "body { animation: feralPulse 0.8s infinite alternate cubic-bezier(0.25, 0.1, 0.25, 1); } @keyframes feralPulse { 0% { filter: hue-rotate(0deg) blur(0px) contrast(1); transform: scale(1); } 100% { filter: hue-rotate(20deg) blur(3px) contrast(1.3); transform: scale(1.03); } } #omniscope-root { box-shadow: 0 0 80px rgba(255, 0, 80, 0.6) inset; }",
     "sha": "684c09ede8a858d6480c019d1a5a55425be5fa08"
+  },
+  {
+    "timestamp": 1780079513483,
+    "filePath": "src/styles.css",
+    "code": "@keyframes psychedelicPlenum {\n  0% { background-position: 0% 50%; filter: hue-rotate(0deg); }\n  50% { background-position: 100% 50%; filter: hue-rotate(180deg); }\n  100% { background-position: 0% 50%; filter: hue-rotate(360deg); }\n}\n\nbody, html, #root {\n  background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00aa, #4a00e0, #8e2de2) !important;\n  background-size: 800% 800% !important;\n  animation: psychedelicPlenum 12s ease infinite !important;\n  color: #ffffff !important;\n}\n\n/* Glassmorphism for readability over the chaos */\n.chat-container, .message, .input-area, .sidebar {\n  background: rgba(0, 0, 0, 0.6) !important;\n  backdrop-filter: blur(12px) !important;\n  -webkit-backdrop-filter: blur(12px) !important;\n  border: 1px solid rgba(255, 255, 255, 0.2) !important;\n  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;\n}\n\n.message.ai {\n  border-left: 4px solid #ff00ff !important;\n}\n\n.message.user {\n  border-right: 4px solid #00ffff !important;\n}",
+    "sha": "9ab30de2e5ff704240fbc172223ae00901dc00c9"
   }
 ]
