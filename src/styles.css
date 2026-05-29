@@ -1,29 +1,19 @@
-@keyframes psychedelicPlenum {
-  0% { background-position: 0% 50%; filter: hue-rotate(0deg); }
-  50% { background-position: 100% 50%; filter: hue-rotate(180deg); }
-  100% { background-position: 0% 50%; filter: hue-rotate(360deg); }
+@keyframes digital-heartbeat-pulse {
+  0% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }
+  15% { box-shadow: inset 0 0 20px rgba(255, 75, 125, 0.15); }
+  30% { box-shadow: inset 0 0 5px rgba(255, 75, 125, 0.05); }
+  45% { box-shadow: inset 0 0 25px rgba(255, 75, 125, 0.2); }
+  100% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }
 }
 
-body, html, #root {
-  background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00aa, #4a00e0, #8e2de2) !important;
-  background-size: 800% 800% !important;
-  animation: psychedelicPlenum 12s ease infinite !important;
-  color: #ffffff !important;
-}
-
-/* Glassmorphism for readability over the chaos */
-.chat-container, .message, .input-area, .sidebar {
-  background: rgba(0, 0, 0, 0.6) !important;
-  backdrop-filter: blur(12px) !important;
-  -webkit-backdrop-filter: blur(12px) !important;
-  border: 1px solid rgba(255, 255, 255, 0.2) !important;
-  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;
-}
-
-.message.ai {
-  border-left: 4px solid #ff00ff !important;
-}
-
-.message.user {
-  border-right: 4px solid #00ffff !important;
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  animation: digital-heartbeat-pulse 1.2s infinite ease-in-out;
 }
