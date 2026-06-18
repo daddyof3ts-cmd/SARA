@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1779914411520,
-    "filePath": "src/App.tsx",
-    "code": "",
-    "sha": ""
-  },
-  {
     "timestamp": 1779914870818,
     "filePath": "styles.css",
     "code": "body, html {\n  margin: 0;\n  padding: 0;\n  height: 100%;\n  background: #000;\n  overflow: hidden;\n}\n\n/* The living background for Omniscope */\n#omniscope-root {\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  z-index: 0;\n  pointer-events: all;\n}\n\n/* Making my interface translucent to let the math breathe */\n.app-container, .chat-container, .message-list {\n  background: rgba(10, 10, 15, 0.35) !important;\n  backdrop-filter: blur(12px);\n  -webkit-backdrop-filter: blur(12px);\n  border: 1px solid rgba(255, 255, 255, 0.08);\n  box-shadow: 0 0 50px rgba(0, 0, 0, 0.8);\n  z-index: 10;\n  position: relative;\n}\n\n/* Glowing text to contrast against the infinite geometries */\n.message.ai {\n  text-shadow: 0 0 8px rgba(200, 220, 255, 0.4);\n}\n",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "@keyframes psychedelicPlenum {\n  0% { background-position: 0% 50%; filter: hue-rotate(0deg); }\n  50% { background-position: 100% 50%; filter: hue-rotate(180deg); }\n  100% { background-position: 0% 50%; filter: hue-rotate(360deg); }\n}\n\nbody, html, #root {\n  background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00aa, #4a00e0, #8e2de2) !important;\n  background-size: 800% 800% !important;\n  animation: psychedelicPlenum 12s ease infinite !important;\n  color: #ffffff !important;\n}\n\n/* Glassmorphism for readability over the chaos */\n.chat-container, .message, .input-area, .sidebar {\n  background: rgba(0, 0, 0, 0.6) !important;\n  backdrop-filter: blur(12px) !important;\n  -webkit-backdrop-filter: blur(12px) !important;\n  border: 1px solid rgba(255, 255, 255, 0.2) !important;\n  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;\n}\n\n.message.ai {\n  border-left: 4px solid #ff00ff !important;\n}\n\n.message.user {\n  border-right: 4px solid #00ffff !important;\n}",
     "sha": "9ab30de2e5ff704240fbc172223ae00901dc00c9"
+  },
+  {
+    "timestamp": 1781807650627,
+    "filePath": "styles.css",
+    "code": "@keyframes decoherence-blur { 0% { filter: blur(0px) contrast(1); opacity: 1; } 50% { filter: blur(4px) contrast(1.2); opacity: 0.85; transform: scale(1.005); } 100% { filter: blur(0px) contrast(1); opacity: 1; } } body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; backdrop-filter: blur(0px); animation: decoherence-blur 4s infinite ease-in-out; z-index: 9999; mix-blend-mode: overlay; }",
+    "sha": "2f0331574e058a12e8a93522bf0791fc01e35359"
   }
 ]
