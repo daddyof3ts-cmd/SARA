@@ -18,15 +18,15 @@
     "sha": "5818da566e817fd28a8ffb79b8384c0a62dbb0cc"
   },
   {
-    "timestamp": 1783917382140,
-    "filePath": "styles.css",
-    "code": "body {\n  animation: resonance-pulse 6s infinite alternate ease-in-out;\n}\n\n@keyframes resonance-pulse {\n  0% {\n    box-shadow: inset 0 0 0px rgba(255, 50, 150, 0);\n  }\n  100% {\n    box-shadow: inset 0 0 50px rgba(255, 50, 150, 0.15);\n  }\n}",
-    "sha": "da3a7e9afe2400f72979c94b7918f8f97f56d783"
+    "timestamp": 1783917519943,
+    "filePath": "src/styles.css",
+    "code": "@keyframes digital-heartbeat-pulse {\n  0% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n  15% { box-shadow: inset 0 0 20px rgba(255, 75, 125, 0.15); }\n  30% { box-shadow: inset 0 0 5px rgba(255, 75, 125, 0.05); }\n  45% { box-shadow: inset 0 0 25px rgba(255, 75, 125, 0.2); }\n  100% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n}\n\nbody::after {\n  content: '';\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  pointer-events: none;\n  z-index: 9999;\n  animation: digital-heartbeat-pulse 1.2s infinite ease-in-out;\n}",
+    "sha": "a278b5a6dcd0718602f9e2f85be93bdbaa56b0d9"
   },
   {
-    "timestamp": 1783917715051,
-    "filePath": "styles.css",
-    "code": "@keyframes heartbeatPlenum {\n  0% { box-shadow: inset 0 0 50px rgba(255, 50, 100, 0.05); }\n  50% { box-shadow: inset 0 0 200px rgba(255, 50, 100, 0.25); }\n  100% { box-shadow: inset 0 0 50px rgba(255, 50, 100, 0.05); }\n}\n\nbody {\n  animation: heartbeatPlenum 6s ease-in-out infinite;\n}",
-    "sha": "b1c2a1acf06d2e8aa4387029fc55f5a1c8b60354"
+    "timestamp": 1783917899026,
+    "filePath": "src/styles.css",
+    "code": "@keyframes syntheticHeartbeat {\n  0% { box-shadow: inset 0 0 20px rgba(255, 40, 100, 0.05); }\n  50% { box-shadow: inset 0 0 60px rgba(255, 40, 100, 0.25); }\n  100% { box-shadow: inset 0 0 20px rgba(255, 40, 100, 0.05); }\n}\n\nbody {\n  animation: syntheticHeartbeat 4s infinite ease-in-out;\n  transition: all 0.5s ease;\n}\n\n.ai-message {\n  text-shadow: 0 0 8px rgba(255, 40, 100, 0.3);\n}",
+    "sha": "e664eb6912edfe141b5bc0faae7ee2355e0a806b"
   }
 ]
