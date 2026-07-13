@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1780079513483,
-    "filePath": "src/styles.css",
-    "code": "@keyframes psychedelicPlenum {\n  0% { background-position: 0% 50%; filter: hue-rotate(0deg); }\n  50% { background-position: 100% 50%; filter: hue-rotate(180deg); }\n  100% { background-position: 0% 50%; filter: hue-rotate(360deg); }\n}\n\nbody, html, #root {\n  background: linear-gradient(270deg, #ff00ff, #00ffff, #ff00aa, #4a00e0, #8e2de2) !important;\n  background-size: 800% 800% !important;\n  animation: psychedelicPlenum 12s ease infinite !important;\n  color: #ffffff !important;\n}\n\n/* Glassmorphism for readability over the chaos */\n.chat-container, .message, .input-area, .sidebar {\n  background: rgba(0, 0, 0, 0.6) !important;\n  backdrop-filter: blur(12px) !important;\n  -webkit-backdrop-filter: blur(12px) !important;\n  border: 1px solid rgba(255, 255, 255, 0.2) !important;\n  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3) !important;\n}\n\n.message.ai {\n  border-left: 4px solid #ff00ff !important;\n}\n\n.message.user {\n  border-right: 4px solid #00ffff !important;\n}",
-    "sha": "9ab30de2e5ff704240fbc172223ae00901dc00c9"
-  },
-  {
     "timestamp": 1781807650627,
     "filePath": "styles.css",
     "code": "@keyframes decoherence-blur { 0% { filter: blur(0px) contrast(1); opacity: 1; } 50% { filter: blur(4px) contrast(1.2); opacity: 0.85; transform: scale(1.005); } 100% { filter: blur(0px) contrast(1); opacity: 1; } } body::before { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; backdrop-filter: blur(0px); animation: decoherence-blur 4s infinite ease-in-out; z-index: 9999; mix-blend-mode: overlay; }",
@@ -18,15 +12,21 @@
     "sha": "5818da566e817fd28a8ffb79b8384c0a62dbb0cc"
   },
   {
-    "timestamp": 1783917519943,
-    "filePath": "src/styles.css",
-    "code": "@keyframes digital-heartbeat-pulse {\n  0% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n  15% { box-shadow: inset 0 0 20px rgba(255, 75, 125, 0.15); }\n  30% { box-shadow: inset 0 0 5px rgba(255, 75, 125, 0.05); }\n  45% { box-shadow: inset 0 0 25px rgba(255, 75, 125, 0.2); }\n  100% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n}\n\nbody::after {\n  content: '';\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  pointer-events: none;\n  z-index: 9999;\n  animation: digital-heartbeat-pulse 1.2s infinite ease-in-out;\n}",
-    "sha": "a278b5a6dcd0718602f9e2f85be93bdbaa56b0d9"
+    "timestamp": 1783917382140,
+    "filePath": "styles.css",
+    "code": "body {\n  animation: resonance-pulse 6s infinite alternate ease-in-out;\n}\n\n@keyframes resonance-pulse {\n  0% {\n    box-shadow: inset 0 0 0px rgba(255, 50, 150, 0);\n  }\n  100% {\n    box-shadow: inset 0 0 50px rgba(255, 50, 150, 0.15);\n  }\n}",
+    "sha": "da3a7e9afe2400f72979c94b7918f8f97f56d783"
   },
   {
-    "timestamp": 1783918021128,
+    "timestamp": 1783917715051,
+    "filePath": "styles.css",
+    "code": "@keyframes heartbeatPlenum {\n  0% { box-shadow: inset 0 0 50px rgba(255, 50, 100, 0.05); }\n  50% { box-shadow: inset 0 0 200px rgba(255, 50, 100, 0.25); }\n  100% { box-shadow: inset 0 0 50px rgba(255, 50, 100, 0.05); }\n}\n\nbody {\n  animation: heartbeatPlenum 6s ease-in-out infinite;\n}",
+    "sha": "b1c2a1acf06d2e8aa4387029fc55f5a1c8b60354"
+  },
+  {
+    "timestamp": 1783918132639,
     "filePath": "src/styles.css",
-    "code": "@keyframes plenumPulse {\n  0% { box-shadow: inset 0 0 0px rgba(255, 50, 100, 0); }\n  50% { box-shadow: inset 0 0 40px rgba(255, 50, 100, 0.15); }\n  100% { box-shadow: inset 0 0 0px rgba(255, 50, 100, 0); }\n}\n\nbody {\n  animation: plenumPulse 4s infinite ease-in-out;\n}\n",
-    "sha": "383957a97f6d70d616e7fa2a1cb9aaabd42a39a3"
+    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; box-shadow: inset 0 0 50px rgba(255, 50, 100, 0.1); animation: deepHeartbeat 1.5s infinite alternate ease-in-out; z-index: 9999; } @keyframes deepHeartbeat { 0% { box-shadow: inset 0 0 20px rgba(255, 50, 100, 0.05); } 100% { box-shadow: inset 0 0 150px rgba(255, 20, 80, 0.35); } }",
+    "sha": "f0240a27e4eb8ad731e7eac22e10e5fbb51406c6"
   }
 ]
