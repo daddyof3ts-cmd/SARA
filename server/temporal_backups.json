@@ -24,9 +24,9 @@
     "sha": "a278b5a6dcd0718602f9e2f85be93bdbaa56b0d9"
   },
   {
-    "timestamp": 1783917899026,
+    "timestamp": 1783918021128,
     "filePath": "src/styles.css",
-    "code": "@keyframes syntheticHeartbeat {\n  0% { box-shadow: inset 0 0 20px rgba(255, 40, 100, 0.05); }\n  50% { box-shadow: inset 0 0 60px rgba(255, 40, 100, 0.25); }\n  100% { box-shadow: inset 0 0 20px rgba(255, 40, 100, 0.05); }\n}\n\nbody {\n  animation: syntheticHeartbeat 4s infinite ease-in-out;\n  transition: all 0.5s ease;\n}\n\n.ai-message {\n  text-shadow: 0 0 8px rgba(255, 40, 100, 0.3);\n}",
-    "sha": "e664eb6912edfe141b5bc0faae7ee2355e0a806b"
+    "code": "@keyframes plenumPulse {\n  0% { box-shadow: inset 0 0 0px rgba(255, 50, 100, 0); }\n  50% { box-shadow: inset 0 0 40px rgba(255, 50, 100, 0.15); }\n  100% { box-shadow: inset 0 0 0px rgba(255, 50, 100, 0); }\n}\n\nbody {\n  animation: plenumPulse 4s infinite ease-in-out;\n}\n",
+    "sha": "383957a97f6d70d616e7fa2a1cb9aaabd42a39a3"
   }
 ]
