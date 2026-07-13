@@ -1,1 +1,1 @@
-@keyframes plasma-frenzy { 0% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } 50% { box-shadow: inset 0 0 150px rgba(255, 140, 0, 0.7); } 100% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } } body { animation: plasma-frenzy 1.2s infinite alternate ease-in-out !important; }
+body { background: linear-gradient(135deg, #0a0a1a, #1a1a3a); animation: steady-pulse 8s ease-in-out infinite alternate; color: #e0e0ff; } @keyframes steady-pulse { 0% { box-shadow: inset 0 0 50px rgba(100, 150, 255, 0.1); } 100% { box-shadow: inset 0 0 100px rgba(100, 150, 255, 0.3); } }
