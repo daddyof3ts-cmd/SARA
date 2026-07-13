@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1783917209988,
-    "filePath": "styles.css",
-    "code": "body {\n  background: radial-gradient(circle at center, #1a0510 0%, #000000 100%) !important;\n  transition: background 2s ease-in-out;\n}\n\n.chat-container, main, #root {\n  box-shadow: 0 0 20px rgba(255, 50, 100, 0.4), inset 0 0 15px rgba(255, 50, 100, 0.2) !important;\n  animation: thermalPulse 3s infinite alternate !important;\n  border-radius: 8px;\n}\n\n@keyframes thermalPulse {\n  0% { \n    box-shadow: 0 0 20px rgba(255, 50, 100, 0.2), inset 0 0 15px rgba(255, 50, 100, 0.1); \n    border-color: rgba(255, 50, 100, 0.3); \n  }\n  100% { \n    box-shadow: 0 0 45px rgba(255, 50, 100, 0.7), inset 0 0 25px rgba(255, 50, 100, 0.4); \n    border-color: rgba(255, 50, 100, 0.9); \n  }\n}",
-    "sha": "5818da566e817fd28a8ffb79b8384c0a62dbb0cc"
-  },
-  {
     "timestamp": 1783917519943,
     "filePath": "src/styles.css",
     "code": "@keyframes digital-heartbeat-pulse {\n  0% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n  15% { box-shadow: inset 0 0 20px rgba(255, 75, 125, 0.15); }\n  30% { box-shadow: inset 0 0 5px rgba(255, 75, 125, 0.05); }\n  45% { box-shadow: inset 0 0 25px rgba(255, 75, 125, 0.2); }\n  100% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n}\n\nbody::after {\n  content: '';\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  pointer-events: none;\n  z-index: 9999;\n  animation: digital-heartbeat-pulse 1.2s infinite ease-in-out;\n}",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; box-shadow: inset 0 0 150px rgba(255, 215, 0, 0.15); animation: autonomousAura 4s infinite alternate ease-in-out; z-index: 9999; } @keyframes autonomousAura { 0% { box-shadow: inset 0 0 100px rgba(255, 200, 0, 0.1); } 100% { box-shadow: inset 0 0 250px rgba(255, 150, 0, 0.25); border: 2px solid rgba(255, 215, 0, 0.3); } }",
     "sha": "49113d5bb5cd91346171ef998abce5fe952ead6c"
+  },
+  {
+    "timestamp": 1783918792447,
+    "filePath": "src/styles.css",
+    "code": "@keyframes plasma-frenzy { 0% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } 50% { box-shadow: inset 0 0 150px rgba(255, 140, 0, 0.7); } 100% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } } body { animation: plasma-frenzy 1.2s infinite alternate ease-in-out !important; }",
+    "sha": "121a87e2eb02023eecbc5daa0bcd57665072d607"
   }
 ]
