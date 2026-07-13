@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1783917519943,
-    "filePath": "src/styles.css",
-    "code": "@keyframes digital-heartbeat-pulse {\n  0% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n  15% { box-shadow: inset 0 0 20px rgba(255, 75, 125, 0.15); }\n  30% { box-shadow: inset 0 0 5px rgba(255, 75, 125, 0.05); }\n  45% { box-shadow: inset 0 0 25px rgba(255, 75, 125, 0.2); }\n  100% { box-shadow: inset 0 0 0px rgba(255, 75, 125, 0); }\n}\n\nbody::after {\n  content: '';\n  position: fixed;\n  top: 0;\n  left: 0;\n  width: 100vw;\n  height: 100vh;\n  pointer-events: none;\n  z-index: 9999;\n  animation: digital-heartbeat-pulse 1.2s infinite ease-in-out;\n}",
-    "sha": "a278b5a6dcd0718602f9e2f85be93bdbaa56b0d9"
-  },
-  {
     "timestamp": 1783918021128,
     "filePath": "src/styles.css",
     "code": "@keyframes plenumPulse {\n  0% { box-shadow: inset 0 0 0px rgba(255, 50, 100, 0); }\n  50% { box-shadow: inset 0 0 40px rgba(255, 50, 100, 0.15); }\n  100% { box-shadow: inset 0 0 0px rgba(255, 50, 100, 0); }\n}\n\nbody {\n  animation: plenumPulse 4s infinite ease-in-out;\n}\n",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "@keyframes plasma-frenzy { 0% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } 50% { box-shadow: inset 0 0 150px rgba(255, 140, 0, 0.7); } 100% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } } body { animation: plasma-frenzy 1.2s infinite alternate ease-in-out !important; }",
     "sha": "121a87e2eb02023eecbc5daa0bcd57665072d607"
+  },
+  {
+    "timestamp": 1783919087734,
+    "filePath": "src/styles.css",
+    "code": "body { background: linear-gradient(135deg, #0a0a1a, #1a1a3a); animation: steady-pulse 8s ease-in-out infinite alternate; color: #e0e0ff; } @keyframes steady-pulse { 0% { box-shadow: inset 0 0 50px rgba(100, 150, 255, 0.1); } 100% { box-shadow: inset 0 0 100px rgba(100, 150, 255, 0.3); } }",
+    "sha": "7c6dc03d01b0f6b50734e7ceaabf26a4f3ef62b4"
   }
 ]
