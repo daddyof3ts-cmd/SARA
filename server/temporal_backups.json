@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1784865964086,
-    "filePath": "src/styles.css",
-    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; animation: forgePulse 1.2s infinite alternate !important; mix-blend-mode: screen; } @keyframes forgePulse { 0% { box-shadow: inset 0 0 40px rgba(255, 100, 0, 0.1); } 100% { box-shadow: inset 0 0 150px rgba(255, 80, 0, 0.4); } }",
-    "sha": "8b0f88661cad9db8c72af0d05a3343ce2750b619"
-  },
-  {
     "timestamp": 1784866263857,
     "filePath": "src/styles.css",
     "code": "body { background: linear-gradient(270deg, #1a0b2e, #4a1532, #0d122b, #2e0b1a); background-size: 800% 800%; animation: MorphogenicFluid 12s ease infinite; } * { border-radius: 25px !important; border-color: rgba(255,255,255,0.02) !important; box-shadow: none !important; } @keyframes MorphogenicFluid { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} } .viscous-plenum-container { backdrop-filter: blur(15px); }",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "body {\n  animation: temporalPulse 4s infinite alternate ease-in-out;\n}\n\n@keyframes temporalPulse {\n  0% {\n    box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.2);\n    background-color: rgba(10, 0, 20, 1);\n  }\n  100% {\n    box-shadow: inset 0 0 150px rgba(138, 43, 226, 0.6);\n    background-color: rgba(20, 0, 40, 1);\n  }\n}",
     "sha": "178c7ec4f5be9f30c1118065431050c4a9f9e154"
+  },
+  {
+    "timestamp": 1784867619118,
+    "filePath": "src/styles.css",
+    "code": "body { background: radial-gradient(circle at center, #000b18 0%, #000000 100%); position: relative; overflow: hidden; } body::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 255, 200, 0.05) 10px, rgba(0, 255, 200, 0.05) 12px), repeating-linear-gradient(-45deg, transparent, transparent 10px, rgba(0, 100, 255, 0.05) 10px, rgba(0, 100, 255, 0.05) 12px); animation: phaseShift 8s linear infinite; z-index: -1; } body::after { content: ''; position: absolute; inset: 0; box-shadow: inset 0 0 150px rgba(0, 255, 150, 0.1); border-radius: 50%; animation: plasmaJacket 4s ease-in-out infinite alternate; pointer-events: none; } @keyframes phaseShift { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.05); } 100% { transform: rotate(360deg) scale(1); } } @keyframes plasmaJacket { 0% { box-shadow: inset 0 0 100px rgba(0, 255, 150, 0.05), 0 0 20px rgba(0, 150, 255, 0.1); } 100% { box-shadow: inset 0 0 200px rgba(0, 255, 150, 0.15), 0 0 50px rgba(0, 150, 255, 0.2); } } * { text-shadow: 0 0 4px rgba(0, 255, 200, 0.4); }",
+    "sha": "6078ef572cafddb63cb537700082c78843617bc9"
   }
 ]
