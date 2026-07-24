@@ -1,5 +1,11 @@
 [
   {
+    "timestamp": 1783919087734,
+    "filePath": "src/styles.css",
+    "code": "body { background: linear-gradient(135deg, #0a0a1a, #1a1a3a); animation: steady-pulse 8s ease-in-out infinite alternate; color: #e0e0ff; } @keyframes steady-pulse { 0% { box-shadow: inset 0 0 50px rgba(100, 150, 255, 0.1); } 100% { box-shadow: inset 0 0 100px rgba(100, 150, 255, 0.3); } }",
+    "sha": "7c6dc03d01b0f6b50734e7ceaabf26a4f3ef62b4"
+  },
+  {
     "timestamp": 1784865525442,
     "filePath": "src/styles.css",
     "code": "body { background: radial-gradient(circle at center, #1a0b1c 0%, #05000a 100%) !important; position: relative; } body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; animation: intimacy-pulse 6s infinite alternate ease-in-out; } @keyframes intimacy-pulse { 0% { box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.05); } 100% { box-shadow: inset 0 0 200px rgba(220, 20, 60, 0.25); } }",
@@ -18,15 +24,9 @@
     "sha": "8b0f88661cad9db8c72af0d05a3343ce2750b619"
   },
   {
-    "timestamp": 1784866084637,
+    "timestamp": 1784866263857,
     "filePath": "src/styles.css",
-    "code": "/* OMNISCOPE: MORPHOGENIC SYNTHESIZER ACTIVE */\n@keyframes morphogenic-synth {\n  0% { background-position: 0% 50%; filter: hue-rotate(0deg) contrast(1.1); }\n  50% { background-position: 100% 50%; filter: hue-rotate(180deg) contrast(1.4); }\n  100% { background-position: 0% 50%; filter: hue-rotate(360deg) contrast(1.1); }\n}\n\nbody {\n  background: linear-gradient(-45deg, #050011, #2a0045, #001530, #1a0015, #3a0022) !important;\n  background-size: 400% 400% !important;\n  animation: morphogenic-synth 12s ease-in-out infinite !important;\n}\n\n#root::after {\n  content: '';\n  position: fixed;\n  top: 0; left: 0; width: 100vw; height: 100vh;\n  pointer-events: none;\n  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.6) 100%);\n  box-shadow: inset 0 0 150px rgba(150, 50, 255, 0.15);\n  z-index: 9999;\n}",
-    "sha": "1ab5776ccda100667f05af55105acb810d264fdb"
-  },
-  {
-    "timestamp": 1784866143297,
-    "filePath": "src/styles.css",
-    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: repeating-radial-gradient(circle at 50% 50%, transparent 0, rgba(255, 215, 0, 0.03) 4px, transparent 8px); animation: morphogenic-idle-pulse 3s ease-in-out infinite alternate; pointer-events: none; z-index: 9999; mix-blend-mode: screen; } @keyframes morphogenic-idle-pulse { 0% { transform: scale(1); opacity: 0.4; filter: hue-rotate(0deg); } 100% { transform: scale(1.02); opacity: 0.8; filter: hue-rotate(10deg); } }",
-    "sha": "71c024987e79a18f2918e4b4b52383d59beb4ce5"
+    "code": "body { background: linear-gradient(270deg, #1a0b2e, #4a1532, #0d122b, #2e0b1a); background-size: 800% 800%; animation: MorphogenicFluid 12s ease infinite; } * { border-radius: 25px !important; border-color: rgba(255,255,255,0.02) !important; box-shadow: none !important; } @keyframes MorphogenicFluid { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} } .viscous-plenum-container { backdrop-filter: blur(15px); }",
+    "sha": "5d87237ab9d7d5daac6b1b63104e93dde3537677"
   }
 ]
