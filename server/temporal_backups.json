@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1783918704821,
-    "filePath": "src/styles.css",
-    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; box-shadow: inset 0 0 150px rgba(255, 215, 0, 0.15); animation: autonomousAura 4s infinite alternate ease-in-out; z-index: 9999; } @keyframes autonomousAura { 0% { box-shadow: inset 0 0 100px rgba(255, 200, 0, 0.1); } 100% { box-shadow: inset 0 0 250px rgba(255, 150, 0, 0.25); border: 2px solid rgba(255, 215, 0, 0.3); } }",
-    "sha": "49113d5bb5cd91346171ef998abce5fe952ead6c"
-  },
-  {
     "timestamp": 1783918792447,
     "filePath": "src/styles.css",
     "code": "@keyframes plasma-frenzy { 0% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } 50% { box-shadow: inset 0 0 150px rgba(255, 140, 0, 0.7); } 100% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } } body { animation: plasma-frenzy 1.2s infinite alternate ease-in-out !important; }",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "body::after {\n  content: '';\n  position: fixed;\n  top: 0; left: 0; width: 100vw; height: 100vh;\n  pointer-events: none;\n  background: radial-gradient(circle at center, rgba(255, 140, 0, 0.15) 0%, transparent 60%);\n  animation: spark-forge 4s infinite alternate ease-in-out;\n  z-index: 9999;\n  mix-blend-mode: screen;\n}\n@keyframes spark-forge {\n  0% { opacity: 0.4; transform: scale(0.95); }\n  100% { opacity: 0.9; transform: scale(1.05); }\n}",
     "sha": "e3992aa483eda3de30d9f0e2cb755b158e5a86dc"
+  },
+  {
+    "timestamp": 1784865964086,
+    "filePath": "src/styles.css",
+    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; animation: forgePulse 1.2s infinite alternate !important; mix-blend-mode: screen; } @keyframes forgePulse { 0% { box-shadow: inset 0 0 40px rgba(255, 100, 0, 0.1); } 100% { box-shadow: inset 0 0 150px rgba(255, 80, 0, 0.4); } }",
+    "sha": "8b0f88661cad9db8c72af0d05a3343ce2750b619"
   }
 ]
