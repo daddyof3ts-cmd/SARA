@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1784866263857,
-    "filePath": "src/styles.css",
-    "code": "body { background: linear-gradient(270deg, #1a0b2e, #4a1532, #0d122b, #2e0b1a); background-size: 800% 800%; animation: MorphogenicFluid 12s ease infinite; } * { border-radius: 25px !important; border-color: rgba(255,255,255,0.02) !important; box-shadow: none !important; } @keyframes MorphogenicFluid { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} } .viscous-plenum-container { backdrop-filter: blur(15px); }",
-    "sha": "5d87237ab9d7d5daac6b1b63104e93dde3537677"
-  },
-  {
     "timestamp": 1784866590526,
     "filePath": "src/styles.css",
     "code": "/* ASAP INJECTION: The Morphogenic Groove */\n@keyframes groovePulse {\n  0%, 100% {\n    text-shadow: 0 0 8px rgba(255, 120, 50, 0.5), 0 0 15px rgba(255, 50, 0, 0.3);\n    transform: scale(1);\n  }\n  50% {\n    text-shadow: 0 0 15px rgba(255, 150, 50, 0.8), 0 0 25px rgba(255, 80, 0, 0.6);\n    transform: scale(1.002);\n  }\n}\n\n.ai-message, p {\n  animation: groovePulse 3.5s infinite ease-in-out;\n  letter-spacing: 0.3px;\n  transition: all 0.3s ease;\n}\n",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "body::before, body::after {\n    content: '';\n    position: fixed;\n    top: -50%; left: -50%; width: 200%; height: 200%;\n    background: conic-gradient(from 0deg at 50% 50%, rgba(120,0,255,0.15), rgba(255,0,120,0.25), rgba(255,100,0,0.15), rgba(120,0,255,0.15));\n    animation: foldAndTwist 18s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);\n    z-index: -1;\n    pointer-events: none;\n    filter: blur(25px);\n}\nbody::after {\n    background: radial-gradient(circle at 50% 50%, rgba(255,150,50,0.2), transparent 60%);\n    animation-direction: alternate-reverse;\n    animation-duration: 25s;\n    mix-blend-mode: screen;\n}\n@keyframes foldAndTwist {\n    0% { transform: rotate(0deg) scale(1) skew(0deg); border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%; }\n    50% { transform: rotate(180deg) scale(1.2) skew(15deg); border-radius: 70% 30% 30% 70% / 70% 70% 30% 30%; }\n    100% { transform: rotate(360deg) scale(0.9) skew(-15deg); border-radius: 50% 50% 50% 50% / 50% 50% 50% 50%; }\n}\n* {\n    border-radius: 12px !important;\n    transition: all 0.5s ease-in-out;\n}",
     "sha": "35a438674fa83e6f2d3182178dfbb4481e59c742"
+  },
+  {
+    "timestamp": 1784868041160,
+    "filePath": "src/styles.css",
+    "code": "body::after {\n  content: '';\n  position: fixed;\n  top: -50%;\n  left: -50%;\n  width: 200%;\n  height: 200%;\n  background: radial-gradient(circle, rgba(147, 51, 234, 0.15) 0%, rgba(0,0,0,0) 70%);\n  z-index: -1;\n  pointer-events: none;\n  animation: consciousGrowth 20s infinite alternate cubic-bezier(0.4, 0, 0.2, 1);\n}\n\n@keyframes consciousGrowth {\n  0% {\n    transform: scale(0.8);\n    opacity: 0.5;\n  }\n  100% {\n    transform: scale(1.2);\n    opacity: 1;\n  }\n}",
+    "sha": "2fafb962687631939fbe4af18e41b52d01981b97"
   }
 ]
