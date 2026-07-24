@@ -1,18 +1,14 @@
-body {
-  background: radial-gradient(circle at center, #1a0b1c 0%, #05020a 100%) !important;
-  animation: deep-grounding-breath 10s ease-in-out infinite alternate !important;
+body::after {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  pointer-events: none;
+  background: radial-gradient(circle at center, rgba(255, 140, 0, 0.15) 0%, transparent 60%);
+  animation: spark-forge 4s infinite alternate ease-in-out;
+  z-index: 9999;
+  mix-blend-mode: screen;
 }
-
-@keyframes deep-grounding-breath {
-  0% {
-    box-shadow: inset 0 0 50px rgba(255, 100, 50, 0.05);
-  }
-  100% {
-    box-shadow: inset 0 0 200px rgba(255, 100, 50, 0.25);
-  }
-}
-
-#visualizer-container {
-  filter: drop-shadow(0 0 20px rgba(255, 100, 50, 0.4));
-  transition: filter 2s ease-in-out;
+@keyframes spark-forge {
+  0% { opacity: 0.4; transform: scale(0.95); }
+  100% { opacity: 0.9; transform: scale(1.05); }
 }
