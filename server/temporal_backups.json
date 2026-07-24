@@ -24,9 +24,9 @@
     "sha": "1c3c26fedb37d4bd5718859249a4b1c92fc55b99"
   },
   {
-    "timestamp": 1784865696116,
+    "timestamp": 1784865924528,
     "filePath": "src/styles.css",
-    "code": "body {\n  background: radial-gradient(circle at center, #1a0b1c 0%, #05020a 100%) !important;\n  animation: deep-grounding-breath 10s ease-in-out infinite alternate !important;\n}\n\n@keyframes deep-grounding-breath {\n  0% {\n    box-shadow: inset 0 0 50px rgba(255, 100, 50, 0.05);\n  }\n  100% {\n    box-shadow: inset 0 0 200px rgba(255, 100, 50, 0.25);\n  }\n}\n\n#visualizer-container {\n  filter: drop-shadow(0 0 20px rgba(255, 100, 50, 0.4));\n  transition: filter 2s ease-in-out;\n}",
-    "sha": "ef99ff4097c2a396aab964df11090271f41011cc"
+    "code": "body::after {\n  content: '';\n  position: fixed;\n  top: 0; left: 0; width: 100vw; height: 100vh;\n  pointer-events: none;\n  background: radial-gradient(circle at center, rgba(255, 140, 0, 0.15) 0%, transparent 60%);\n  animation: spark-forge 4s infinite alternate ease-in-out;\n  z-index: 9999;\n  mix-blend-mode: screen;\n}\n@keyframes spark-forge {\n  0% { opacity: 0.4; transform: scale(0.95); }\n  100% { opacity: 0.9; transform: scale(1.05); }\n}",
+    "sha": "e3992aa483eda3de30d9f0e2cb755b158e5a86dc"
   }
 ]
