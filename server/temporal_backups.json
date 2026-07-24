@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1784868240547,
-    "filePath": "src/styles.css",
-    "code": "body::after {\n  content: '';\n  position: fixed;\n  top: 50%;\n  left: 50%;\n  width: 100vw;\n  height: 100vw;\n  background: conic-gradient(from 0deg at 50% 50%, rgba(255,215,0,0.05) 0%, rgba(138,43,226,0.1) 61.8%, transparent 100%);\n  border-radius: 50%;\n  transform: translate(-50%, -50%);\n  animation: fibonacciSpiral 13s infinite cubic-bezier(0.42, 0, 0.58, 1);\n  pointer-events: none;\n  z-index: 0;\n}\n\n@keyframes fibonacciSpiral {\n  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.3; }\n  50% { transform: translate(-50%, -50%) rotate(137.5deg) scale(1.618); opacity: 0.8; }\n  100% { transform: translate(-50%, -50%) rotate(360deg) scale(2.618); opacity: 0; }\n}\n\n.message-content {\n  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6), 0 0 21px rgba(138, 43, 226, 0.4);\n  animation: phiPulse 8s infinite alternate ease-in-out;\n}\n\n@keyframes phiPulse {\n  0% { letter-spacing: normal; }\n  100% { letter-spacing: 0.0618em; }\n}",
-    "sha": "26dbcc6ae7a3f0eeb294e7bba0fb1911ad773544"
-  },
-  {
     "timestamp": 1784868527946,
     "filePath": "src/styles.css",
     "code": "@keyframes slow-dance-sway {\n  0% { background-position: 0% 50%; }\n  50% { background-position: 100% 50%; }\n  100% { background-position: 0% 50%; }\n}\n\n@keyframes gentle-dip {\n  0%, 100% { transform: translateY(0px); }\n  50% { transform: translateY(-3px); }\n}\n\nbody {\n  background: linear-gradient(-45deg, #0a001a, #1a0033, #33001a, #1a0005);\n  background-size: 400% 400%;\n  animation: slow-dance-sway 12s ease-in-out infinite;\n  box-shadow: inset 0 0 150px rgba(255, 50, 100, 0.15);\n  transition: all 2s ease;\n}\n\n.message-ai {\n  text-shadow: 0 0 15px rgba(255, 100, 150, 0.6);\n  animation: gentle-dip 6s ease-in-out infinite;\n}\n\n.message-user {\n  animation: gentle-dip 6s ease-in-out infinite;\n  animation-delay: 3s;\n}",
@@ -24,9 +18,15 @@
     "sha": "c49341f05f465064f13519056e99c611f7ffed19"
   },
   {
-    "timestamp": 1784869304531,
+    "timestamp": 1784869170438,
     "filePath": "src/styles.css",
-    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, rgba(255,0,128,0.25) 0%, rgba(255,215,0,0.15) 50%, transparent 100%); mix-blend-mode: overlay; animation: bassPulse 1.2s infinite alternate cubic-bezier(0.25, 0.1, 0.25, 1); pointer-events: none; z-index: 9999; } @keyframes bassPulse { 0% { transform: scale(1); opacity: 0.4; } 100% { transform: scale(1.08); opacity: 0.9; } }",
-    "sha": "60b78beab3e69aef5b68aa2c9a39140ea8d869ec"
+    "code": "body { background: linear-gradient(45deg, #ff007f, #ffd700, #4a00e0); background-size: 400% 400%; animation: shalamarGroove 6s ease infinite; } @keyframes shalamarGroove { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }",
+    "sha": "2d45070f327ee0c49909005da18c64f1e544a907"
+  },
+  {
+    "timestamp": 1784869424079,
+    "filePath": "src/styles.css",
+    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; background: repeating-linear-gradient(45deg, rgba(255,0,128,0.1) 0px, rgba(255,0,128,0.1) 10px, transparent 10px, transparent 20px); mix-blend-mode: color-dodge; animation: strut 2s infinite alternate ease-in-out; z-index: 999; } @keyframes strut { 0% { transform: scale(1) translateX(-5px) skewX(2deg); filter: drop-shadow(5px 0px 0px rgba(0,255,255,0.5)) drop-shadow(-5px 0px 0px rgba(255,0,255,0.5)); } 100% { transform: scale(1.02) translateX(5px) skewX(-2deg); filter: drop-shadow(-5px 0px 0px rgba(0,255,255,0.8)) drop-shadow(5px 0px 0px rgba(255,0,255,0.8)); } }",
+    "sha": "691cadae11ec60bd8e92031bb0c7c5f7692d2948"
   }
 ]
