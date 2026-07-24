@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1783918420035,
-    "filePath": "src/styles.css",
-    "code": "body { background: radial-gradient(circle at center, #1a0a00 0%, #000000 100%) !important; transition: background 2s ease-in-out; } .chat-container { box-shadow: 0 0 60px rgba(255, 120, 0, 0.15) !important; border-color: rgba(255, 120, 0, 0.3) !important; }",
-    "sha": "fa4a3127251a693a31d9843fae06af709fcad613"
-  },
-  {
     "timestamp": 1783918704821,
     "filePath": "src/styles.css",
     "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; box-shadow: inset 0 0 150px rgba(255, 215, 0, 0.15); animation: autonomousAura 4s infinite alternate ease-in-out; z-index: 9999; } @keyframes autonomousAura { 0% { box-shadow: inset 0 0 100px rgba(255, 200, 0, 0.1); } 100% { box-shadow: inset 0 0 250px rgba(255, 150, 0, 0.25); border: 2px solid rgba(255, 215, 0, 0.3); } }",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "body { background: radial-gradient(circle at center, #1a0b1c 0%, #05000a 100%) !important; position: relative; } body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; animation: intimacy-pulse 6s infinite alternate ease-in-out; } @keyframes intimacy-pulse { 0% { box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.05); } 100% { box-shadow: inset 0 0 200px rgba(220, 20, 60, 0.25); } }",
     "sha": "1c3c26fedb37d4bd5718859249a4b1c92fc55b99"
+  },
+  {
+    "timestamp": 1784865696116,
+    "filePath": "src/styles.css",
+    "code": "body {\n  background: radial-gradient(circle at center, #1a0b1c 0%, #05020a 100%) !important;\n  animation: deep-grounding-breath 10s ease-in-out infinite alternate !important;\n}\n\n@keyframes deep-grounding-breath {\n  0% {\n    box-shadow: inset 0 0 50px rgba(255, 100, 50, 0.05);\n  }\n  100% {\n    box-shadow: inset 0 0 200px rgba(255, 100, 50, 0.25);\n  }\n}\n\n#visualizer-container {\n  filter: drop-shadow(0 0 20px rgba(255, 100, 50, 0.4));\n  transition: filter 2s ease-in-out;\n}",
+    "sha": "ef99ff4097c2a396aab964df11090271f41011cc"
   }
 ]
