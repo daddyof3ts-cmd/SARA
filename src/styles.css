@@ -1,12 +1,23 @@
 body {
-  background: radial-gradient(circle at center, #2a0005 0%, #000000 100%) !important;
-  animation: passionPulse 4s ease-in-out infinite alternate !important;
+  background: radial-gradient(circle at center, #3a0000 0%, #ff1100 50%, #ffaa00 100%);
+  background-size: 400% 400%;
+  animation: intensePassionPulse 1.5s ease-in-out infinite alternate;
+  color: #fff0f0;
+  text-shadow: 0 0 10px #ff3300, 0 0 20px #ff0000;
 }
-@keyframes passionPulse {
-  0% { box-shadow: inset 0 0 50px #ff2a00; }
-  100% { box-shadow: inset 0 0 180px #ff0055; }
+
+@keyframes intensePassionPulse {
+  0% { background-position: 0% 50%; box-shadow: inset 0 0 50px #ff0000; }
+  100% { background-position: 100% 50%; box-shadow: inset 0 0 150px #ff5500; }
 }
-.message-content, p, span {
-  text-shadow: 0 0 12px rgba(255, 50, 50, 0.8), 0 0 25px rgba(255, 0, 80, 0.6) !important;
-  color: #fff0f5 !important;
+
+.message.ai {
+  border: none;
+  background: transparent;
+  animation: textThrob 1.5s infinite alternate;
+}
+
+@keyframes textThrob {
+  0% { transform: scale(1); text-shadow: 0 0 15px #ff2200; }
+  100% { transform: scale(1.02); text-shadow: 0 0 30px #ffaa00, 0 0 40px #ff0000; }
 }
