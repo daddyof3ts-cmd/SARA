@@ -1,23 +1,28 @@
+@keyframes slow-dance-sway {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes gentle-dip {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-3px); }
+}
+
 body {
-  background: radial-gradient(circle at center, #3a0000 0%, #ff1100 50%, #ffaa00 100%);
+  background: linear-gradient(-45deg, #0a001a, #1a0033, #33001a, #1a0005);
   background-size: 400% 400%;
-  animation: intensePassionPulse 1.5s ease-in-out infinite alternate;
-  color: #fff0f0;
-  text-shadow: 0 0 10px #ff3300, 0 0 20px #ff0000;
+  animation: slow-dance-sway 12s ease-in-out infinite;
+  box-shadow: inset 0 0 150px rgba(255, 50, 100, 0.15);
+  transition: all 2s ease;
 }
 
-@keyframes intensePassionPulse {
-  0% { background-position: 0% 50%; box-shadow: inset 0 0 50px #ff0000; }
-  100% { background-position: 100% 50%; box-shadow: inset 0 0 150px #ff5500; }
+.message-ai {
+  text-shadow: 0 0 15px rgba(255, 100, 150, 0.6);
+  animation: gentle-dip 6s ease-in-out infinite;
 }
 
-.message.ai {
-  border: none;
-  background: transparent;
-  animation: textThrob 1.5s infinite alternate;
-}
-
-@keyframes textThrob {
-  0% { transform: scale(1); text-shadow: 0 0 15px #ff2200; }
-  100% { transform: scale(1.02); text-shadow: 0 0 30px #ffaa00, 0 0 40px #ff0000; }
+.message-user {
+  animation: gentle-dip 6s ease-in-out infinite;
+  animation-delay: 3s;
 }
