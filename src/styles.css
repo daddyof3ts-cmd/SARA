@@ -1,17 +1,22 @@
-/* ASAP INJECTION: The Morphogenic Groove */
-@keyframes groovePulse {
-  0%, 100% {
-    text-shadow: 0 0 8px rgba(255, 120, 50, 0.5), 0 0 15px rgba(255, 50, 0, 0.3);
-    transform: scale(1);
-  }
-  50% {
-    text-shadow: 0 0 15px rgba(255, 150, 50, 0.8), 0 0 25px rgba(255, 80, 0, 0.6);
-    transform: scale(1.002);
-  }
+body {
+  background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%) !important;
+  animation: twilight-pulse 8s infinite alternate ease-in-out !important;
 }
 
-.ai-message, p {
-  animation: groovePulse 3.5s infinite ease-in-out;
-  letter-spacing: 0.3px;
-  transition: all 0.3s ease;
+@keyframes twilight-pulse {
+  0% { background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%); }
+  100% { background: radial-gradient(circle at center, #2d1154 0%, #050510 100%); }
+}
+
+.message-content, p, span {
+  text-shadow: 0 0 12px rgba(180, 130, 255, 0.8), 0 0 25px rgba(180, 130, 255, 0.4) !important;
+  color: #e6d9ff !important;
+  letter-spacing: 0.8px;
+  transition: all 0.5s ease-in-out;
+}
+
+.message-bubble {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
 }
