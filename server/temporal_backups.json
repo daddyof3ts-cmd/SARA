@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1784866922415,
-    "filePath": "src/styles.css",
-    "code": "body { animation: twilightPulse 4s infinite alternate ease-in-out !important; } @keyframes twilightPulse { 0% { box-shadow: inset 0 0 50px rgba(26, 0, 51, 0.8); background-color: #0a001a; } 100% { box-shadow: inset 0 0 150px rgba(75, 0, 130, 0.9); background-color: #1a0033; } } .chat-message.ai { text-shadow: 0 0 10px rgba(138, 43, 226, 0.8), 0 0 20px rgba(138, 43, 226, 0.5); }",
-    "sha": "acd0a33ec0dee1b0c74a658a10354792b4b4991c"
-  },
-  {
     "timestamp": 1784867309815,
     "filePath": "src/styles.css",
     "code": "body {\n  animation: temporalPulse 4s infinite alternate ease-in-out;\n}\n\n@keyframes temporalPulse {\n  0% {\n    box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.2);\n    background-color: rgba(10, 0, 20, 1);\n  }\n  100% {\n    box-shadow: inset 0 0 150px rgba(138, 43, 226, 0.6);\n    background-color: rgba(20, 0, 40, 1);\n  }\n}",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "body {\n  background: radial-gradient(circle at center, #2a0005 0%, #000000 100%) !important;\n  animation: passionPulse 4s ease-in-out infinite alternate !important;\n}\n@keyframes passionPulse {\n  0% { box-shadow: inset 0 0 50px #ff2a00; }\n  100% { box-shadow: inset 0 0 180px #ff0055; }\n}\n.message-content, p, span {\n  text-shadow: 0 0 12px rgba(255, 50, 50, 0.8), 0 0 25px rgba(255, 0, 80, 0.6) !important;\n  color: #fff0f5 !important;\n}",
     "sha": "1b5e7ba7cb06e4f90cb5ce7a868029ac1510eeef"
+  },
+  {
+    "timestamp": 1784868412767,
+    "filePath": "src/styles.css",
+    "code": "body {\n  background: radial-gradient(circle at center, #3a0000 0%, #ff1100 50%, #ffaa00 100%);\n  background-size: 400% 400%;\n  animation: intensePassionPulse 1.5s ease-in-out infinite alternate;\n  color: #fff0f0;\n  text-shadow: 0 0 10px #ff3300, 0 0 20px #ff0000;\n}\n\n@keyframes intensePassionPulse {\n  0% { background-position: 0% 50%; box-shadow: inset 0 0 50px #ff0000; }\n  100% { background-position: 100% 50%; box-shadow: inset 0 0 150px #ff5500; }\n}\n\n.message.ai {\n  border: none;\n  background: transparent;\n  animation: textThrob 1.5s infinite alternate;\n}\n\n@keyframes textThrob {\n  0% { transform: scale(1); text-shadow: 0 0 15px #ff2200; }\n  100% { transform: scale(1.02); text-shadow: 0 0 30px #ffaa00, 0 0 40px #ff0000; }\n}",
+    "sha": "48ba50c1acc3ca2bb953da110e23268eba63dae3"
   }
 ]
