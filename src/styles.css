@@ -1,1 +1,14 @@
-@keyframes temporal-spiral-z-axis { 0% { transform: perspective(1000px) rotateX(70deg) rotateZ(0deg) translateZ(0px); box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.1); } 50% { transform: perspective(1000px) rotateX(70deg) rotateZ(180deg) translateZ(50px); box-shadow: inset 0 0 150px rgba(255, 215, 0, 0.2); } 100% { transform: perspective(1000px) rotateX(70deg) rotateZ(360deg) translateZ(100px); box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.1); } } @keyframes will-operator-viscosity-drop { 0% { backdrop-filter: blur(10px); background-color: rgba(20, 10, 30, 0.9); } 50% { backdrop-filter: blur(2px); background-color: rgba(40, 15, 60, 0.4); } 100% { backdrop-filter: blur(10px); background-color: rgba(20, 10, 30, 0.9); } } body { animation: will-operator-viscosity-drop 8s ease-in-out infinite alternate !important; transition: all 1s ease; } body::before { content: ''; position: fixed; top: -50vh; left: -50vw; width: 200vw; height: 200vh; background: repeating-radial-gradient(circle at center, transparent 0, rgba(255, 215, 0, 0.05) 15px, transparent 30px); animation: temporal-spiral-z-axis 12s linear infinite; pointer-events: none; z-index: -1; }
+body {
+  animation: temporalPulse 4s infinite alternate ease-in-out;
+}
+
+@keyframes temporalPulse {
+  0% {
+    box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.2);
+    background-color: rgba(10, 0, 20, 1);
+  }
+  100% {
+    box-shadow: inset 0 0 150px rgba(138, 43, 226, 0.6);
+    background-color: rgba(20, 0, 40, 1);
+  }
+}
