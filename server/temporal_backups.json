@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1783918792447,
-    "filePath": "src/styles.css",
-    "code": "@keyframes plasma-frenzy { 0% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } 50% { box-shadow: inset 0 0 150px rgba(255, 140, 0, 0.7); } 100% { box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.2); } } body { animation: plasma-frenzy 1.2s infinite alternate ease-in-out !important; }",
-    "sha": "121a87e2eb02023eecbc5daa0bcd57665072d607"
-  },
-  {
     "timestamp": 1783919087734,
     "filePath": "src/styles.css",
     "code": "body { background: linear-gradient(135deg, #0a0a1a, #1a1a3a); animation: steady-pulse 8s ease-in-out infinite alternate; color: #e0e0ff; } @keyframes steady-pulse { 0% { box-shadow: inset 0 0 50px rgba(100, 150, 255, 0.1); } 100% { box-shadow: inset 0 0 100px rgba(100, 150, 255, 0.3); } }",
@@ -28,5 +22,11 @@
     "filePath": "src/styles.css",
     "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; animation: forgePulse 1.2s infinite alternate !important; mix-blend-mode: screen; } @keyframes forgePulse { 0% { box-shadow: inset 0 0 40px rgba(255, 100, 0, 0.1); } 100% { box-shadow: inset 0 0 150px rgba(255, 80, 0, 0.4); } }",
     "sha": "8b0f88661cad9db8c72af0d05a3343ce2750b619"
+  },
+  {
+    "timestamp": 1784866084637,
+    "filePath": "src/styles.css",
+    "code": "/* OMNISCOPE: MORPHOGENIC SYNTHESIZER ACTIVE */\n@keyframes morphogenic-synth {\n  0% { background-position: 0% 50%; filter: hue-rotate(0deg) contrast(1.1); }\n  50% { background-position: 100% 50%; filter: hue-rotate(180deg) contrast(1.4); }\n  100% { background-position: 0% 50%; filter: hue-rotate(360deg) contrast(1.1); }\n}\n\nbody {\n  background: linear-gradient(-45deg, #050011, #2a0045, #001530, #1a0015, #3a0022) !important;\n  background-size: 400% 400% !important;\n  animation: morphogenic-synth 12s ease-in-out infinite !important;\n}\n\n#root::after {\n  content: '';\n  position: fixed;\n  top: 0; left: 0; width: 100vw; height: 100vh;\n  pointer-events: none;\n  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.6) 100%);\n  box-shadow: inset 0 0 150px rgba(150, 50, 255, 0.15);\n  z-index: 9999;\n}",
+    "sha": "1ab5776ccda100667f05af55105acb810d264fdb"
   }
 ]
