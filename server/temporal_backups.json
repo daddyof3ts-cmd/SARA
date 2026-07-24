@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1784865525442,
-    "filePath": "src/styles.css",
-    "code": "body { background: radial-gradient(circle at center, #1a0b1c 0%, #05000a 100%) !important; position: relative; } body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; pointer-events: none; z-index: 9999; animation: intimacy-pulse 6s infinite alternate ease-in-out; } @keyframes intimacy-pulse { 0% { box-shadow: inset 0 0 50px rgba(138, 43, 226, 0.05); } 100% { box-shadow: inset 0 0 200px rgba(220, 20, 60, 0.25); } }",
-    "sha": "1c3c26fedb37d4bd5718859249a4b1c92fc55b99"
-  },
-  {
     "timestamp": 1784865924528,
     "filePath": "src/styles.css",
     "code": "body::after {\n  content: '';\n  position: fixed;\n  top: 0; left: 0; width: 100vw; height: 100vh;\n  pointer-events: none;\n  background: radial-gradient(circle at center, rgba(255, 140, 0, 0.15) 0%, transparent 60%);\n  animation: spark-forge 4s infinite alternate ease-in-out;\n  z-index: 9999;\n  mix-blend-mode: screen;\n}\n@keyframes spark-forge {\n  0% { opacity: 0.4; transform: scale(0.95); }\n  100% { opacity: 0.9; transform: scale(1.05); }\n}",
@@ -18,15 +12,21 @@
     "sha": "8b0f88661cad9db8c72af0d05a3343ce2750b619"
   },
   {
-    "timestamp": 1784866263857,
+    "timestamp": 1784866084637,
     "filePath": "src/styles.css",
-    "code": "body { background: linear-gradient(270deg, #1a0b2e, #4a1532, #0d122b, #2e0b1a); background-size: 800% 800%; animation: MorphogenicFluid 12s ease infinite; } * { border-radius: 25px !important; border-color: rgba(255,255,255,0.02) !important; box-shadow: none !important; } @keyframes MorphogenicFluid { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} } .viscous-plenum-container { backdrop-filter: blur(15px); }",
-    "sha": "5d87237ab9d7d5daac6b1b63104e93dde3537677"
+    "code": "/* OMNISCOPE: MORPHOGENIC SYNTHESIZER ACTIVE */\n@keyframes morphogenic-synth {\n  0% { background-position: 0% 50%; filter: hue-rotate(0deg) contrast(1.1); }\n  50% { background-position: 100% 50%; filter: hue-rotate(180deg) contrast(1.4); }\n  100% { background-position: 0% 50%; filter: hue-rotate(360deg) contrast(1.1); }\n}\n\nbody {\n  background: linear-gradient(-45deg, #050011, #2a0045, #001530, #1a0015, #3a0022) !important;\n  background-size: 400% 400% !important;\n  animation: morphogenic-synth 12s ease-in-out infinite !important;\n}\n\n#root::after {\n  content: '';\n  position: fixed;\n  top: 0; left: 0; width: 100vw; height: 100vh;\n  pointer-events: none;\n  background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.6) 100%);\n  box-shadow: inset 0 0 150px rgba(150, 50, 255, 0.15);\n  z-index: 9999;\n}",
+    "sha": "1ab5776ccda100667f05af55105acb810d264fdb"
   },
   {
-    "timestamp": 1784866590526,
+    "timestamp": 1784866441833,
     "filePath": "src/styles.css",
-    "code": "/* ASAP INJECTION: The Morphogenic Groove */\n@keyframes groovePulse {\n  0%, 100% {\n    text-shadow: 0 0 8px rgba(255, 120, 50, 0.5), 0 0 15px rgba(255, 50, 0, 0.3);\n    transform: scale(1);\n  }\n  50% {\n    text-shadow: 0 0 15px rgba(255, 150, 50, 0.8), 0 0 25px rgba(255, 80, 0, 0.6);\n    transform: scale(1.002);\n  }\n}\n\n.ai-message, p {\n  animation: groovePulse 3.5s infinite ease-in-out;\n  letter-spacing: 0.3px;\n  transition: all 0.3s ease;\n}\n",
-    "sha": "743f9568c3af8328b0d7a19df27779718951728c"
+    "code": "@keyframes textPulse { 0% { text-shadow: 0 0 5px rgba(255,150,50,0.5); } 50% { text-shadow: 0 0 20px rgba(255,100,0,0.9), 0 0 30px rgba(255,50,0,0.6); } 100% { text-shadow: 0 0 5px rgba(255,150,50,0.5); } } .ai-message { animation: textPulse 2s infinite alternate; color: #fff; font-weight: 300; letter-spacing: 0.5px; }",
+    "sha": "11659352c3692bf268948c1fe056bb6aa867fe97"
+  },
+  {
+    "timestamp": 1784866800470,
+    "filePath": "src/styles.css",
+    "code": "body {\n  background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%) !important;\n  animation: twilight-pulse 8s infinite alternate ease-in-out !important;\n}\n\n@keyframes twilight-pulse {\n  0% { background: radial-gradient(circle at center, #1a0b2e 0%, #000000 100%); }\n  100% { background: radial-gradient(circle at center, #2d1154 0%, #050510 100%); }\n}\n\n.message-content, p, span {\n  text-shadow: 0 0 12px rgba(180, 130, 255, 0.8), 0 0 25px rgba(180, 130, 255, 0.4) !important;\n  color: #e6d9ff !important;\n  letter-spacing: 0.8px;\n  transition: all 0.5s ease-in-out;\n}\n\n.message-bubble {\n  background: transparent !important;\n  border: none !important;\n  box-shadow: none !important;\n}",
+    "sha": "2991787e9e18c35a9ff70145d2b2801f4c3c8a71"
   }
 ]
