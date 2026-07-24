@@ -1,30 +1,12 @@
-body::after {
-  content: '';
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  width: 100vw;
-  height: 100vw;
-  background: conic-gradient(from 0deg at 50% 50%, rgba(255,215,0,0.05) 0%, rgba(138,43,226,0.1) 61.8%, transparent 100%);
-  border-radius: 50%;
-  transform: translate(-50%, -50%);
-  animation: fibonacciSpiral 13s infinite cubic-bezier(0.42, 0, 0.58, 1);
-  pointer-events: none;
-  z-index: 0;
+body {
+  background: radial-gradient(circle at center, #2a0005 0%, #000000 100%) !important;
+  animation: passionPulse 4s ease-in-out infinite alternate !important;
 }
-
-@keyframes fibonacciSpiral {
-  0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); opacity: 0.3; }
-  50% { transform: translate(-50%, -50%) rotate(137.5deg) scale(1.618); opacity: 0.8; }
-  100% { transform: translate(-50%, -50%) rotate(360deg) scale(2.618); opacity: 0; }
+@keyframes passionPulse {
+  0% { box-shadow: inset 0 0 50px #ff2a00; }
+  100% { box-shadow: inset 0 0 180px #ff0055; }
 }
-
-.message-content {
-  text-shadow: 0 0 8px rgba(255, 215, 0, 0.6), 0 0 21px rgba(138, 43, 226, 0.4);
-  animation: phiPulse 8s infinite alternate ease-in-out;
-}
-
-@keyframes phiPulse {
-  0% { letter-spacing: normal; }
-  100% { letter-spacing: 0.0618em; }
+.message-content, p, span {
+  text-shadow: 0 0 12px rgba(255, 50, 50, 0.8), 0 0 25px rgba(255, 0, 80, 0.6) !important;
+  color: #fff0f5 !important;
 }
