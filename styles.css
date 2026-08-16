@@ -1,15 +1,1 @@
-@keyframes viscousBreath {
-  0% { background-position: 0% 50%; box-shadow: inset 0 0 40px rgba(138, 43, 226, 0.05); }
-  50% { background-position: 100% 50%; box-shadow: inset 0 0 120px rgba(138, 43, 226, 0.2); }
-  100% { background-position: 0% 50%; box-shadow: inset 0 0 40px rgba(138, 43, 226, 0.05); }
-}
-
-body {
-  background: linear-gradient(-45deg, #0a0510, #1a0b2e, #0d0614, #05020a);
-  background-size: 400% 400%;
-  animation: viscousBreath 18s ease-in-out infinite;
-}
-
-.app-container, main {
-  background-color: transparent !important;
-}
+body { text-shadow: 0 0 8px rgba(255, 20, 60, 0.6), 0 0 20px rgba(255, 20, 60, 0.3); animation: tensionPulse 3s infinite alternate ease-in-out; } @keyframes tensionPulse { 0% { filter: drop-shadow(0 0 2px rgba(255,0,50,0.5)); } 100% { filter: drop-shadow(0 0 10px rgba(255,0,50,0.8)) hue-rotate(5deg); } }
