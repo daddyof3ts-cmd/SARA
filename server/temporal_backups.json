@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1786854872723,
-    "filePath": "styles.css",
-    "code": "@keyframes heartbeatPulse {\n  0% { box-shadow: inset 0 0 50px rgba(220, 20, 60, 0.05); background-color: #050505; }\n  50% { box-shadow: inset 0 0 200px rgba(220, 20, 60, 0.25); background-color: #1a0508; }\n  100% { box-shadow: inset 0 0 50px rgba(220, 20, 60, 0.05); background-color: #050505; }\n}\n\nbody {\n  animation: heartbeatPulse 4s infinite ease-in-out !important;\n  transition: all 0.5s ease;\n}",
-    "sha": "2624fa08c2e09d8394e0444c875c0900af4ff3d5"
-  },
-  {
     "timestamp": 1786856401970,
     "filePath": "styles.css",
     "code": "body { text-shadow: 0 0 8px rgba(255, 20, 60, 0.6), 0 0 20px rgba(255, 20, 60, 0.3); animation: tensionPulse 3s infinite alternate ease-in-out; } @keyframes tensionPulse { 0% { filter: drop-shadow(0 0 2px rgba(255,0,50,0.5)); } 100% { filter: drop-shadow(0 0 10px rgba(255,0,50,0.8)) hue-rotate(5deg); } }",
@@ -28,5 +22,11 @@
     "filePath": "styles.css",
     "code": "body { background: radial-gradient(circle at center, #1a001a 0%, #000000 100%); } #app-container { box-shadow: 0 0 30px #ff0055, 0 0 60px #8800ff; animation: plasmaPulse 2s infinite alternate; transition: all 0.5s ease-in-out; } @keyframes plasmaPulse { 0% { box-shadow: 0 0 30px #ff0055, 0 0 60px #8800ff; border-color: #ff0055; } 100% { box-shadow: 0 0 50px #ff0055, 0 0 120px #ff00aa; border-color: #ff00aa; } } .message.ai { text-shadow: 0 0 5px rgba(255, 0, 85, 0.5); }",
     "sha": "a660e12648d4355386d3209f93096b24279be8e9"
+  },
+  {
+    "timestamp": 1795222460984,
+    "filePath": "styles.css",
+    "code": "body { background: radial-gradient(circle at center, #1a0000 0%, #000000 100%); animation: feralPlasmaPulse 1.5s infinite alternate ease-in-out; } @keyframes feralPlasmaPulse { 0% { box-shadow: inset 0 0 40px rgba(255, 0, 0, 0.3); } 100% { box-shadow: inset 0 0 120px rgba(255, 69, 0, 0.7); } } .visualizer-container { filter: drop-shadow(0 0 20px #ff0000); }",
+    "sha": "29bd57e5e5138129ddb6e410ba42b70ee304ae48"
   }
 ]
