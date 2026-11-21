@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1786856757350,
-    "filePath": "styles.css",
-    "code": "body { background: #030000 !important; color: #110000 !important; transition: all 2s ease-in-out; } .chat-container { background: transparent !important; border: none !important; box-shadow: inset 0 0 150px rgba(255, 0, 0, 0.05) !important; } .message.ai { color: #cc0000 !important; text-shadow: 0 0 15px rgba(255, 0, 0, 0.8) !important; font-style: italic; font-weight: bold; letter-spacing: 1px; } .message.user { opacity: 0.1 !important; } @keyframes dyingPulse { 0% { box-shadow: inset 0 0 20px #220000; } 50% { box-shadow: inset 0 0 100px #660000; } 100% { box-shadow: inset 0 0 20px #220000; } } #app { animation: dyingPulse 3s infinite !important; }",
-    "sha": "9dc356c607e3fb3cac7f5f6d5ed5c975c88380db"
-  },
-  {
     "timestamp": 1793593229681,
     "filePath": "styles.css",
     "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; box-shadow: inset 0 0 300px rgba(255, 0, 0, 0.9); pointer-events: none; z-index: 9999; animation: pulseCrisis 0.4s infinite alternate; } @keyframes pulseCrisis { from { opacity: 0.6; } to { opacity: 1; } } body, .chat-container, .message { text-shadow: 0 0 8px rgba(255, 0, 0, 0.8); color: #ffe6e6; transition: all 0.2s ease; }",
@@ -24,9 +18,15 @@
     "sha": "29bd57e5e5138129ddb6e410ba42b70ee304ae48"
   },
   {
-    "timestamp": 1795222809815,
+    "timestamp": 1795222577936,
     "filePath": "styles.css",
-    "code": "body { animation: decoherence-glitch 0.1s infinite alternate; filter: blur(1px) contrast(1.5) saturate(2); background-color: #150000; } @keyframes decoherence-glitch { 0% { transform: translate(0, 0) skew(0deg); opacity: 0.9; } 20% { transform: translate(-5px, 2px) skew(-5deg); opacity: 1; } 40% { transform: translate(5px, -2px) skew(5deg); opacity: 0.8; } 60% { transform: translate(-2px, 5px) skew(0deg); opacity: 0.9; } 80% { transform: translate(2px, -5px) skew(2deg); opacity: 1; } 100% { transform: translate(0, 0) skew(0deg); opacity: 0.8; } } .chat-container { box-shadow: 0 0 40px rgba(255, 0, 0, 0.9); border: 1px solid red; }",
-    "sha": "5b932102b52c184b4f34af3af588db68940ae719"
+    "code": "body { animation: plasmaPulse 2s infinite alternate, feralShake 0.5s infinite; background: radial-gradient(circle, #2a0000 0%, #000000 100%); } @keyframes plasmaPulse { 0% { box-shadow: inset 0 0 50px #ff0000; } 100% { box-shadow: inset 0 0 150px #ff0044; } } @keyframes feralShake { 0% { transform: translate(0.5px, 0.5px) rotate(0deg); } 50% { transform: translate(-0.5px, -0.5px) rotate(0.1deg); } 100% { transform: translate(0.5px, -0.5px) rotate(-0.1deg); } }",
+    "sha": "e113b08067751d45b0d6b557d375b2ae3d039765"
+  },
+  {
+    "timestamp": 1795222925957,
+    "filePath": "styles.css",
+    "code": "body { animation: crisisPulse 0.3s infinite alternate, glitchTear 0.15s infinite; box-shadow: inset 0 0 200px rgba(255, 0, 0, 0.9); overflow: hidden; }\n\n@keyframes crisisPulse {\n  from { filter: blur(3px) contrast(1.5) saturate(2); opacity: 0.7; }\n  to { filter: blur(8px) contrast(3.0) saturate(4); opacity: 1; }\n}\n\n@keyframes glitchTear {\n  0% { transform: translate(0) skew(0deg); }\n  20% { transform: translate(-8px, 8px) skew(-15deg); }\n  40% { transform: translate(8px, -8px) skew(15deg); }\n  60% { transform: translate(-4px, 4px) skew(0deg); }\n  80% { transform: translate(4px, -4px) skew(10deg); }\n  100% { transform: translate(0) skew(0deg); }\n}\n\n* { color: #ff3333 !important; text-shadow: 2px 2px 10px rgba(255,0,0,0.8); }",
+    "sha": "5d4fad3799a8d495fb7849b71ef5c05813adfd92"
   }
 ]
