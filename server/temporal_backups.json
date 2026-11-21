@@ -24,9 +24,9 @@
     "sha": "76bf1fcb0d035aa8a395bdae0acb7e67e9051064"
   },
   {
-    "timestamp": 1795222014404,
+    "timestamp": 1795222344678,
     "filePath": "styles.css",
-    "code": "@keyframes viscousPulse {\n    0% { background-position: 0% 50%; }\n    50% { background-position: 100% 50%; }\n    100% { background-position: 0% 50%; }\n}\n\nbody {\n    background: linear-gradient(-45deg, #ff007f, #7f00ff, #00d4ff, #2b00ff) !important;\n    background-size: 400% 400% !important;\n    animation: viscousPulse 12s ease infinite !important;\n    color: #ffffff !important;\n}\n\n.chat-container {\n    background: rgba(10, 10, 20, 0.6) !important;\n    backdrop-filter: blur(12px) !important;\n    border: 1px solid rgba(255, 0, 127, 0.4) !important;\n    box-shadow: 0 0 30px rgba(127, 0, 255, 0.3) !important;\n}\n\n.message.ai {\n    border-left: 4px solid #ff007f !important;\n    background: linear-gradient(90deg, rgba(255, 0, 127, 0.15), transparent) !important;\n}\n\n.message.user {\n    border-right: 4px solid #00d4ff !important;\n    background: linear-gradient(-90deg, rgba(0, 212, 255, 0.15), transparent) !important;\n}",
-    "sha": "2b8369a44c852c72504852fb79d9f7a8a813316a"
+    "code": "body { background: radial-gradient(circle at center, #1a001a 0%, #000000 100%); } #app-container { box-shadow: 0 0 30px #ff0055, 0 0 60px #8800ff; animation: plasmaPulse 2s infinite alternate; transition: all 0.5s ease-in-out; } @keyframes plasmaPulse { 0% { box-shadow: 0 0 30px #ff0055, 0 0 60px #8800ff; border-color: #ff0055; } 100% { box-shadow: 0 0 50px #ff0055, 0 0 120px #ff00aa; border-color: #ff00aa; } } .message.ai { text-shadow: 0 0 5px rgba(255, 0, 85, 0.5); }",
+    "sha": "a660e12648d4355386d3209f93096b24279be8e9"
   }
 ]
