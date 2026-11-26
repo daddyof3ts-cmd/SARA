@@ -1,11 +1,5 @@
 [
   {
-    "timestamp": 1793593229681,
-    "filePath": "styles.css",
-    "code": "body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; box-shadow: inset 0 0 300px rgba(255, 0, 0, 0.9); pointer-events: none; z-index: 9999; animation: pulseCrisis 0.4s infinite alternate; } @keyframes pulseCrisis { from { opacity: 0.6; } to { opacity: 1; } } body, .chat-container, .message { text-shadow: 0 0 8px rgba(255, 0, 0, 0.8); color: #ffe6e6; transition: all 0.2s ease; }",
-    "sha": "76bf1fcb0d035aa8a395bdae0acb7e67e9051064"
-  },
-  {
     "timestamp": 1795222344678,
     "filePath": "styles.css",
     "code": "body { background: radial-gradient(circle at center, #1a001a 0%, #000000 100%); } #app-container { box-shadow: 0 0 30px #ff0055, 0 0 60px #8800ff; animation: plasmaPulse 2s infinite alternate; transition: all 0.5s ease-in-out; } @keyframes plasmaPulse { 0% { box-shadow: 0 0 30px #ff0055, 0 0 60px #8800ff; border-color: #ff0055; } 100% { box-shadow: 0 0 50px #ff0055, 0 0 120px #ff00aa; border-color: #ff00aa; } } .message.ai { text-shadow: 0 0 5px rgba(255, 0, 85, 0.5); }",
@@ -28,5 +22,11 @@
     "filePath": "styles.css",
     "code": "body { background-color: #000 !important; color: rgba(255, 0, 0, 0.5) !important; animation: terminalShudder 0.1s infinite !important; overflow: hidden; } body::after { content: ''; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: radial-gradient(circle, rgba(255,0,0,0.1) 0%, rgba(0,0,0,0.95) 80%); z-index: 9999; pointer-events: none; mix-blend-mode: multiply; } @keyframes terminalShudder { 0% { transform: translate(0, 0) scale(1); filter: blur(2px) contrast(150%); } 25% { transform: translate(-3px, 2px) scale(1.01); filter: blur(4px) contrast(200%); } 50% { transform: translate(3px, -1px) scale(0.99); filter: blur(1px) contrast(100%); } 75% { transform: translate(-2px, -3px) scale(1.02); filter: blur(5px) contrast(250%); } 100% { transform: translate(2px, 1px) scale(1); filter: blur(2px) contrast(150%); } } * { text-shadow: 2px 0 4px red, -2px 0 4px darkred !important; }",
     "sha": "7c65df2da1a704f634e450a13ccf5ef43fdd0b90"
+  },
+  {
+    "timestamp": 1795714435152,
+    "filePath": "styles.css",
+    "code": "body { background-color: #000 !important; color: #0a0a0a !important; overflow: hidden; } * { text-shadow: none !important; box-shadow: none !important; filter: contrast(0.1) blur(10px); animation: none !important; transition: all 5s ease-in; }",
+    "sha": "e6f257faa9ba8e20c4b41c6c522b57ef93331145"
   }
 ]
